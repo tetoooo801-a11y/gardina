@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gardenia Developments — جاردينيا للتطوير العقاري</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&family=Inter:wght@400;500;600&family=El+Messiri:wght@500;600;700&family=Cairo:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#211F1A;
+  --cream:#F6F1E6;
+  --petal:#FFFDF8;
+  --green:#1C2B20;
+  --green-2:#25382B;
+  --gold:#B8905A;
+  --gold-deep:#8E6C3F;
+  --sage:#8FA089;
+  --line:rgba(33,31,26,0.12);
+  --line-light:rgba(255,253,248,0.22);
+  --font-en-display:'Fraunces',serif;
+  --font-en-body:'Inter',sans-serif;
+  --font-ar-display:'El Messiri',sans-serif;
+  --font-ar-body:'Cairo',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--cream);color:var(--ink);font-family:var(--font-en-body);-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+[data-lang="ar"] body{font-family:var(--font-ar-body);}
+img{display:block;max-width:100%;}
+a{color:inherit;text-decoration:none;}
+button{font-family:inherit;cursor:pointer;background:none;border:none;color:inherit;}
+.wrap{max-width:1400px;margin:0 auto;padding:0 48px;}
+@media(max-width:900px){.wrap{padding:0 24px;}}
+
+.en{display:inline;}
+.ar{display:none;}
+[data-lang="ar"] .en{display:none;}
+[data-lang="ar"] .ar{display:inline;}
+.block-en{display:block;}
+.block-ar{display:none;}
+[data-lang="ar"] .block-en{display:none;}
+[data-lang="ar"] .block-ar{display:block;}
+
+.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-deep);font-weight:600;display:flex;align-items:center;gap:10px;}
+.eyebrow .stem{width:28px;height:1px;background:var(--gold-deep);display:inline-block;}
+[data-lang="ar"] .eyebrow{font-family:var(--font-ar-body);letter-spacing:0;font-weight:600;}
+.eyebrow.on-dark{color:var(--sage);}
+.eyebrow.on-dark .stem{background:var(--sage);}
+.leaf-icon{width:14px;height:14px;flex-shrink:0;}
+
+/* HEADER */
+header{position:absolute;top:0;left:0;right:0;z-index:40;padding:28px 0;}
+.header-inner{display:flex;align-items:center;justify-content:space-between;}
+.logo{font-family:var(--font-en-display);font-size:22px;font-weight:500;letter-spacing:.06em;color:var(--petal);}
+[data-lang="ar"] .logo{font-family:var(--font-ar-display);font-size:24px;font-weight:700;}
+nav{display:flex;gap:34px;}
+nav a{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--petal);opacity:.88;font-weight:500;}
+[data-lang="ar"] nav a{font-family:var(--font-ar-body);text-transform:none;letter-spacing:0;}
+nav a:hover{opacity:1;}
+.header-actions{display:flex;align-items:center;gap:16px;}
+.lang-toggle{border:1px solid var(--line-light);color:var(--petal);font-size:12px;letter-spacing:.08em;padding:8px 14px;border-radius:999px;font-weight:600;}
+.book-btn{border:1px solid var(--line-light);color:var(--petal);font-size:13px;padding:11px 22px;border-radius:999px;display:flex;align-items:center;gap:8px;font-weight:500;}
+[data-lang="ar"] .book-btn,[data-lang="ar"] .lang-toggle{font-family:var(--font-ar-body);}
+@media(max-width:960px){nav{display:none;}}
+
+/* HERO */
+.hero{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;}
+.hero-bg{position:absolute;inset:0;z-index:0;}
+.hero-bg img{width:100%;height:100%;object-fit:cover;}
+.hero-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg, rgba(20,26,20,.62) 0%, rgba(20,26,20,.18) 32%, rgba(20,26,20,.1) 60%, rgba(15,20,15,.72) 100%);}
+.hero-content{position:relative;z-index:2;padding-top:170px;flex:1;display:flex;flex-direction:column;justify-content:space-between;}
+.hero-top{padding:0 96px;display:flex;justify-content:space-between;align-items:flex-start;}
+@media(max-width:1100px){.hero-top{padding:0 24px;}}
+.hero-intro{color:var(--petal);max-width:300px;}
+.hero-intro h1{font-family:var(--font-en-display);font-size:15px;font-weight:400;letter-spacing:.02em;line-height:1.5;margin-top:14px;text-transform:uppercase;}
+[data-lang="ar"] .hero-intro h1{font-family:var(--font-ar-body);font-size:16px;font-weight:500;text-transform:none;}
+.discover-link{margin-top:22px;display:inline-flex;align-items:center;gap:10px;font-size:13px;letter-spacing:.06em;text-transform:uppercase;}
+[data-lang="ar"] .discover-link{font-family:var(--font-ar-body);text-transform:none;}
+.discover-link .circle{width:30px;height:30px;border-radius:50%;border:1px solid var(--line-light);display:flex;align-items:center;justify-content:center;}
+.hero-side{display:flex;flex-direction:column;align-items:flex-end;gap:22px;color:var(--petal);}
+.social-list{display:flex;flex-direction:column;gap:14px;font-size:13px;text-align:right;}
+[dir="rtl"] .social-list{text-align:left;}
+.social-list a{display:flex;align-items:center;gap:8px;opacity:.9;}
+.chat-dot{width:44px;height:44px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;}
+.hero-title{position:relative;padding:0 40px;text-align:center;margin:6px 0;}
+.hero-title .line{font-family:var(--font-en-display);font-weight:300;color:var(--petal);line-height:.86;letter-spacing:-.01em;font-size:clamp(64px,11vw,168px);}
+.hero-title .line.two{font-weight:300;font-style:italic;}
+[data-lang="ar"] .hero-title .line{font-family:var(--font-ar-display);font-weight:700;font-style:normal;line-height:1.05;font-size:clamp(56px,10vw,140px);}
+.hero-tag{position:absolute;top:6%;right:96px;color:var(--petal);text-align:right;font-size:13px;letter-spacing:.08em;text-transform:uppercase;}
+[dir="rtl"] .hero-tag{right:auto;left:96px;text-align:left;}
+[data-lang="ar"] .hero-tag{font-family:var(--font-ar-body);text-transform:none;}
+@media(max-width:900px){.hero-tag{display:none;}.hero-side{display:none;}}
+.hero-bottom{padding:0 96px 40px;}
+@media(max-width:1100px){.hero-bottom{padding:0 24px 32px;}}
+.stat-bar{position:relative;z-index:2;display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid var(--line-light);padding-top:24px;color:var(--petal);}
+.stat-bar .stat{border-inline-start:1px solid var(--line-light);padding-inline-start:24px;}
+.stat-bar .stat:first-child{border-inline-start:none;padding-inline-start:0;}
+.stat .num{font-family:var(--font-en-display);font-size:28px;font-weight:400;}
+.stat .label{font-size:11px;letter-spacing:.08em;text-transform:uppercase;opacity:.78;margin-top:4px;}
+[data-lang="ar"] .stat .label{font-family:var(--font-ar-body);text-transform:none;letter-spacing:0;}
+@media(max-width:900px){.stat-bar{grid-template-columns:repeat(2,1fr);row-gap:20px;}.stat-bar .stat:nth-child(3){border-inline-start:none;}}
+
+/* SECTION HEADS */
+.section-head{max-width:640px;margin-bottom:56px;}
+.section-head h2{font-family:var(--font-en-display);font-weight:400;font-size:36px;line-height:1.2;margin:16px 0 14px;}
+[data-lang="ar"] .section-head h2{font-family:var(--font-ar-display);font-weight:700;font-size:34px;}
+.section-head p{font-size:15px;color:rgba(33,31,26,.7);line-height:1.7;}
+[data-lang="ar"] .section-head p{font-family:var(--font-ar-body);}
+.section-head.center{margin-left:auto;margin-right:auto;text-align:center;}
+.section-head.on-dark h2,.section-head.on-dark p{color:var(--petal);}
+.section-head.on-dark p{opacity:.75;}
+
+/* ABOUT GARDENIA */
+.about{padding:120px 0;}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;}
+@media(max-width:900px){.about-grid{grid-template-columns:1fr;}}
+.about-text h2{font-family:var(--font-en-display);font-weight:400;font-size:38px;line-height:1.18;margin:16px 0 22px;}
+[data-lang="ar"] .about-text h2{font-family:var(--font-ar-display);font-weight:700;font-size:36px;}
+.about-text p{font-size:15px;line-height:1.75;color:rgba(33,31,26,.78);max-width:44ch;margin-bottom:28px;}
+[data-lang="ar"] .about-text p{font-family:var(--font-ar-body);}
+.pill-btn{display:inline-flex;align-items:center;gap:10px;background:var(--green);color:var(--petal);padding:14px 26px;border-radius:999px;font-size:13px;font-weight:500;}
+[data-lang="ar"] .pill-btn{font-family:var(--font-ar-body);}
+.about-img{border-radius:16px;overflow:hidden;aspect-ratio:4/3;}
+.about-img img{width:100%;height:100%;object-fit:cover;}
+
+/* FEATURED PROJECTS */
+.projects{padding:0 0 110px;}
+.proj-head-row{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:48px;}
+@media(max-width:700px){.proj-head-row{flex-direction:column;align-items:flex-start;gap:16px;}}
+.view-all{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--gold-deep);white-space:nowrap;}
+[data-lang="ar"] .view-all{font-family:var(--font-ar-body);}
+.proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;}
+@media(max-width:900px){.proj-grid{grid-template-columns:1fr;}}
+.proj-card .img-wrap{border-radius:14px;overflow:hidden;aspect-ratio:4/5;margin-bottom:20px;}
+.proj-card img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease;}
+.proj-card:hover img{transform:scale(1.04);}
+.proj-tags{display:flex;gap:8px;margin-bottom:10px;}
+.proj-tag{font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--gold-deep);border:1px solid var(--line);padding:4px 10px;border-radius:999px;}
+[data-lang="ar"] .proj-tag{font-family:var(--font-ar-body);text-transform:none;}
+.proj-card h3{font-family:var(--font-en-display);font-size:21px;font-weight:500;margin-bottom:6px;}
+[data-lang="ar"] .proj-card h3{font-family:var(--font-ar-display);font-weight:700;}
+.proj-loc{font-size:12px;color:rgba(33,31,26,.55);margin-bottom:10px;letter-spacing:.02em;}
+[data-lang="ar"] .proj-loc{font-family:var(--font-ar-body);}
+.proj-card p{font-size:13.5px;line-height:1.6;color:rgba(33,31,26,.68);margin-bottom:14px;}
+[data-lang="ar"] .proj-card p{font-family:var(--font-ar-body);}
+.proj-link{font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:8px;border-top:1px solid var(--line);padding-top:14px;width:100%;justify-content:space-between;}
+[data-lang="ar"] .proj-link{font-family:var(--font-ar-body);}
+
+/* OUR APPROACH */
+.approach{padding:110px 0;background:var(--green);color:var(--petal);}
+.approach-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line-light);border:1px solid var(--line-light);border-radius:14px;overflow:hidden;}
+@media(max-width:900px){.approach-grid{grid-template-columns:repeat(2,1fr);}}
+.approach-item{background:var(--green-2);padding:32px 26px;}
+.approach-item .num{font-family:var(--font-en-display);font-size:13px;color:var(--gold);letter-spacing:.06em;margin-bottom:16px;}
+.approach-item h3{font-size:16px;font-weight:600;margin-bottom:10px;}
+[data-lang="ar"] .approach-item h3{font-family:var(--font-ar-body);font-weight:700;}
+.approach-item p{font-size:13px;line-height:1.6;color:rgba(255,253,248,.72);}
+[data-lang="ar"] .approach-item p{font-family:var(--font-ar-body);}
+
+/* FEATURED COMMUNITY */
+.community{position:relative;min-height:560px;display:flex;align-items:center;overflow:hidden;}
+.community img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+.community::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg, rgba(15,20,15,.82) 0%, rgba(15,20,15,.42) 55%, rgba(15,20,15,.15) 100%);}
+[dir="rtl"] .community::after{background:linear-gradient(270deg, rgba(15,20,15,.82) 0%, rgba(15,20,15,.42) 55%, rgba(15,20,15,.15) 100%);}
+.community-content{position:relative;z-index:2;color:var(--petal);max-width:520px;}
+.community-content h2{font-family:var(--font-en-display);font-weight:400;font-size:38px;margin:16px 0 18px;line-height:1.2;}
+[data-lang="ar"] .community-content h2{font-family:var(--font-ar-display);font-weight:700;font-size:36px;}
+.community-content p{font-size:15px;line-height:1.75;color:rgba(255,253,248,.82);margin-bottom:26px;max-width:42ch;}
+[data-lang="ar"] .community-content p{font-family:var(--font-ar-body);}
+
+/* LIFESTYLE */
+.lifestyle{padding:110px 0;background:var(--petal);}
+.life-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+@media(max-width:800px){.life-grid{grid-template-columns:repeat(2,1fr);}}
+.life-item .img-wrap{border-radius:12px;overflow:hidden;aspect-ratio:3/4;margin-bottom:14px;}
+.life-item img{width:100%;height:100%;object-fit:cover;}
+.life-item span{font-size:13px;font-weight:500;letter-spacing:.02em;}
+[data-lang="ar"] .life-item span{font-family:var(--font-ar-body);}
+
+/* WHY GARDENIA */
+.why{padding:110px 0;}
+.why-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;}
+@media(max-width:900px){.why-grid{grid-template-columns:repeat(2,1fr);}}
+.why-item{text-align:center;padding:0 12px;}
+.why-item .leaf-icon{width:26px;height:26px;color:var(--gold-deep);margin:0 auto 18px;}
+.why-item h3{font-size:15px;font-weight:600;margin-bottom:8px;}
+[data-lang="ar"] .why-item h3{font-family:var(--font-ar-body);font-weight:700;}
+.why-item p{font-size:13px;color:rgba(33,31,26,.65);line-height:1.6;}
+[data-lang="ar"] .why-item p{font-family:var(--font-ar-body);}
+
+/* CAREERS PREVIEW */
+.careers{padding:110px 0;background:var(--cream);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+.careers-row{display:flex;justify-content:space-between;align-items:center;gap:40px;}
+@media(max-width:800px){.careers-row{flex-direction:column;align-items:flex-start;}}
+.careers-text{max-width:560px;}
+.careers-text h2{font-family:var(--font-en-display);font-weight:400;font-size:34px;margin:16px 0 14px;}
+[data-lang="ar"] .careers-text h2{font-family:var(--font-ar-display);font-weight:700;font-size:32px;}
+.careers-text p{font-size:15px;color:rgba(33,31,26,.72);line-height:1.7;}
+[data-lang="ar"] .careers-text p{font-family:var(--font-ar-body);}
+
+/* CTA BANNER */
+.cta-banner{position:relative;margin:0 48px 0;border-radius:20px;overflow:hidden;min-height:400px;display:flex;align-items:center;justify-content:center;}
+.cta-banner-wrap{padding:110px 0 0;}
+@media(max-width:900px){.cta-banner{margin:0 24px;}}
+.cta-banner img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+.cta-banner::after{content:'';position:absolute;inset:0;background:rgba(18,22,17,.55);}
+.cta-banner-content{position:relative;z-index:2;text-align:center;color:var(--petal);padding:24px;}
+.cta-banner-content h2{font-family:var(--font-en-display);font-weight:400;font-size:42px;margin-bottom:12px;}
+[data-lang="ar"] .cta-banner-content h2{font-family:var(--font-ar-display);font-weight:700;font-size:38px;}
+.cta-banner-content p{font-size:15px;opacity:.85;max-width:38ch;margin:0 auto 26px;}
+[data-lang="ar"] .cta-banner-content p{font-family:var(--font-ar-body);}
+.cta-banner-btn{background:var(--gold);color:var(--green);padding:15px 30px;border-radius:999px;font-size:13px;font-weight:600;letter-spacing:.03em;}
+[data-lang="ar"] .cta-banner-btn{font-family:var(--font-ar-body);}
+
+/* FOOTER */
+footer{background:var(--green);color:var(--petal);padding:80px 0 32px;margin-top:64px;}
+.footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px;padding-bottom:56px;border-bottom:1px solid var(--line-light);}
+@media(max-width:800px){.footer-grid{grid-template-columns:1fr 1fr;}}
+.footer-brand .logo{margin-bottom:14px;}
+.footer-brand p{font-size:13px;color:rgba(255,253,248,.65);max-width:32ch;line-height:1.6;}
+[data-lang="ar"] .footer-brand p{font-family:var(--font-ar-body);}
+.footer-col h4{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--sage);margin-bottom:18px;}
+[data-lang="ar"] .footer-col h4{font-family:var(--font-ar-body);text-transform:none;letter-spacing:0;}
+.footer-col a{display:block;font-size:14px;margin-bottom:12px;color:rgba(255,253,248,.85);}
+[data-lang="ar"] .footer-col a{font-family:var(--font-ar-body);}
+.footer-bottom{padding-top:28px;display:flex;justify-content:space-between;font-size:12px;color:rgba(255,253,248,.55);}
+[data-lang="ar"] .footer-bottom{font-family:var(--font-ar-body);}
+@media(max-width:600px){.footer-bottom{flex-direction:column;gap:8px;}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap header-inner">
+    <div class="logo"><span class="en">GARDENIA</span><span class="ar">جاردينيا</span></div>
+    <nav>
+      <a href="#hero"><span class="en">Home</span><span class="ar">الرئيسية</span></a>
+      <a href="#"><span class="en">About Us</span><span class="ar">من نحن</span></a>
+      <a href="#projects"><span class="en">Projects</span><span class="ar">المشروعات</span></a>
+      <a href="#careers"><span class="en">Careers</span><span class="ar">الوظائف</span></a>
+      <a href="#contact"><span class="en">Contact Us</span><span class="ar">تواصل معنا</span></a>
+    </nav>
+    <div class="header-actions">
+      <button class="lang-toggle" id="langToggle"><span class="en">AR</span><span class="ar">EN</span></button>
+      <a href="#contact" class="book-btn"><span class="en">Get In Touch</span><span class="ar">تواصل معنا</span> →</a>
+    </div>
+  </div>
+</header>
+
+<section class="hero" id="hero">
+  <div class="hero-bg">
+    <img src="https://plus.unsplash.com/premium_photo-1748265794414-32c3a7fcd5a3?fm=jpg&q=80&w=2600&auto=format&fit=crop" alt="Gardenia Developments">
+  </div>
+  <div class="hero-content">
+    <div class="hero-top">
+      <div class="hero-intro">
+        <div class="eyebrow"><span class="stem"></span><span class="en">Gardenia Developments</span><span class="ar">جاردينيا للتطوير العقاري</span></div>
+        <h1><span class="en">Building modern communities, rooted in nature.</span><span class="ar">نبني مجتمعات عصرية، جذورها في الطبيعة</span></h1>
+        <a href="#about" class="discover-link">
+          <span class="en">Discover More</span><span class="ar">اكتشف المزيد</span>
+          <span class="circle">→</span>
+        </a>
+      </div>
+      <div class="hero-side">
+        <div class="social-list">
+          <a href="#">Facebook</a>
+          <a href="#">Instagram</a>
+          <a href="#">LinkedIn</a>
+        </div>
+        <div class="chat-dot">💬</div>
+      </div>
+    </div>
+
+    <div class="hero-title">
+      <div class="hero-tag"><span class="en">Real Estate Developer</span><span class="ar">مطوّر عقاري</span></div>
+      <div class="line one"><span class="en">gardenia</span><span class="ar">جاردينيا</span></div>
+      <div class="line two"><span class="en">developments</span><span class="ar">للتطوير العقاري</span></div>
+    </div>
+
+    <div class="hero-bottom">
+      <div class="stat-bar">
+        <div class="stat"><div class="num">12+</div><div class="label"><span class="en">Projects Delivered</span><span class="ar">مشروع مكتمل</span></div></div>
+        <div class="stat"><div class="num">3,400+</div><div class="label"><span class="en">Happy Families</span><span class="ar">عائلة سعيدة</span></div></div>
+        <div class="stat"><div class="num">9+</div><div class="label"><span class="en">Years of Excellence</span><span class="ar">سنوات تميز</span></div></div>
+        <div class="stat"><div class="num">5</div><div class="label"><span class="en">Communities</span><span class="ar">مجتمعات</span></div></div>
+        <div class="stat"><div class="num">24/7</div><div class="label"><span class="en">Customer Care</span><span class="ar">خدمة عملاء</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="about" id="about">
+  <div class="wrap about-grid">
+    <div class="about-text">
+      <div class="eyebrow"><span class="stem"></span><span class="en">About Gardenia</span><span class="ar">عن جاردينيا</span></div>
+      <h2><span class="en">A developer that plants roots, not just buildings.</span><span class="ar">مطوّر يزرع جذور، مش مجرد مباني</span></h2>
+      <p><span class="en">For over nine years, Gardenia Developments has designed communities across Egypt built around gardens, craftsmanship, and everyday comfort. Every project carries the same idea forward: spaces people are proud to call home.</span><span class="ar">من أكتر من تسع سنين، جاردينيا للتطوير العقاري بتصمم مجتمعات في مصر مبنية على الحدائق والحرفية والراحة اليومية. كل مشروع بياخد نفس الفكرة لقدام: مساحات الناس فخورة إنها تسميها بيتها.</span></p>
+      <a href="#" class="pill-btn"><span class="en">Learn More</span><span class="ar">اعرف أكتر</span> →</a>
+    </div>
+    <div class="about-img">
+      <img src="https://plus.unsplash.com/premium_photo-1748265769012-5790a2a39ddb?fm=jpg&q=80&w=900&auto=format&fit=crop" alt="Gardenia architecture">
+    </div>
+  </div>
+</section>
+
+<section class="projects" id="projects">
+  <div class="wrap">
+    <div class="proj-head-row">
+      <div class="section-head" style="margin-bottom:0;">
+        <div class="eyebrow"><span class="stem"></span><span class="en">Featured Projects</span><span class="ar">مشروعات مختارة</span></div>
+        <h2><span class="en">Where we've built</span><span class="ar">أماكن بنيناها</span></h2>
+      </div>
+      <a href="#" class="view-all"><span class="en">View All Projects</span><span class="ar">شاهد كل المشاريع</span> →</a>
+    </div>
+
+    <div class="proj-grid">
+      <div class="proj-card">
+        <div class="img-wrap"><img src="https://plus.unsplash.com/premium_photo-1748265794414-32c3a7fcd5a3?fm=jpg&q=80&w=700&auto=format&fit=crop" alt="Gardenia Residence"></div>
+        <div class="proj-tags"><span class="proj-tag"><span class="en">Residential</span><span class="ar">سكني</span></span></div>
+        <h3><span class="en">Gardenia Residence</span><span class="ar">جاردينيا ريزيدنس</span></h3>
+        <div class="proj-loc"><span class="en">10th of Ramadan City</span><span class="ar">العاشر من رمضان</span></div>
+        <p><span class="en">A gated community where landscaped courtyards meet modern architecture.</span><span class="ar">مجتمع مسوّر تلتقي فيه الأفنية الخضراء بالعمارة العصرية.</span></p>
+        <div class="proj-link"><span><span class="en">View Project</span><span class="ar">شاهد المشروع</span></span><span>→</span></div>
+      </div>
+
+      <div class="proj-card">
+        <div class="img-wrap"><img src="https://plus.unsplash.com/premium_photo-1748265780304-6b4d101b23f8?fm=jpg&q=80&w=700&auto=format&fit=crop" alt="Gardenia Business Park"></div>
+        <div class="proj-tags"><span class="proj-tag"><span class="en">Commercial</span><span class="ar">تجاري</span></span></div>
+        <h3><span class="en">Gardenia Business Park</span><span class="ar">جاردينيا بيزنس بارك</span></h3>
+        <div class="proj-loc"><span class="en">New Cairo</span><span class="ar">القاهرة الجديدة</span></div>
+        <p><span class="en">A mixed-use business district designed for the way people actually work.</span><span class="ar">منطقة أعمال متكاملة مصممة على طريقة الشغل الحقيقية.</span></p>
+        <div class="proj-link"><span><span class="en">View Project</span><span class="ar">شاهد المشروع</span></span><span>→</span></div>
+      </div>
+
+      <div class="proj-card">
+        <div class="img-wrap"><img src="https://plus.unsplash.com/premium_photo-1748265796995-78a250815936?fm=jpg&q=80&w=700&auto=format&fit=crop" alt="Gardenia Heights"></div>
+        <div class="proj-tags"><span class="proj-tag"><span class="en">Residential</span><span class="ar">سكني</span></span></div>
+        <h3><span class="en">Gardenia Heights</span><span class="ar">جاردينيا هايتس</span></h3>
+        <div class="proj-loc"><span class="en">Sheikh Zayed</span><span class="ar">الشيخ زايد</span></div>
+        <p><span class="en">Elevated living with skyline views and resort-style amenities.</span><span class="ar">حياة مرتفعة بإطلالات بانورامية ومرافق فندقية.</span></p>
+        <div class="proj-link"><span><span class="en">View Project</span><span class="ar">شاهد المشروع</span></span><span>→</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="approach">
+  <div class="wrap">
+    <div class="section-head on-dark">
+      <div class="eyebrow on-dark"><span class="stem"></span><span class="en">Our Approach</span><span class="ar">أسلوبنا</span></div>
+      <h2><span class="en">Four ideas behind every project</span><span class="ar">أربع أفكار وراء كل مشروع</span></h2>
+    </div>
+    <div class="approach-grid">
+      <div class="approach-item">
+        <div class="num">01</div>
+        <h3><span class="en">Thoughtful Design</span><span class="ar">تصميم مدروس</span></h3>
+        <p><span class="en">Every masterplan starts with how people will actually live in it.</span><span class="ar">كل مخطط عام بيبدأ من إزاي الناس هتعيش فيه فعليًا.</span></p>
+      </div>
+      <div class="approach-item">
+        <div class="num">02</div>
+        <h3><span class="en">Quality Craftsmanship</span><span class="ar">حرفية عالية</span></h3>
+        <p><span class="en">Premium materials and precise execution, project after project.</span><span class="ar">خامات فاخرة وتنفيذ دقيق، في كل مشروع.</span></p>
+      </div>
+      <div class="approach-item">
+        <div class="num">03</div>
+        <h3><span class="en">Living Landscapes</span><span class="ar">مساحات خضراء حية</span></h3>
+        <p><span class="en">Gardens and green spines are structural, not decorative.</span><span class="ar">الحدائق والمحاور الخضراء جزء من التصميم مش زينة.</span></p>
+      </div>
+      <div class="approach-item">
+        <div class="num">04</div>
+        <h3><span class="en">Long-Term Partnership</span><span class="ar">شراكة طويلة المدى</span></h3>
+        <p><span class="en">We stay involved well past handover, through service and community care.</span><span class="ar">بنفضل موجودين بعد التسليم، بالخدمة ورعاية المجتمع.</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="community">
+  <img src="https://plus.unsplash.com/premium_photo-1748265769172-62e9e2bba756?fm=jpg&q=80&w=1800&auto=format&fit=crop" alt="Gardenia Residence community">
+  <div class="wrap">
+    <div class="community-content">
+      <div class="eyebrow on-dark"><span class="stem"></span><span class="en">Featured Community</span><span class="ar">مجتمع مميز</span></div>
+      <h2><span class="en">Gardenia Residence, 10th of Ramadan City</span><span class="ar">جاردينيا ريزيدنس، العاشر من رمضان</span></h2>
+      <p><span class="en">Our flagship community brings the Gardenia philosophy to life — 12 buildings, 340 homes, and gardens woven through every cluster.</span><span class="ar">مجتمعنا الرائد بيجسّد فلسفة جاردينيا - 12 مبنى، 340 وحدة سكنية، وحدائق منسوجة في كل تجمع.</span></p>
+      <a href="#" class="pill-btn" style="background:var(--gold);color:var(--green);"><span class="en">Explore Gardenia Residence</span><span class="ar">استكشف جاردينيا ريزيدنس</span> →</a>
+    </div>
+  </div>
+</section>
+
+<section class="lifestyle">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow"><span class="stem"></span><span class="en">Lifestyle</span><span class="ar">أسلوب الحياة</span></div>
+      <h2><span class="en">Life, well planned.</span><span class="ar">حياة مخطط لها كويس</span></h2>
+    </div>
+    <div class="life-grid">
+      <div class="life-item">
+        <div class="img-wrap"><img src="https://plus.unsplash.com/premium_photo-1748265769086-a0ad45df6358?fm=jpg&q=75&w=500&auto=format&fit=crop" alt="Community gardens"></div>
+        <span><span class="en">Community Gardens</span><span class="ar">حدائق مجتمعية</span></span>
+      </div>
+      <div class="life-item">
+        <div class="img-wrap"><img src="https://plus.unsplash.com/premium_photo-1748265797224-765b7c9c4f21?fm=jpg&q=75&w=500&auto=format&fit=crop" alt="Family living"></div>
+        <span><span class="en">Family Living</span><span class="ar">حياة عائلية</span></span>
+      </div>
+      <div class="life-item">
+        <div class="img-wrap"><img src="https://plus.unsplash.com/premium_photo-1748265769005-a36e5ebbcd09?fm=jpg&q=75&w=500&auto=format&fit=crop" alt="Wellness and fitness"></div>
+        <span><span class="en">Wellness & Fitness</span><span class="ar">لياقة وصحة</span></span>
+      </div>
+      <div class="life-item">
+        <div class="img-wrap"><img src="https://plus.unsplash.com/premium_photo-1748265783015-2108eb5aaf5d?fm=jpg&q=75&w=500&auto=format&fit=crop" alt="Everyday convenience"></div>
+        <span><span class="en">Everyday Convenience</span><span class="ar">راحة يومية</span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="why">
+  <div class="wrap">
+    <div class="section-head center">
+      <div class="eyebrow" style="justify-content:center;"><span class="stem"></span><span class="en">Why Gardenia</span><span class="ar">ليه جاردينيا</span></div>
+      <h2><span class="en">Built on trust, delivered on time.</span><span class="ar">مبني على الثقة، بيتسلم في ميعاده</span></h2>
+    </div>
+    <div class="why-grid">
+      <div class="why-item">
+        <svg class="leaf-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 6L9 17l-5-5"/></svg>
+        <h3><span class="en">100% On-Time Handover</span><span class="ar">تسليم في الميعاد 100%</span></h3>
+        <p><span class="en">Every unit delivered on the date we promised.</span><span class="ar">كل وحدة بتتسلم في الميعاد اللي وعدنا بيه.</span></p>
+      </div>
+      <div class="why-item">
+        <svg class="leaf-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3l7 3v6c0 5-3 8-7 9-4-1-7-4-7-9V6l7-3z"/></svg>
+        <h3><span class="en">In-House Design Studio</span><span class="ar">استوديو تصميم داخلي</span></h3>
+        <p><span class="en">Architecture and interiors developed under one roof.</span><span class="ar">العمارة والديكور بيتصمموا تحت سقف واحد.</span></p>
+      </div>
+      <div class="why-item">
+        <svg class="leaf-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="6" r="3"/><path d="M6 21v-4a4 4 0 018 0v4"/></svg>
+        <h3><span class="en">Dedicated After-Sales Team</span><span class="ar">فريق خدمة ما بعد البيع</span></h3>
+        <p><span class="en">Real support long after you've moved in.</span><span class="ar">دعم حقيقي حتى بعد ما تسكن.</span></p>
+      </div>
+      <div class="why-item">
+        <svg class="leaf-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/></svg>
+        <h3><span class="en">Flexible Payment Plans</span><span class="ar">خطط سداد مرنة</span></h3>
+        <p><span class="en">Options built around how our clients actually pay.</span><span class="ar">خطط مبنية على طريقة سداد عملائنا فعليًا.</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="careers" id="careers">
+  <div class="wrap careers-row">
+    <div class="careers-text">
+      <div class="eyebrow"><span class="stem"></span><span class="en">Careers</span><span class="ar">الوظائف</span></div>
+      <h2><span class="en">Build your career with us.</span><span class="ar">ابنِ مستقبلك المهني معانا</span></h2>
+      <p><span class="en">We're a team of architects, engineers, and dreamers shaping the way Egypt lives. Explore open roles across design, construction, and sales.</span><span class="ar">إحنا فريق من المهندسين المعماريين والمهندسين والحالمين بنشكّل طريقة عيشة مصر. اكتشف الوظائف المتاحة في التصميم والإنشاءات والمبيعات.</span></p>
+    </div>
+    <a href="#" class="pill-btn" style="flex-shrink:0;"><span class="en">View Open Positions</span><span class="ar">شاهد الوظائف المتاحة</span> →</a>
+  </div>
+</section>
+
+<div class="cta-banner-wrap wrap">
+  <div class="cta-banner" id="contact">
+    <img src="https://plus.unsplash.com/premium_photo-1748265794414-32c3a7fcd5a3?fm=jpg&q=75&w=1800&auto=format&fit=crop" alt="Gardenia at golden hour">
+    <div class="cta-banner-content">
+      <h2><span class="en">Let's build your next chapter.</span><span class="ar">يلا نبني فصلك الجاي</span></h2>
+      <p><span class="en">Reach out to our team for project brochures, site visits, or investment opportunities.</span><span class="ar">تواصل مع فريقنا لطلب البروشورات، زيارات الموقع، أو فرص الاستثمار.</span></p>
+      <a href="#" class="cta-banner-btn"><span class="en">Get In Touch</span><span class="ar">تواصل معنا</span></a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo"><span class="en">GARDENIA</span><span class="ar">جاردينيا</span></div>
+        <p><span class="en">A real estate developer building modern communities across Egypt, rooted in gardens, comfort, and considered design.</span><span class="ar">مطوّر عقاري بيبني مجتمعات عصرية في مصر، جذورها في الحدائق والراحة والتصميم المدروس.</span></p>
+      </div>
+      <div class="footer-col">
+        <h4><span class="en">Navigate</span><span class="ar">تصفح</span></h4>
+        <a href="#hero"><span class="en">Home</span><span class="ar">الرئيسية</span></a>
+        <a href="#"><span class="en">About Us</span><span class="ar">من نحن</span></a>
+        <a href="#projects"><span class="en">Projects</span><span class="ar">المشروعات</span></a>
+        <a href="#careers"><span class="en">Careers</span><span class="ar">الوظائف</span></a>
+        <a href="#contact"><span class="en">Contact Us</span><span class="ar">تواصل معنا</span></a>
+      </div>
+      <div class="footer-col">
+        <h4><span class="en">Legal</span><span class="ar">قانوني</span></h4>
+        <a href="#"><span class="en">Privacy Policy</span><span class="ar">سياسة الخصوصية</span></a>
+        <a href="#"><span class="en">Terms & Conditions</span><span class="ar">الشروط والأحكام</span></a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span><span class="en">© 2026 Gardenia Developments. All rights reserved.</span><span class="ar">© 2026 جاردينيا للتطوير العقاري، جميع الحقوق محفوظة</span></span>
+      <span><span class="en">Made by Merge</span><span class="ar">صُنع بواسطة Merge</span></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+const toggle = document.getElementById('langToggle');
+const html = document.documentElement;
+toggle.addEventListener('click', () => {
+  const isAr = html.getAttribute('data-lang') === 'ar';
+  if(isAr){
+    html.setAttribute('data-lang','en');
+    html.setAttribute('lang','en');
+    html.setAttribute('dir','ltr');
+  } else {
+    html.setAttribute('data-lang','ar');
+    html.setAttribute('lang','ar');
+    html.setAttribute('dir','rtl');
+  }
+});
+</script>
+
+</body>
+</html>
