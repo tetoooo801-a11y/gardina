@@ -1,5 +1,5 @@
 import { useLang } from '../context/LangContext'
-import GardeniaHero from '../components/GardeniaHero'
+import TowerHeroScrollytelling from '../components/TowerHeroScrollytelling'
 import { FadeUp, FadeIn, WordPullUp, Stagger, StaggerItem, ImageReveal, ParallaxImage, HoverScale } from '../components/Animate'
 
 type Page = 'home' | 'about' | 'projects' | 'careers' | 'contact'
@@ -18,8 +18,8 @@ export default function Home({ onNavigate }: HomeProps) {
 
   return (
     <>
-      {/* HERO */}
-      <GardeniaHero onNavigate={onNavigate} />
+      {/* HERO SCROLLYTELLING */}
+      <TowerHeroScrollytelling />
 
       {/* ABOUT GARDENIA */}
       <section className="about" id="about-section">
