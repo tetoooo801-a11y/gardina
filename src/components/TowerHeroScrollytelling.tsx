@@ -13,6 +13,10 @@ import { useLang } from '../context/LangContext';
 
 const TOTAL_FRAMES = 232;
 
+const gardeniaLogoAr = '/gardenia-logo-collapsed.svg';
+const gardeniaLogoEn = '/gardenia-logo-collapsed-en.svg';
+const gardeniaLogoFull = '/gardenia-logo.svg';
+
 interface ScrollyBeatProps {
   progress: MotionValue<number>;
   range: [number, number, number, number];
@@ -59,7 +63,6 @@ function ScrollyBeat({
       style={{ opacity, y }}
       className={`pointer-events-none absolute inset-0 flex flex-col justify-center px-6 ${alignmentClasses}`}
     >
-      {/* Badge / Eyebrow */}
       <span
         className="mb-3 inline-block text-[12px] font-semibold uppercase tracking-[0.25em] drop-shadow-md text-[#d4af37]"
         style={{
@@ -69,9 +72,8 @@ function ScrollyBeat({
         {isAr ? badge.ar : badge.en}
       </span>
 
-      {/* Main Title with Site Display Font */}
       <h2
-        className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-normal leading-[1.15] text-white drop-shadow-[0_4px_24px_rgba(0,0,0,0.8)]"
+        className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-normal leading-[1.15] text-white drop-shadow-[0_4px_24px_rgba(0,0,0,0.85)]"
         style={{
           fontFamily: isAr ? 'var(--font-ar-display)' : 'var(--font-en-display)',
         }}
@@ -79,7 +81,6 @@ function ScrollyBeat({
         {isAr ? title.ar : title.en}
       </h2>
 
-      {/* Subtitle with Site Body Font */}
       <p
         className="mt-4 text-sm sm:text-base md:text-xl font-light leading-relaxed text-white/80 max-w-xl drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)]"
         style={{
@@ -116,6 +117,23 @@ export default function TowerHeroScrollytelling() {
 
   const exploreIndicatorOpacity = useTransform(scrollYProgress, [0, 0.08], [1, 0]);
 
+  // Logo Reveal Animation at the end of the scroll (after all text beats finish)
+  const logoOpacity = useTransform(
+    smoothProgress,
+    [0.82, 0.88, 0.98, 1.0],
+    [0, 1, 1, 1]
+  );
+  const logoScale = useTransform(
+    smoothProgress,
+    [0.82, 0.88, 0.98, 1.0],
+    [0.92, 1, 1.03, 1.03]
+  );
+  const logoY = useTransform(
+    smoothProgress,
+    [0.82, 0.88, 0.98, 1.0],
+    [30, 0, 0, 0]
+  );
+
   const renderFrame = useCallback((frameIndex: number) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -125,9 +143,13 @@ export default function TowerHeroScrollytelling() {
     const img = imagesRef.current[frameIndex];
     if (!img || !img.complete || img.naturalWidth === 0) return;
 
-    const dpr = window.devicePixelRatio || 1;
+    const dpr = Math.max(window.devicePixelRatio || 1, 2);
     const width = canvas.width / dpr;
     const height = canvas.height / dpr;
+
+    // Enable high-quality image smoothing & bicubic scaling
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'high';
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -159,7 +181,7 @@ export default function TowerHeroScrollytelling() {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const dpr = window.devicePixelRatio || 1;
+    const dpr = Math.max(window.devicePixelRatio || 1, 2);
     const displayWidth = window.innerWidth;
     const displayHeight = window.innerHeight;
 
@@ -233,7 +255,7 @@ export default function TowerHeroScrollytelling() {
   }, [smoothProgress, imagesLoaded, renderFrame]);
 
   return (
-    <div ref={containerRef} className="relative h-[400vh] bg-[#050505]">
+    <div ref={containerRef} className="relative h-[450vh] bg-[#050505]">
       <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center bg-[#050505]">
         {/* Preloader Overlay */}
         <AnimatePresence>
@@ -267,39 +289,67 @@ export default function TowerHeroScrollytelling() {
           )}
         </AnimatePresence>
 
-        {/* Dynamic HTML5 Canvas for Sequence */}
+        {/* Dynamic HTML5 Canvas with Contrast & Sharpness Grading */}
         <canvas
           ref={canvasRef}
           className="absolute inset-0 block h-full w-full pointer-events-none"
+          style={{
+            filter: 'contrast(1.12) brightness(0.94) saturate(1.15)',
+          }}
         />
+
+        {/* 🎬 35MM CINEMATIC FILM GRAIN (Masks low resolution & compression artifacts) */}
+        <svg className="pointer-events-none absolute inset-0 h-full w-full opacity-35 mix-blend-overlay">
+          <filter id="hero-film-grain">
+            <feTurbulence
+              type="fractalNoise"
+              baseFrequency="0.8"
+              numOctaves="3"
+              stitchTiles="stitch"
+            />
+            <feColorMatrix type="saturate" values="0" />
+          </filter>
+          <rect width="100%" height="100%" filter="url(#hero-film-grain)" />
+        </svg>
 
         {/* 🌿 LUXURY BOTANICAL TRANSLUCENT GREEN EFFECT OVERLAY */}
         <div
-          className="pointer-events-none absolute inset-0 mix-blend-multiply opacity-75"
+          className="pointer-events-none absolute inset-0 mix-blend-multiply opacity-80"
           style={{
             background:
-              'radial-gradient(ellipse at 50% 40%, rgba(37, 66, 45, 0.55) 0%, rgba(20, 38, 26, 0.75) 60%, rgba(5, 10, 7, 0.95) 100%)',
+              'radial-gradient(ellipse at 50% 45%, rgba(35, 62, 42, 0.6) 0%, rgba(18, 35, 23, 0.8) 60%, rgba(5, 10, 7, 0.96) 100%)',
           }}
         />
 
-        {/* Subtle Ambient Sage / Emerald Glow */}
+        {/* Soft Center Dream Glow & Sage Vignette */}
         <div
-          className="pointer-events-none absolute inset-0 mix-blend-screen opacity-25"
+          className="pointer-events-none absolute inset-0 mix-blend-screen opacity-20"
           style={{
             background:
-              'radial-gradient(circle at 50% 50%, rgba(143, 160, 137, 0.4) 0%, transparent 65%)',
+              'radial-gradient(circle at 50% 50%, rgba(143, 160, 137, 0.5) 0%, transparent 60%)',
           }}
         />
 
-        {/* Bottom Fade to Content & Top Nav Shadow */}
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-[#050505] opacity-80" />
+        {/* Deep Contrast Vignette & Edge Softener */}
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              'radial-gradient(circle at 50% 50%, transparent 40%, rgba(5, 5, 5, 0.7) 80%, #050505 100%)',
+          }}
+        />
 
-        {/* Scrollytelling Story Beats (Bilingual + Project Fonts) */}
+        {/* Top/Bottom Dark Blends */}
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-[#050505] opacity-90" />
+
+        {/* ════════════════════════════════════════════════════
+            SCROLLYTELLING TEXT BEATS (0% -> 80%)
+        ════════════════════════════════════════════════════ */}
         <div className="absolute inset-0 pointer-events-none z-10">
-          {/* Beat A: 0% – 20% */}
+          {/* Beat A: 0% – 19% */}
           <ScrollyBeat
             progress={smoothProgress}
-            range={[0.0, 0.05, 0.18, 0.23]}
+            range={[0.0, 0.04, 0.15, 0.19]}
             badge={{ en: 'The Vision', ar: 'الرؤية المعمارية' }}
             title={{ en: 'Monumental Living', ar: 'حياة استثنائية راقية' }}
             subtitle={{
@@ -309,10 +359,10 @@ export default function TowerHeroScrollytelling() {
             isAr={isAr}
           />
 
-          {/* Beat B: 25% – 45% */}
+          {/* Beat B: 21% – 39% */}
           <ScrollyBeat
             progress={smoothProgress}
-            range={[0.26, 0.31, 0.43, 0.48]}
+            range={[0.21, 0.25, 0.35, 0.39]}
             badge={{ en: 'Biophilic Sanctuary', ar: 'ملاذ بيئي مستدام' }}
             title={{ en: 'Living In Harmony', ar: 'تناغم الطبيعة والعمارة' }}
             subtitle={{
@@ -322,10 +372,10 @@ export default function TowerHeroScrollytelling() {
             isAr={isAr}
           />
 
-          {/* Beat C: 50% – 70% */}
+          {/* Beat C: 41% – 59% */}
           <ScrollyBeat
             progress={smoothProgress}
-            range={[0.51, 0.56, 0.68, 0.73]}
+            range={[0.41, 0.45, 0.55, 0.59]}
             badge={{ en: 'Master Craftsmanship', ar: 'حرفية وإتقان' }}
             title={{ en: 'Refined Interiors', ar: 'تصاميم داخلية فاخرة' }}
             subtitle={{
@@ -335,10 +385,10 @@ export default function TowerHeroScrollytelling() {
             isAr={isAr}
           />
 
-          {/* Beat D: 75% – 95% */}
+          {/* Beat D: 61% – 79% */}
           <ScrollyBeat
             progress={smoothProgress}
-            range={[0.76, 0.81, 0.93, 0.98]}
+            range={[0.61, 0.65, 0.75, 0.79]}
             badge={{ en: 'Sky Residences', ar: 'أجنحة السحاب' }}
             title={{ en: 'Claim Your Horizon', ar: 'امتلك أفقك الخاص' }}
             subtitle={{
@@ -348,6 +398,61 @@ export default function TowerHeroScrollytelling() {
             isAr={isAr}
           />
         </div>
+
+        {/* ════════════════════════════════════════════════════
+            ✨ FINALE: LOGO REVEAL AFTER ALL TEXT FINISHES (82% -> 100%)
+        ════════════════════════════════════════════════════ */}
+        <motion.div
+          style={{ opacity: logoOpacity, scale: logoScale, y: logoY }}
+          className="pointer-events-none absolute inset-0 z-20 flex flex-col items-center justify-center px-6 text-center"
+        >
+          {/* Subtle Ambient Backlight Glow behind Logo */}
+          <div
+            className="absolute h-64 w-64 md:h-80 md:w-80 rounded-full blur-3xl opacity-40"
+            style={{
+              background: 'radial-gradient(circle, #d4af37 0%, #8FA089 50%, transparent 70%)',
+            }}
+          />
+
+          {/* Golden Badge Accent */}
+          <span
+            className="mb-4 inline-block text-[11px] md:text-[13px] font-semibold tracking-[0.35em] uppercase text-[#d4af37] drop-shadow-md"
+            style={{
+              fontFamily: isAr ? 'var(--font-ar-body)' : 'var(--font-en-body)',
+            }}
+          >
+            {t('Gardenia Developments', 'جاردينيا للتطوير العقاري')}
+          </span>
+
+          {/* Official Logo Display */}
+          <div className="relative mb-6 max-w-[280px] sm:max-w-[360px] md:max-w-[440px] drop-shadow-[0_8px_32px_rgba(212,175,55,0.45)]">
+            <img
+              src={isAr ? gardeniaLogoAr : gardeniaLogoEn}
+              alt="Gardenia Heights Logo"
+              className="h-auto w-full object-contain brightness-0 invert sepia hue-rotate-[5deg] saturate-[2.5]"
+              style={{
+                filter:
+                  'drop-shadow(0 0 16px rgba(212,175,55,0.35)) brightness(1.2) contrast(1.1)',
+              }}
+            />
+          </div>
+
+          {/* Slogan underneath the Logo */}
+          <p
+            className="max-w-lg text-sm sm:text-base md:text-xl font-light text-white/90 drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)]"
+            style={{
+              fontFamily: isAr ? 'var(--font-ar-display)' : 'var(--font-en-display)',
+            }}
+          >
+            {t(
+              'A developer that plants roots, not just buildings.',
+              'مطوّر يزرع جذوراً في المستقبل، مش مجرد مباني.'
+            )}
+          </p>
+
+          {/* Elegant Gold Divider */}
+          <div className="mt-5 h-[1px] w-24 bg-gradient-to-r from-transparent via-[#d4af37]/80 to-transparent" />
+        </motion.div>
 
         {/* "Scroll to Explore" / "مرر للاستكشاف" Indicator */}
         <motion.div
