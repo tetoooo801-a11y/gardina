@@ -9,15 +9,17 @@ import {
   AnimatePresence,
   MotionValue,
 } from 'framer-motion';
+import { useLang } from '../context/LangContext';
 
 const TOTAL_FRAMES = 232;
 
 interface ScrollyBeatProps {
   progress: MotionValue<number>;
   range: [number, number, number, number];
-  badge?: string;
-  title: string;
-  subtitle: string;
+  badge: { en: string; ar: string };
+  title: { en: string; ar: string };
+  subtitle: { en: string; ar: string };
+  isAr: boolean;
   align?: 'center' | 'left' | 'right';
 }
 
@@ -27,6 +29,7 @@ function ScrollyBeat({
   badge,
   title,
   subtitle,
+  isAr,
   align = 'center',
 }: ScrollyBeatProps) {
   const opacity = useTransform(
@@ -43,8 +46,12 @@ function ScrollyBeat({
 
   const alignmentClasses = {
     center: 'items-center text-center max-w-3xl mx-auto',
-    left: 'items-start text-left max-w-xl ml-8 md:ml-24 mr-auto',
-    right: 'items-end text-right max-w-xl mr-8 md:mr-24 ml-auto',
+    left: isAr
+      ? 'items-start text-right max-w-xl mr-8 md:mr-24 ml-auto'
+      : 'items-start text-left max-w-xl ml-8 md:ml-24 mr-auto',
+    right: isAr
+      ? 'items-end text-left max-w-xl ml-8 md:ml-24 mr-auto'
+      : 'items-end text-right max-w-xl mr-8 md:mr-24 ml-auto',
   }[align];
 
   return (
@@ -52,22 +59,42 @@ function ScrollyBeat({
       style={{ opacity, y }}
       className={`pointer-events-none absolute inset-0 flex flex-col justify-center px-6 ${alignmentClasses}`}
     >
-      {badge && (
-        <span className="mb-3 inline-block text-[11px] font-medium tracking-[0.35em] uppercase text-amber-300/90 drop-shadow-md">
-          {badge}
-        </span>
-      )}
-      <h2 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-light tracking-[-0.03em] text-white/95 uppercase leading-[1.08] drop-shadow-lg">
-        {title}
+      {/* Badge / Eyebrow */}
+      <span
+        className="mb-3 inline-block text-[12px] font-semibold uppercase tracking-[0.25em] drop-shadow-md text-[#d4af37]"
+        style={{
+          fontFamily: isAr ? 'var(--font-ar-body)' : 'var(--font-en-body)',
+        }}
+      >
+        {isAr ? badge.ar : badge.en}
+      </span>
+
+      {/* Main Title with Site Display Font */}
+      <h2
+        className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-normal leading-[1.15] text-white drop-shadow-[0_4px_24px_rgba(0,0,0,0.8)]"
+        style={{
+          fontFamily: isAr ? 'var(--font-ar-display)' : 'var(--font-en-display)',
+        }}
+      >
+        {isAr ? title.ar : title.en}
       </h2>
-      <p className="mt-4 text-sm sm:text-base md:text-xl font-light tracking-wide text-white/70 max-w-xl leading-relaxed drop-shadow">
-        {subtitle}
+
+      {/* Subtitle with Site Body Font */}
+      <p
+        className="mt-4 text-sm sm:text-base md:text-xl font-light leading-relaxed text-white/80 max-w-xl drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)]"
+        style={{
+          fontFamily: isAr ? 'var(--font-ar-body)' : 'var(--font-en-body)',
+        }}
+      >
+        {isAr ? subtitle.ar : subtitle.en}
       </p>
     </motion.div>
   );
 }
 
 export default function TowerHeroScrollytelling() {
+  const { isAr, t } = useLang();
+
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const imagesRef = useRef<HTMLImageElement[]>([]);
@@ -104,7 +131,6 @@ export default function TowerHeroScrollytelling() {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Aspect-ratio cover fit to fill screen beautifully
     const imgRatio = img.naturalWidth / img.naturalHeight;
     const canvasRatio = width / height;
 
@@ -209,6 +235,7 @@ export default function TowerHeroScrollytelling() {
   return (
     <div ref={containerRef} className="relative h-[400vh] bg-[#050505]">
       <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center bg-[#050505]">
+        {/* Preloader Overlay */}
         <AnimatePresence>
           {!imagesLoaded && (
             <motion.div
@@ -218,15 +245,20 @@ export default function TowerHeroScrollytelling() {
               className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-[#050505] text-white"
             >
               <div className="flex flex-col items-center space-y-4">
-                <span className="text-[11px] font-medium tracking-[0.35em] text-amber-300/90 uppercase">
-                  The Lumina
+                <span
+                  className="text-[12px] font-semibold tracking-[0.3em] uppercase text-[#d4af37]"
+                  style={{
+                    fontFamily: isAr ? 'var(--font-ar-body)' : 'var(--font-en-body)',
+                  }}
+                >
+                  {t('Gardenia Heights', 'جاردينيا هايتس')}
                 </span>
                 <span className="text-3xl font-light tabular-nums tracking-tight text-white/90">
                   {loadProgress}%
                 </span>
-                <div className="h-[1px] w-28 overflow-hidden bg-white/10">
+                <div className="h-[2px] w-32 overflow-hidden bg-white/10 rounded-full">
                   <div
-                    className="h-full bg-amber-300/90 transition-all duration-150 ease-out"
+                    className="h-full bg-gradient-to-r from-[#8FA089] to-[#d4af37] transition-all duration-150 ease-out"
                     style={{ width: `${loadProgress}%` }}
                   />
                 </div>
@@ -235,55 +267,102 @@ export default function TowerHeroScrollytelling() {
           )}
         </AnimatePresence>
 
+        {/* Dynamic HTML5 Canvas for Sequence */}
         <canvas
           ref={canvasRef}
           className="absolute inset-0 block h-full w-full pointer-events-none"
         />
 
+        {/* 🌿 LUXURY BOTANICAL TRANSLUCENT GREEN EFFECT OVERLAY */}
+        <div
+          className="pointer-events-none absolute inset-0 mix-blend-multiply opacity-75"
+          style={{
+            background:
+              'radial-gradient(ellipse at 50% 40%, rgba(37, 66, 45, 0.55) 0%, rgba(20, 38, 26, 0.75) 60%, rgba(5, 10, 7, 0.95) 100%)',
+          }}
+        />
+
+        {/* Subtle Ambient Sage / Emerald Glow */}
+        <div
+          className="pointer-events-none absolute inset-0 mix-blend-screen opacity-25"
+          style={{
+            background:
+              'radial-gradient(circle at 50% 50%, rgba(143, 160, 137, 0.4) 0%, transparent 65%)',
+          }}
+        />
+
+        {/* Bottom Fade to Content & Top Nav Shadow */}
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-[#050505] opacity-80" />
+
+        {/* Scrollytelling Story Beats (Bilingual + Project Fonts) */}
         <div className="absolute inset-0 pointer-events-none z-10">
+          {/* Beat A: 0% – 20% */}
           <ScrollyBeat
             progress={smoothProgress}
             range={[0.0, 0.05, 0.18, 0.23]}
-            badge="The Vision"
-            title="Monumental Living"
-            subtitle="Architectural brilliance sculpted into the twilight sky."
+            badge={{ en: 'The Vision', ar: 'الرؤية المعمارية' }}
+            title={{ en: 'Monumental Living', ar: 'حياة استثنائية راقية' }}
+            subtitle={{
+              en: 'Architectural brilliance sculpted into the twilight sky.',
+              ar: 'براعة معمارية متفردة تعانق سماء الغسق بكل فخامة.',
+            }}
+            isAr={isAr}
           />
 
+          {/* Beat B: 25% – 45% */}
           <ScrollyBeat
             progress={smoothProgress}
             range={[0.26, 0.31, 0.43, 0.48]}
-            badge="Architecture & Nature"
-            title="Biophilic Sanctuary"
-            subtitle="Lush vertical terraces designed for serene elevated living."
+            badge={{ en: 'Biophilic Sanctuary', ar: 'ملاذ بيئي مستدام' }}
+            title={{ en: 'Living In Harmony', ar: 'تناغم الطبيعة والعمارة' }}
+            subtitle={{
+              en: 'Lush vertical terraces designed for serene elevated living.',
+              ar: 'تراسات خضراء معلقة صُممت لتوفر أسلوب حياة هادئ ومتميز.',
+            }}
+            isAr={isAr}
           />
 
+          {/* Beat C: 50% – 70% */}
           <ScrollyBeat
             progress={smoothProgress}
             range={[0.51, 0.56, 0.68, 0.73]}
-            badge="Craftsmanship"
-            title="Refined Interiors"
-            subtitle="Natural timber, honed marble, and warm bespoke finishes."
+            badge={{ en: 'Master Craftsmanship', ar: 'حرفية وإتقان' }}
+            title={{ en: 'Refined Interiors', ar: 'تصاميم داخلية فاخرة' }}
+            subtitle={{
+              en: 'Natural timber, honed marble, and warm bespoke finishes.',
+              ar: 'أخشاب طبيعية ورخام مصقول مع تشطيبات راقية مصممة خصيصاً.',
+            }}
+            isAr={isAr}
           />
 
+          {/* Beat D: 75% – 95% */}
           <ScrollyBeat
             progress={smoothProgress}
             range={[0.76, 0.81, 0.93, 0.98]}
-            badge="Sky Residences"
-            title="Claim Your Horizon"
-            subtitle="Exclusive sky penthouses now available for private booking."
+            badge={{ en: 'Sky Residences', ar: 'أجنحة السحاب' }}
+            title={{ en: 'Claim Your Horizon', ar: 'امتلك أفقك الخاص' }}
+            subtitle={{
+              en: 'Exclusive sky penthouses now available for private booking.',
+              ar: 'بنتهاوس وأجنحة سحابية حصرية متاحة الآن للحجز الخاص.',
+            }}
+            isAr={isAr}
           />
         </div>
 
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-black/40 opacity-70" />
-
+        {/* "Scroll to Explore" / "مرر للاستكشاف" Indicator */}
         <motion.div
           style={{ opacity: exploreIndicatorOpacity }}
           className="pointer-events-none absolute bottom-10 z-20 flex flex-col items-center gap-2"
         >
-          <span className="text-[10px] font-medium tracking-[0.3em] uppercase text-white/60">
-            Scroll to Explore
+          <span
+            className="text-[11px] font-semibold tracking-[0.25em] uppercase text-white/70"
+            style={{
+              fontFamily: isAr ? 'var(--font-ar-body)' : 'var(--font-en-body)',
+            }}
+          >
+            {t('Scroll to Explore', 'مرر لأسفل للاستكشاف')}
           </span>
-          <div className="h-6 w-[1px] bg-gradient-to-b from-white/60 to-transparent animate-pulse" />
+          <div className="h-6 w-[1px] bg-gradient-to-b from-[#d4af37] via-[#8FA089] to-transparent animate-pulse" />
         </motion.div>
       </div>
     </div>
