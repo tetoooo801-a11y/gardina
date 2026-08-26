@@ -181,7 +181,7 @@ export default function AnimatedNav({ currentPage, onNavigate }: AnimatedNavProp
               key={lang}
               src={isAr ? gardeniaLogoCollapsedAr : gardeniaLogoCollapsedEn}
               alt="Gardenia"
-              style={{ height: isAr ? 28 : 18, width: 'auto', maxWidth: 36, objectFit: 'contain', filter: logoFilter, opacity: 0.92, direction: 'ltr' }}
+              style={{ height: 26, width: 'auto', maxWidth: 36, objectFit: 'contain', filter: logoFilter, opacity: 0.92, direction: 'ltr' }}
             />
           </motion.div>
         </motion.nav>
