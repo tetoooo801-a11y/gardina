@@ -425,7 +425,7 @@ export default function TowerHeroScrollytelling() {
           </span>
 
           {/* Official Logo Display */}
-          <div className="relative mb-6 max-w-[280px] sm:max-w-[360px] md:max-w-[440px] drop-shadow-[0_8px_32px_rgba(212,175,55,0.45)]">
+          <div className="relative mb-6 max-w-[220px] sm:max-w-[280px] md:max-w-[320px] drop-shadow-[0_8px_32px_rgba(212,175,55,0.45)]">
             <img
               src={isAr ? gardeniaLogoAr : gardeniaLogoEn}
               alt="Gardenia Heights Logo"
