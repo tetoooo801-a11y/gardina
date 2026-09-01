@@ -228,7 +228,13 @@ export function ParallaxImage({
       <motion.img
         src={src}
         alt={alt}
-        style={{ y, width: '100%', height: `calc(100% + ${strength}px)`, objectFit: 'cover' }}
+        style={{
+          y,
+          marginTop: `-${strength / 2}px`,
+          width: '100%',
+          height: `calc(100% + ${strength}px)`,
+          objectFit: 'cover',
+        }}
       />
     </div>
   )
