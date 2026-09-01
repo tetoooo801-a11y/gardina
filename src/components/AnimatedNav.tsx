@@ -3,7 +3,8 @@ import { motion, useScroll, useMotionValueEvent, AnimatePresence } from 'framer-
 import { Menu, X } from 'lucide-react'
 import { useLang } from '../context/LangContext'
 
-const gardeniaLogo          = '/gardenia-logo.svg'
+const gardeniaLogoAr          = '/gardenia-logo.svg'
+const gardeniaLogoEn          = '/gardenia-logo-en.png'
 const gardeniaLogoCollapsedAr = '/gardenia-logo-collapsed.svg'
 const gardeniaLogoCollapsedEn = '/gardenia-logo-collapsed-en.svg'
 
@@ -93,8 +94,13 @@ export default function AnimatedNav({ currentPage, onNavigate }: AnimatedNavProp
             style={{ display: 'flex', alignItems: 'center', pointerEvents: isExpanded ? 'auto' : 'none' }}
           >
             {/* Logo */}
-            <div style={{ flexShrink: 0, display: 'flex', alignItems: 'center', padding: '0 10px 0 14px' }}>
-              <img src={gardeniaLogo} alt="Gardenia" style={{ height: 26, width: 'auto', filter: logoFilter, opacity: 0.92 }} />
+            <div style={{ flexShrink: 0, display: 'flex', alignItems: 'center', padding: isAr ? '0 10px 0 14px' : '0 14px 0 10px' }}>
+              <img
+                key={lang}
+                src={isAr ? gardeniaLogoAr : gardeniaLogoEn}
+                alt={isAr ? 'جاردينيا هايتس' : 'Gardenia Heights'}
+                style={{ height: 26, width: 'auto', filter: logoFilter, opacity: 0.95 }}
+              />
             </div>
 
             {/* Divider */}
@@ -209,7 +215,12 @@ export default function AnimatedNav({ currentPage, onNavigate }: AnimatedNavProp
               style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 48 }}
               onClick={e => e.stopPropagation()}
             >
-              <img src={gardeniaLogo} alt="Gardenia" style={{ height: 28, width: 'auto', filter: logoFilter, opacity: 0.9 }} />
+              <img
+                key={lang}
+                src={isAr ? gardeniaLogoAr : gardeniaLogoEn}
+                alt={isAr ? 'جاردينيا هايتس' : 'Gardenia Heights'}
+                style={{ height: 28, width: 'auto', filter: logoFilter, opacity: 0.95 }}
+              />
               <button
                 onClick={() => setMobileOpen(false)}
                 style={{ color: petalDim, padding: 8, background: 'none', border: 'none', cursor: 'pointer', display: 'flex' }}
