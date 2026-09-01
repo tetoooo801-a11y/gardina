@@ -361,11 +361,11 @@ footer { background: var(--green); color: var(--petal); padding: 80px 0 32px; ma
 /* PAGE HERO (inner pages) */
 .page-hero {
   position: relative;
-  min-height: 60vh;
+  min-height: 65vh;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   overflow: hidden;
-  padding-bottom: 64px;
+  padding: 110px 0 60px;
   background-color: #141a14;
 }
 .page-hero-bg { position: absolute; inset: 0; z-index: 0; background-color: #141a14; }
@@ -376,7 +376,7 @@ footer { background: var(--green); color: var(--petal); padding: 80px 0 32px; ma
   inset: 0;
   background: linear-gradient(180deg, rgba(20,26,20,.55) 0%, rgba(15,20,15,.75) 100%);
 }
-.page-hero-content { position: relative; z-index: 2; color: var(--petal); padding-top: 140px; }
+.page-hero-content { position: relative; z-index: 2; color: var(--petal); width: 100%; }
 .page-hero-content .eyebrow-label {
   font-size: 12px;
   letter-spacing: .14em;
