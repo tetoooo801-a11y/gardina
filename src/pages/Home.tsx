@@ -19,7 +19,7 @@ export default function Home({ onNavigate }: HomeProps) {
   return (
     <>
       {/* HERO SCROLLYTELLING */}
-      <TowerHeroScrollytelling />
+      <TowerHeroScrollytelling onNavigate={nav} />
 
       {/* ABOUT GARDENIA */}
       <section className="about" id="about-section">

@@ -1,12 +1,12 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { useLang } from '../context/LangContext'
-import { FadeUp, WordPullUp, Stagger, StaggerItem, ImageReveal, ParallaxImage } from '../components/Animate'
+import { FadeUp, WordPullUp, ImageReveal, ParallaxImage } from '../components/Animate'
 import { SlideTabs } from '../components/ui/slide-tabs'
-
-type Page = 'home' | 'about' | 'projects' | 'careers' | 'contact'
+import { MessageCircle, ArrowRight } from 'lucide-react'
+import type { Page, ContactPrefill } from '../App'
 
 interface ProjectsProps {
-  onNavigate: (page: Page) => void
+  onNavigate: (page: Page, prefill?: ContactPrefill) => void
 }
 
 interface Project {
@@ -91,7 +91,7 @@ const FILTER_TABS = [
 ]
 
 export default function Projects({ onNavigate }: ProjectsProps) {
-  const { t } = useLang()
+  const { t, isAr } = useLang()
   const [selected, setSelected] = useState<Project | null>(null)
   const [filterIndex, setFilterIndex] = useState(0)
 
@@ -100,6 +100,45 @@ export default function Projects({ onNavigate }: ProjectsProps) {
     const tag = FILTER_TABS[filterIndex].en
     return projects.filter(p => p.tag.en === tag)
   }, [filterIndex])
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setSelected(null)
+    }
+    if (selected) {
+      window.addEventListener('keydown', handleKeyDown)
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'unset'
+    }
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown)
+      document.body.style.overflow = 'unset'
+    }
+  }, [selected])
+
+  const handleEnquire = (proj: Project) => {
+    const pName = isAr ? proj.name.ar : proj.name.en
+    const pLoc = isAr ? proj.loc.ar : proj.loc.en
+    const subject = isAr
+      ? `استفسار بخصوص مشروع: ${pName} (${pLoc})`
+      : `Inquiry regarding: ${pName} (${pLoc})`
+    const message = isAr
+      ? `مرحباً فريق جاردينيا،\n\nأود الاستفسار عن تفاصيل الوحدات والأسعار وخطط السداد المتاحة في مشروع "${pName}" (${pLoc}).\n\nبرجاء التواصل معي على:`
+      : `Hello Gardenia Team,\n\nI would like to inquire about available units, pricing, and payment plans for "${pName}" located in ${pLoc}.\n\nPlease reach out to me at:`
+
+    setSelected(null)
+    onNavigate('contact', { subject, message })
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  const getWhatsAppUrl = (proj: Project) => {
+    const pName = isAr ? proj.name.ar : proj.name.en
+    const text = isAr
+      ? `مرحباً، أود الاستفسار وحجز جولة معاينة لمشروع "${pName}".`
+      : `Hello, I would like to inquire and schedule a viewing for "${pName}".`
+    return `https://wa.me/201000000000?text=${encodeURIComponent(text)}`
+  }
 
   return (
     <>
@@ -130,8 +169,8 @@ export default function Projects({ onNavigate }: ProjectsProps) {
           <FadeUp delay={0.45}>
             <p className="subtitle">
               {t(
-                'Discover the communities created by Gardenia Developments.',
-                'اكتشف المجتمعات التي أنشأتها جاردينيا للتطوير العقاري.'
+                'Discover the iconic communities designed and delivered by Gardenia Developments.',
+                'اكتشف المجتمعات الراقية التي صممتها ونفذتها جاردينيا للتطوير العقاري.'
               )}
             </p>
           </FadeUp>
@@ -207,7 +246,7 @@ export default function Projects({ onNavigate }: ProjectsProps) {
           />
           <div className="cta-banner-content">
             <h2>{t('Interested in a project?', 'مهتم بأحد مشروعاتنا؟')}</h2>
-            <p>{t('Request a brochure, book a site visit, or speak with our team.', 'اطلب بروشور أو احجز زيارة موقع أو تحدث مع فريقنا.')}</p>
+            <p>{t('Request a brochure, book a site visit, or speak directly with our advisory team.', 'اطلب بروشور المشروع أو احجز زيارة معاينة وتحدث مع فريقنا الاستشاري.')}</p>
             <button
               className="cta-banner-btn"
               onClick={() => { onNavigate('contact'); window.scrollTo({ top: 0, behavior: 'smooth' }) }}
@@ -226,25 +265,56 @@ export default function Projects({ onNavigate }: ProjectsProps) {
               <img src={selected.img} alt={selected.name.en} />
             </div>
             <div className="proj-overlay-body">
-              <button className="proj-overlay-close" onClick={() => setSelected(null)}>✕</button>
+              <button className="proj-overlay-close" aria-label="Close modal" onClick={() => setSelected(null)}>✕</button>
               <div className="proj-tags">
                 <span className="proj-tag">{t(selected.tag.en, selected.tag.ar)}</span>
                 <span className="proj-tag">{t(selected.type.en, selected.type.ar)}</span>
               </div>
-              <h3 style={{ fontFamily: 'var(--font-en-display)', fontSize: '28px', fontWeight: 400 }}>
+              <h3 style={{ fontFamily: 'var(--font-en-display)', fontSize: '28px', fontWeight: 400, margin: '4px 0' }}>
                 {t(selected.name.en, selected.name.ar)}
               </h3>
-              <div style={{ fontSize: '13px', color: 'rgba(33,31,26,.55)' }}>{t(selected.loc.en, selected.loc.ar)}</div>
+              <div style={{ fontSize: '13.5px', color: 'var(--gold-deep)', fontWeight: 500 }}>{t(selected.loc.en, selected.loc.ar)}</div>
               <div className="divider" />
-              <p style={{ fontSize: '15px', lineHeight: 1.75, color: 'rgba(33,31,26,.75)' }}>{t(selected.desc.en, selected.desc.ar)}</p>
-              <p style={{ fontSize: '13px', lineHeight: 1.65, color: 'rgba(33,31,26,.55)' }}>{t(selected.detail.en, selected.detail.ar)}</p>
-              <button
-                className="pill-btn"
-                style={{ marginTop: '8px' }}
-                onClick={() => { setSelected(null); onNavigate('contact'); window.scrollTo({ top: 0, behavior: 'smooth' }) }}
-              >
-                {t('Enquire About This Project', 'استفسر عن هذا المشروع')} →
-              </button>
+              <p style={{ fontSize: '15px', lineHeight: 1.75, color: 'rgba(33,31,26,.8)' }}>{t(selected.desc.en, selected.desc.ar)}</p>
+              <p style={{ fontSize: '13px', lineHeight: 1.65, color: 'rgba(33,31,26,.65)', background: 'rgba(33,31,26,.04)', padding: '12px 16px', borderRadius: 10 }}>
+                {t(selected.detail.en, selected.detail.ar)}
+              </p>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: '8px' }}>
+                <button
+                  className="pill-btn"
+                  style={{ width: '100%', justifyContent: 'center' }}
+                  onClick={() => handleEnquire(selected)}
+                >
+                  {t('Enquire About This Project', 'طلب تفاصيل وحجز هذا المشروع')} <ArrowRight size={14} />
+                </button>
+
+                <a
+                  href={getWhatsAppUrl(selected)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: 8,
+                    background: 'rgba(37, 211, 102, 0.12)',
+                    color: '#15803d',
+                    border: '1px solid rgba(37, 211, 102, 0.3)',
+                    padding: '12px 20px',
+                    borderRadius: 999,
+                    fontSize: 13,
+                    fontWeight: 600,
+                    textDecoration: 'none',
+                    transition: 'all 0.2s',
+                  }}
+                  onMouseEnter={e => (e.currentTarget.style.background = 'rgba(37, 211, 102, 0.22)')}
+                  onMouseLeave={e => (e.currentTarget.style.background = 'rgba(37, 211, 102, 0.12)')}
+                >
+                  <MessageCircle size={16} />
+                  {t('Chat with Sales on WhatsApp', 'استفسار عبر واتساب المبيعات')}
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -252,3 +322,4 @@ export default function Projects({ onNavigate }: ProjectsProps) {
     </>
   )
 }
+

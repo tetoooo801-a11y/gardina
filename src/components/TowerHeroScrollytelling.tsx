@@ -93,7 +93,11 @@ function ScrollyBeat({
   );
 }
 
-export default function TowerHeroScrollytelling() {
+interface TowerHeroScrollytellingProps {
+  onNavigate?: (page: 'home' | 'about' | 'projects' | 'careers' | 'contact') => void;
+}
+
+export default function TowerHeroScrollytelling({ onNavigate }: TowerHeroScrollytellingProps) {
   const { isAr, t } = useLang();
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -298,7 +302,7 @@ export default function TowerHeroScrollytelling() {
           }}
         />
 
-        {/* 🎬 35MM CINEMATIC FILM GRAIN (Masks low resolution & compression artifacts) */}
+        {/* 🎬 35MM CINEMATIC FILM GRAIN */}
         <svg className="pointer-events-none absolute inset-0 h-full w-full opacity-35 mix-blend-overlay">
           <filter id="hero-film-grain">
             <feTurbulence
@@ -404,11 +408,11 @@ export default function TowerHeroScrollytelling() {
         ════════════════════════════════════════════════════ */}
         <motion.div
           style={{ opacity: logoOpacity, scale: logoScale, y: logoY }}
-          className="pointer-events-none absolute inset-0 z-20 flex flex-col items-center justify-center px-6 text-center"
+          className="absolute inset-0 z-20 flex flex-col items-center justify-center px-6 text-center"
         >
           {/* Subtle Ambient Backlight Glow behind Logo */}
           <div
-            className="absolute h-64 w-64 md:h-80 md:w-80 rounded-full blur-3xl opacity-40"
+            className="pointer-events-none absolute h-64 w-64 md:h-80 md:w-80 rounded-full blur-3xl opacity-40"
             style={{
               background: 'radial-gradient(circle, #d4af37 0%, #8FA089 50%, transparent 70%)',
             }}
@@ -451,7 +455,47 @@ export default function TowerHeroScrollytelling() {
           </p>
 
           {/* Elegant Gold Divider */}
-          <div className="mt-5 h-[1px] w-24 bg-gradient-to-r from-transparent via-[#d4af37]/80 to-transparent" />
+          <div className="mt-4 h-[1px] w-24 bg-gradient-to-r from-transparent via-[#d4af37]/80 to-transparent" />
+
+          {/* Interactive CTA Buttons in the finale */}
+          {onNavigate && (
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+              <button
+                onClick={() => onNavigate('projects')}
+                className="pill-btn"
+                style={{
+                  background: 'var(--gold)',
+                  color: '#0b1510',
+                  padding: '11px 24px',
+                  fontSize: '13px',
+                  fontWeight: 600,
+                  boxShadow: '0 4px 20px rgba(184, 144, 90, 0.45)',
+                  cursor: 'pointer',
+                }}
+              >
+                {t('Explore Portfolio', 'استكشف مشروعاتنا')} →
+              </button>
+              <button
+                onClick={() => onNavigate('contact')}
+                style={{
+                  background: 'rgba(255, 253, 248, 0.1)',
+                  backdropFilter: 'blur(12px)',
+                  border: '1px solid rgba(255, 253, 248, 0.25)',
+                  color: 'var(--petal)',
+                  borderRadius: 999,
+                  padding: '11px 22px',
+                  fontSize: '13px',
+                  fontWeight: 500,
+                  cursor: 'pointer',
+                  transition: 'background 0.2s',
+                }}
+                onMouseEnter={e => ((e.currentTarget as HTMLElement).style.background = 'rgba(255, 253, 248, 0.2)')}
+                onMouseLeave={e => ((e.currentTarget as HTMLElement).style.background = 'rgba(255, 253, 248, 0.1)')}
+              >
+                {t('Book a Private Tour', 'احجز زيارة خاصة')}
+              </button>
+            </div>
+          )}
         </motion.div>
 
         {/* "Scroll to Explore" / "مرر للاستكشاف" Indicator */}

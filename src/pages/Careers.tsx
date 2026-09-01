@@ -1,10 +1,9 @@
 import { useLang } from '../context/LangContext'
 import { FadeUp, WordPullUp, Stagger, StaggerItem, ImageReveal, ParallaxImage } from '../components/Animate'
-
-type Page = 'home' | 'about' | 'projects' | 'careers' | 'contact'
+import type { Page, ContactPrefill } from '../App'
 
 interface CareersProps {
-  onNavigate: (page: Page) => void
+  onNavigate: (page: Page, prefill?: ContactPrefill) => void
 }
 
 const positions = [
@@ -19,7 +18,21 @@ const positions = [
 ]
 
 export default function Careers({ onNavigate }: CareersProps) {
-  const { t } = useLang()
+  const { t, isAr } = useLang()
+
+  const handleApply = (pos: typeof positions[0]) => {
+    const jobTitle = isAr ? pos.title.ar : pos.title.en
+    const jobDept = isAr ? pos.dept.ar : pos.dept.en
+    const subject = isAr
+      ? `طلب تقديم لوظيفة: ${jobTitle} (${jobDept})`
+      : `Application for: ${jobTitle} (${jobDept})`
+    const message = isAr
+      ? `مرحباً فريق التوظيف في جاردينيا،\n\nأود التقدم لشغل وظيفة "${jobTitle}" في قسم "${jobDept}".\n\nملخص خبرتي ورقم هاتفي:`
+      : `Dear Gardenia Recruitment Team,\n\nI am applying for the position of "${jobTitle}" in the "${jobDept}" department.\n\nSummary of my background and contact number:`
+    
+    onNavigate('contact', { subject, message })
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
 
   return (
     <>
@@ -140,7 +153,7 @@ export default function Careers({ onNavigate }: CareersProps) {
             <Stagger stagger={0.06} delay={0.1} className="positions-list">
               {positions.map((pos, i) => (
                 <StaggerItem key={i}>
-                  <div className="position-item">
+                  <div className="position-item" onClick={() => handleApply(pos)}>
                     <div className="position-meta">
                       <div className="position-title">{t(pos.title.en, pos.title.ar)}</div>
                       <div className="position-dept">{t(pos.dept.en, pos.dept.ar)}</div>
@@ -153,9 +166,12 @@ export default function Careers({ onNavigate }: CareersProps) {
                       <button
                         className="pill-btn"
                         style={{ background: 'transparent', color: 'var(--ink)', border: '1px solid var(--line)', padding: '10px 18px', fontSize: '12px' }}
-                        onClick={() => { onNavigate('contact'); window.scrollTo({ top: 0, behavior: 'smooth' }) }}
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          handleApply(pos)
+                        }}
                       >
-                        {t('Apply Now', 'تقدّم الآن')}
+                        {t('Apply Now', 'تقدّم الآن')} →
                       </button>
                     </div>
                   </div>
@@ -169,3 +185,4 @@ export default function Careers({ onNavigate }: CareersProps) {
     </>
   )
 }
+

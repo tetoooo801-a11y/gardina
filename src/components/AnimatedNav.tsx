@@ -68,6 +68,8 @@ export default function AnimatedNav({ currentPage, onNavigate }: AnimatedNavProp
       }}>
         <motion.nav
           dir={isAr ? 'rtl' : 'ltr'}
+          aria-label="Main Navigation"
+          title={isExpanded ? undefined : (isAr ? 'انقر لفتح القائمة' : 'Click to expand menu')}
           initial={{ y: -72, opacity: 0 }}
           animate={{ y: 0, opacity: 1, width: isExpanded ? 'auto' : '44px' }}
           transition={{ type: 'spring', damping: 22, stiffness: 280 }}
