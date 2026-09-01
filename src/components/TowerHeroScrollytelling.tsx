@@ -261,38 +261,6 @@ export default function TowerHeroScrollytelling({ onNavigate }: TowerHeroScrolly
   return (
     <div ref={containerRef} className="relative h-[450vh] bg-[#050505]">
       <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center bg-[#050505]">
-        {/* Preloader Overlay */}
-        <AnimatePresence>
-          {!imagesLoaded && (
-            <motion.div
-              key="preloader"
-              initial={{ opacity: 1 }}
-              exit={{ opacity: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }}
-              className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-[#050505] text-white"
-            >
-              <div className="flex flex-col items-center space-y-4">
-                <span
-                  className="text-[12px] font-semibold tracking-[0.3em] uppercase text-[#d4af37]"
-                  style={{
-                    fontFamily: isAr ? 'var(--font-ar-body)' : 'var(--font-en-body)',
-                  }}
-                >
-                  {t('Gardenia Heights', 'جاردينيا هايتس')}
-                </span>
-                <span className="text-3xl font-light tabular-nums tracking-tight text-white/90">
-                  {loadProgress}%
-                </span>
-                <div className="h-[2px] w-32 overflow-hidden bg-white/10 rounded-full">
-                  <div
-                    className="h-full bg-gradient-to-r from-[#8FA089] to-[#d4af37] transition-all duration-150 ease-out"
-                    style={{ width: `${loadProgress}%` }}
-                  />
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
         {/* Dynamic HTML5 Canvas with Contrast & Sharpness Grading */}
         <canvas
           ref={canvasRef}
