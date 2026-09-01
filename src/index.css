@@ -410,9 +410,10 @@ footer { background: var(--green); color: var(--petal); padding: 80px 0 32px; ma
   justify-content: center;
 }
 [data-lang="ar"] .page-hero-content h1 {
-  font-family: var(--font-ar-display);
+  font-family: var(--font-ar-display) !important;
   font-weight: 700;
-  line-height: 1.05;
+  line-height: 1.25;
+  letter-spacing: 0;
   font-size: clamp(42px, 7vw, 84px);
   text-align: center;
   justify-content: center;

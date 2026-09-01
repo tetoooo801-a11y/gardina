@@ -9,7 +9,7 @@ interface HomeProps {
 }
 
 export default function Home({ onNavigate }: HomeProps) {
-  const { t } = useLang()
+  const { t, isAr } = useLang()
 
   const nav = (page: Page) => {
     onNavigate(page)
@@ -35,7 +35,13 @@ export default function Home({ onNavigate }: HomeProps) {
               text={t('A developer that plants roots, not just buildings.', 'مطوّر يزرع جذور، مش مجرد مباني')}
               tag="h2"
               delay={0.1}
-              style={{ fontFamily: 'var(--font-en-display)', fontWeight: 400, fontSize: '38px', lineHeight: 1.18, margin: '16px 0 22px' }}
+              style={{
+                fontFamily: isAr ? 'var(--font-ar-display)' : 'var(--font-en-display)',
+                fontWeight: isAr ? 700 : 400,
+                fontSize: isAr ? '34px' : '38px',
+                lineHeight: isAr ? 1.3 : 1.18,
+                margin: '16px 0 22px',
+              }}
             />
             <FadeUp delay={0.3}>
               <p>
@@ -75,7 +81,13 @@ export default function Home({ onNavigate }: HomeProps) {
                 text={t("Where we've built", 'أماكن بنيناها')}
                 tag="h2"
                 delay={0.1}
-                style={{ fontFamily: 'var(--font-en-display)', fontWeight: 400, fontSize: '36px', lineHeight: 1.2, margin: '16px 0 14px' }}
+                style={{
+                  fontFamily: isAr ? 'var(--font-ar-display)' : 'var(--font-en-display)',
+                  fontWeight: isAr ? 700 : 400,
+                  fontSize: isAr ? '32px' : '36px',
+                  lineHeight: isAr ? 1.3 : 1.2,
+                  margin: '16px 0 14px',
+                }}
               />
             </div>
             <FadeUp delay={0.2}>
@@ -146,7 +158,14 @@ export default function Home({ onNavigate }: HomeProps) {
                 text={t('Four ideas behind every project', 'أربع أفكار وراء كل مشروع')}
                 tag="h2"
                 delay={0.1}
-                style={{ fontFamily: 'var(--font-en-display)', fontWeight: 400, fontSize: '36px', lineHeight: 1.2, color: 'var(--petal)', margin: '16px 0 14px' }}
+                style={{
+                  fontFamily: isAr ? 'var(--font-ar-display)' : 'var(--font-en-display)',
+                  fontWeight: isAr ? 700 : 400,
+                  fontSize: isAr ? '32px' : '36px',
+                  lineHeight: isAr ? 1.3 : 1.2,
+                  color: 'var(--petal)',
+                  margin: '16px 0 14px',
+                }}
               />
             </div>
           </FadeUp>
@@ -189,7 +208,14 @@ export default function Home({ onNavigate }: HomeProps) {
               text={t('Gardenia Residence, 10th of Ramadan City', 'جاردينيا ريزيدنس، العاشر من رمضان')}
               tag="h2"
               delay={0.1}
-              style={{ fontFamily: 'var(--font-en-display)', fontWeight: 400, fontSize: '38px', lineHeight: 1.2, color: 'var(--petal)', margin: '16px 0 18px' }}
+              style={{
+                fontFamily: isAr ? 'var(--font-ar-display)' : 'var(--font-en-display)',
+                fontWeight: isAr ? 700 : 400,
+                fontSize: isAr ? '34px' : '38px',
+                lineHeight: isAr ? 1.3 : 1.2,
+                color: 'var(--petal)',
+                margin: '16px 0 18px',
+              }}
             />
             <FadeUp delay={0.3}>
               <p>
@@ -228,7 +254,13 @@ export default function Home({ onNavigate }: HomeProps) {
             text={t('Life, well planned.', 'حياة مخطط لها كويس')}
             tag="h2"
             delay={0.1}
-            style={{ fontFamily: 'var(--font-en-display)', fontWeight: 400, fontSize: '36px', lineHeight: 1.2, margin: '0 0 48px' }}
+            style={{
+              fontFamily: isAr ? 'var(--font-ar-display)' : 'var(--font-en-display)',
+              fontWeight: isAr ? 700 : 400,
+              fontSize: isAr ? '32px' : '36px',
+              lineHeight: isAr ? 1.3 : 1.2,
+              margin: '0 0 48px',
+            }}
           />
           <Stagger stagger={0.1} className="life-grid">
             {[
@@ -264,7 +296,14 @@ export default function Home({ onNavigate }: HomeProps) {
               text={t('Built on trust, delivered on time.', 'مبني على الثقة، بيتسلم في ميعاده')}
               tag="h2"
               delay={0.1}
-              style={{ fontFamily: 'var(--font-en-display)', fontWeight: 400, fontSize: '36px', lineHeight: 1.2, margin: '16px 0 14px', textAlign: 'center' }}
+              style={{
+                fontFamily: isAr ? 'var(--font-ar-display)' : 'var(--font-en-display)',
+                fontWeight: isAr ? 700 : 400,
+                fontSize: isAr ? '32px' : '36px',
+                lineHeight: isAr ? 1.3 : 1.2,
+                margin: '16px 0 14px',
+                textAlign: 'center',
+              }}
             />
           </div>
           <Stagger stagger={0.12} className="why-grid">
@@ -300,7 +339,13 @@ export default function Home({ onNavigate }: HomeProps) {
               text={t('Build your career with us.', 'ابنِ مستقبلك المهني معانا')}
               tag="h2"
               delay={0.1}
-              style={{ fontFamily: 'var(--font-en-display)', fontWeight: 400, fontSize: '34px', margin: '16px 0 14px' }}
+              style={{
+                fontFamily: isAr ? 'var(--font-ar-display)' : 'var(--font-en-display)',
+                fontWeight: isAr ? 700 : 400,
+                fontSize: isAr ? '30px' : '34px',
+                lineHeight: isAr ? 1.3 : 1.2,
+                margin: '16px 0 14px',
+              }}
             />
             <FadeUp delay={0.28}>
               <p>

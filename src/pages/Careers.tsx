@@ -58,7 +58,14 @@ export default function Careers({ onNavigate }: CareersProps) {
             tag="h1"
             delay={0.2}
             stagger={0.1}
-            style={{ fontFamily: 'var(--font-en-display)', fontWeight: 300, lineHeight: 0.9, letterSpacing: '-0.01em', color: 'var(--petal)', fontSize: 'clamp(52px, 8vw, 96px)' }}
+            style={{
+              fontFamily: isAr ? 'var(--font-ar-display)' : 'var(--font-en-display)',
+              fontWeight: isAr ? 700 : 300,
+              lineHeight: isAr ? 1.25 : 0.9,
+              letterSpacing: isAr ? 0 : '-0.01em',
+              color: 'var(--petal)',
+              fontSize: isAr ? 'clamp(44px, 7.5vw, 84px)' : 'clamp(52px, 8vw, 96px)',
+            }}
           />
           <FadeUp delay={0.4}>
             <p className="subtitle">{t('Build the future with us.', 'ابنِ المستقبل معنا.')}</p>
@@ -81,7 +88,15 @@ export default function Careers({ onNavigate }: CareersProps) {
               <WordPullUp
                 text={t('Shape the places people call home.', 'شكّل الأماكن التي يسميها الناس بيتًا.')}
                 delay={0.12}
-                style={{ fontFamily: 'var(--font-en-display)', fontWeight: 300, fontSize: 'clamp(28px, 4vw, 52px)', lineHeight: 1.1, letterSpacing: '-0.01em', color: 'var(--ink)', maxWidth: '14ch' }}
+                style={{
+                  fontFamily: isAr ? 'var(--font-ar-display)' : 'var(--font-en-display)',
+                  fontWeight: isAr ? 700 : 300,
+                  fontSize: 'clamp(28px, 4vw, 52px)',
+                  lineHeight: isAr ? 1.25 : 1.1,
+                  letterSpacing: isAr ? 0 : '-0.01em',
+                  color: 'var(--ink)',
+                  maxWidth: '14ch',
+                }}
               />
             </div>
             <Stagger stagger={0.1} delay={0.1}>
@@ -111,7 +126,13 @@ export default function Careers({ onNavigate }: CareersProps) {
             text={t('Life at Gardenia', 'الحياة في جاردينيا')}
             tag="h2"
             delay={0.1}
-            style={{ fontFamily: 'var(--font-en-display)', fontSize: '32px', fontWeight: 400, marginBottom: '48px' }}
+            style={{
+              fontFamily: isAr ? 'var(--font-ar-display)' : 'var(--font-en-display)',
+              fontSize: isAr ? '28px' : '32px',
+              fontWeight: isAr ? 700 : 400,
+              lineHeight: isAr ? 1.3 : 1.15,
+              marginBottom: '48px',
+            }}
           />
           <Stagger stagger={0.12} className="culture-grid">
             {[
@@ -140,7 +161,13 @@ export default function Careers({ onNavigate }: CareersProps) {
               text={t('Join us. Shape communities.', 'انضم إلينا. شكّل مجتمعات.')}
               tag="h2"
               delay={0.1}
-              style={{ fontFamily: 'var(--font-en-display)', fontSize: '32px', fontWeight: 400, marginBottom: '8px' }}
+              style={{
+                fontFamily: isAr ? 'var(--font-ar-display)' : 'var(--font-en-display)',
+                fontSize: isAr ? '28px' : '32px',
+                fontWeight: isAr ? 700 : 400,
+                lineHeight: isAr ? 1.3 : 1.15,
+                marginBottom: '8px',
+              }}
             />
             <FadeUp delay={0.22}>
               <p style={{ fontSize: '15px', color: 'rgba(33,31,26,.65)', marginBottom: '0' }}>

@@ -76,21 +76,38 @@ export function WordPullUp({
 
   return (
     // @ts-ignore — polymorphic ref
-    <Tag ref={ref} className={`inline-flex flex-wrap ${className}`} style={style}>
+    <Tag
+      ref={ref}
+      className={`inline-flex flex-wrap items-center justify-center ${className}`}
+      style={{
+        rowGap: '0.2em',
+        columnGap: '0.35em',
+        ...style,
+      }}
+    >
       {words.map((word, i) => (
-        <motion.span
+        <span
           key={i}
-          initial={{ y: '110%', opacity: 0 }}
-          animate={inView ? { y: 0, opacity: 1 } : {}}
-          transition={{ duration: 0.75, delay: delay + i * stagger, ease: EASE }}
           style={{
             display: 'inline-block',
-            marginRight: i < words.length - 1 ? '0.25em' : 0,
             overflow: 'hidden',
+            verticalAlign: 'baseline',
+            padding: '0.1em 0.05em 0.15em',
+            margin: '-0.1em -0.05em -0.15em',
           }}
         >
-          {word}
-        </motion.span>
+          <motion.span
+            initial={{ y: '115%', opacity: 0 }}
+            animate={inView ? { y: 0, opacity: 1 } : {}}
+            transition={{ duration: 0.75, delay: delay + i * stagger, ease: EASE }}
+            style={{
+              display: 'inline-block',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            {word}
+          </motion.span>
+        </span>
       ))}
     </Tag>
   )

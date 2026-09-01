@@ -8,7 +8,7 @@ interface AboutProps {
 }
 
 export default function About({ onNavigate }: AboutProps) {
-  const { t } = useLang()
+  const { t, isAr } = useLang()
 
   return (
     <>
@@ -34,7 +34,14 @@ export default function About({ onNavigate }: AboutProps) {
             tag="h1"
             delay={0.2}
             stagger={0.08}
-            style={{ fontFamily: 'var(--font-en-display)', fontWeight: 300, lineHeight: 0.9, letterSpacing: '-0.01em', color: 'var(--petal)', fontSize: 'clamp(52px, 8vw, 96px)' }}
+            style={{
+              fontFamily: isAr ? 'var(--font-ar-display)' : 'var(--font-en-display)',
+              fontWeight: isAr ? 700 : 300,
+              lineHeight: isAr ? 1.25 : 0.9,
+              letterSpacing: isAr ? 0 : '-0.01em',
+              color: 'var(--petal)',
+              fontSize: isAr ? 'clamp(44px, 7.5vw, 84px)' : 'clamp(52px, 8vw, 96px)',
+            }}
           />
           <FadeUp delay={0.45}>
             <p className="subtitle">
@@ -62,7 +69,13 @@ export default function About({ onNavigate }: AboutProps) {
                 text={t('More than a developer — a community builder.', 'أكتر من مطوّر — بنّاء مجتمعات')}
                 tag="h2"
                 delay={0.12}
-                style={{ fontFamily: 'var(--font-en-display)', fontWeight: 400, fontSize: '38px', lineHeight: 1.18, margin: '16px 0 22px' }}
+                style={{
+                  fontFamily: isAr ? 'var(--font-ar-display)' : 'var(--font-en-display)',
+                  fontWeight: isAr ? 700 : 400,
+                  fontSize: isAr ? '34px' : '38px',
+                  lineHeight: isAr ? 1.3 : 1.18,
+                  margin: '16px 0 22px',
+                }}
               />
               <FadeUp delay={0.28}>
                 <p>
@@ -111,7 +124,15 @@ export default function About({ onNavigate }: AboutProps) {
               <WordPullUp
                 text={t('Built from a single idea. Grown into a movement.', 'بُنيت من فكرة واحدة. نمت لتصبح حركة.')}
                 delay={0.1}
-                style={{ fontFamily: 'var(--font-en-display)', fontWeight: 300, fontSize: 'clamp(28px, 4vw, 52px)', lineHeight: 1.1, letterSpacing: '-0.01em', color: 'var(--ink)', maxWidth: '16ch' }}
+                style={{
+                  fontFamily: isAr ? 'var(--font-ar-display)' : 'var(--font-en-display)',
+                  fontWeight: isAr ? 700 : 300,
+                  fontSize: 'clamp(28px, 4vw, 52px)',
+                  lineHeight: isAr ? 1.25 : 1.1,
+                  letterSpacing: isAr ? 0 : '-0.01em',
+                  color: 'var(--ink)',
+                  maxWidth: '16ch',
+                }}
               />
               <FadeUp delay={0.32}>
                 <p style={{ fontSize: '15px', lineHeight: 1.75, color: 'rgba(33,31,26,.75)', maxWidth: '44ch' }}>
@@ -150,7 +171,14 @@ export default function About({ onNavigate }: AboutProps) {
                     'أن نكون المطوّر العقاري الأكثر ثقة في مصر — ليس بعدد الوحدات المُباعة، بل بالمجتمعات التي تزدهر.'
                   )}
                   delay={0.15}
-                  style={{ fontFamily: 'var(--font-en-display)', fontSize: 'clamp(26px, 3.5vw, 44px)', fontWeight: 300, color: 'var(--petal)', lineHeight: 1.1, letterSpacing: '-0.01em' }}
+                  style={{
+                    fontFamily: isAr ? 'var(--font-ar-display)' : 'var(--font-en-display)',
+                    fontSize: 'clamp(26px, 3.5vw, 44px)',
+                    fontWeight: isAr ? 700 : 300,
+                    color: 'var(--petal)',
+                    lineHeight: isAr ? 1.3 : 1.1,
+                    letterSpacing: isAr ? 0 : '-0.01em',
+                  }}
                 />
               </div>
             </FadeUp>
@@ -184,7 +212,13 @@ export default function About({ onNavigate }: AboutProps) {
             text={t('What we stand for', 'ما نؤمن به')}
             tag="h2"
             delay={0.1}
-            style={{ fontFamily: 'var(--font-en-display)', fontWeight: 400, fontSize: '36px', lineHeight: 1.2, margin: '16px 0 0' }}
+            style={{
+              fontFamily: isAr ? 'var(--font-ar-display)' : 'var(--font-en-display)',
+              fontWeight: isAr ? 700 : 400,
+              fontSize: isAr ? '32px' : '36px',
+              lineHeight: isAr ? 1.3 : 1.2,
+              margin: '16px 0 0',
+            }}
           />
           <Stagger stagger={0.1} className="values-grid" delay={0.15}>
             {[
@@ -223,7 +257,13 @@ export default function About({ onNavigate }: AboutProps) {
                 text={t('From masterplan to move-in day.', 'من المخطط إلى يوم السكن')}
                 tag="h2"
                 delay={0.12}
-                style={{ fontFamily: 'var(--font-en-display)', fontWeight: 400, fontSize: '38px', lineHeight: 1.18, margin: '16px 0 22px' }}
+                style={{
+                  fontFamily: isAr ? 'var(--font-ar-display)' : 'var(--font-en-display)',
+                  fontWeight: isAr ? 700 : 400,
+                  fontSize: isAr ? '34px' : '38px',
+                  lineHeight: isAr ? 1.3 : 1.18,
+                  margin: '16px 0 22px',
+                }}
               />
               <FadeUp delay={0.28}>
                 <p>

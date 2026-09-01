@@ -60,7 +60,14 @@ export default function Contact({ prefill }: ContactProps) {
             tag="h1"
             delay={0.2}
             stagger={0.09}
-            style={{ fontFamily: 'var(--font-en-display)', fontWeight: 300, lineHeight: 0.9, letterSpacing: '-0.01em', color: 'var(--petal)', fontSize: 'clamp(52px, 8vw, 96px)' }}
+            style={{
+              fontFamily: isAr ? 'var(--font-ar-display)' : 'var(--font-en-display)',
+              fontWeight: isAr ? 700 : 300,
+              lineHeight: isAr ? 1.25 : 0.9,
+              letterSpacing: isAr ? 0 : '-0.01em',
+              color: 'var(--petal)',
+              fontSize: isAr ? 'clamp(44px, 7.5vw, 84px)' : 'clamp(52px, 8vw, 96px)',
+            }}
           />
           <FadeUp delay={0.42}>
             <p className="subtitle">{t("Let's build what's next together.", 'لنبنِ معاً فصلاً جديداً من التميز.')}</p>
