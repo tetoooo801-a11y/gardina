@@ -16,8 +16,8 @@ export default function About({ onNavigate }: AboutProps) {
       <section className="page-hero">
         <div className="page-hero-bg">
           <ParallaxImage
-            src="https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=2000&h=1200&fit=crop&auto=format"
-            alt="About Gardenia"
+            src="/images/gallery/gallery-06.jpg"
+            alt="About Gardenia Heights"
             strength={100}
             containerStyle={{ position: 'absolute', inset: 0 }}
           />
@@ -54,7 +54,7 @@ export default function About({ onNavigate }: AboutProps) {
         </div>
       </section>
 
-      {/* WHO WE ARE */}
+      {/* VALUE PROPOSITION & REGIONAL EXPANSION */}
       <section className="about-page-section">
         <div className="wrap">
           <div className="about-grid">
@@ -62,11 +62,11 @@ export default function About({ onNavigate }: AboutProps) {
               <FadeUp>
                 <div className="eyebrow">
                   <span className="stem"></span>
-                  {t('Who We Are', 'من نحن')}
+                  {t('Value Proposition & Regional Expansion', 'القيمة الاستثمارية والتوسع الإقليمي')}
                 </div>
               </FadeUp>
               <WordPullUp
-                text={t('More than a developer — a community builder.', 'أكتر من مطوّر — بنّاء مجتمعات')}
+                text={t('A Legacy of Growth & Distinction', 'إرث من النمو والتميز')}
                 tag="h2"
                 delay={0.12}
                 style={{
@@ -74,18 +74,32 @@ export default function About({ onNavigate }: AboutProps) {
                   fontWeight: isAr ? 700 : 400,
                   fontSize: isAr ? '34px' : '38px',
                   lineHeight: isAr ? 1.3 : 1.18,
-                  margin: '16px 0 22px',
+                  margin: '16px 0 10px',
                 }}
               />
-              <FadeUp delay={0.28}>
+              <FadeUp delay={0.22}>
+                <h3
+                  style={{
+                    fontFamily: isAr ? 'var(--font-ar-display)' : 'var(--font-en-display)',
+                    fontWeight: isAr ? 600 : 500,
+                    fontSize: isAr ? '20px' : '22px',
+                    color: 'var(--gold-deep)',
+                    margin: '0 0 20px',
+                    lineHeight: 1.35,
+                  }}
+                >
+                  {t('Elevating Standards Across Strategic Cities', 'الارتقاء بالمعايير في مدن استراتيجية')}
+                </h3>
+              </FadeUp>
+              <FadeUp delay={0.32}>
                 <p>
                   {t(
-                    'Gardenia Developments was founded on a simple conviction: that the best communities grow from the ground up. We are architects, engineers, urban planners, and people who believe that where you live shapes who you become.',
-                    'جاردينيا للتطوير العقاري اتأسست على قناعة بسيطة: إن أفضل المجتمعات بتنمو من تحت لفوق. إحنا معماريين ومهندسين ومخططين عمرانيين وناس بتؤمن إن المكان اللي تعيش فيه بيشكّل مين هتبقى.'
+                    'At Gardenia Heights Developments, we identify thriving economic hubs and transform them into master-planned communities built for generations. From our flagship developments in the industrial heartbeat of 10th of Ramadan to premier urban destinations in New Sohag, our portfolio reflects a singular promise: timeless New Classic design, exceptional privacy, and enduring capital appreciation.',
+                    'في جاردينيا هايتس للتطوير العقاري، نقتنص المراكز الاقتصادية المزدهرة ونحولها إلى مجتمعات متكاملة ومدروسة بُنيت لتدوم عبر الأجيال. من مشروعاتنا الرائدة في القلب الصناعي النابض لمدينة العاشر من رمضان إلى أرقى الوجهات الحضرية في سوهاج الجديدة، تعكس محفظتنا الاستثمارية وعداً راسخاً: تصميم نيو كلاسيك يتحدى الزمن، خصوصية استثنائية، وعوائد رأس مالية متنامية ومستدامة.'
                   )}
                 </p>
               </FadeUp>
-              <FadeUp delay={0.38}>
+              <FadeUp delay={0.42}>
                 <p>
                   {t(
                     'Every project we design is a long-term commitment — to our residents, to the surrounding environment, and to Egypt\'s urban future.',
@@ -95,8 +109,8 @@ export default function About({ onNavigate }: AboutProps) {
               </FadeUp>
             </div>
             <ImageReveal
-              src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=900&h=700&fit=crop&auto=format"
-              alt="Gardenia community"
+              src="/images/gallery/gallery-01.jpg"
+              alt="Gardenia Heights Flagship Community"
               delay={0.15}
               className="about-img"
             />
@@ -109,12 +123,12 @@ export default function About({ onNavigate }: AboutProps) {
         <div className="wrap">
           <div className="story-grid">
             <ImageReveal
-              src="https://images.unsplash.com/photo-1503174971373-b1f69850bded?w=700&h=900&fit=crop&auto=format"
-              alt="Our story"
+              src="/images/gallery/gallery-02.jpg"
+              alt="Gardenia Heights Community & Family Living"
               delay={0}
               className="story-img"
             />
-            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '24px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '20px' }}>
               <FadeUp>
                 <div className="eyebrow">
                   <span className="stem"></span>
@@ -126,12 +140,12 @@ export default function About({ onNavigate }: AboutProps) {
                 delay={0.1}
                 style={{
                   fontFamily: isAr ? 'var(--font-ar-display)' : 'var(--font-en-display)',
-                  fontWeight: isAr ? 700 : 300,
-                  fontSize: 'clamp(28px, 4vw, 52px)',
-                  lineHeight: isAr ? 1.25 : 1.1,
+                  fontWeight: isAr ? 700 : 400,
+                  fontSize: isAr ? '34px' : '38px',
+                  lineHeight: isAr ? 1.3 : 1.18,
                   letterSpacing: isAr ? 0 : '-0.01em',
                   color: 'var(--ink)',
-                  maxWidth: '16ch',
+                  maxWidth: '20ch',
                 }}
               />
               <FadeUp delay={0.32}>
@@ -200,16 +214,16 @@ export default function About({ onNavigate }: AboutProps) {
         </div>
       </section>
 
-      {/* VALUES */}
+      {/* CORE PILLARS */}
       <section className="about-page-section">
         <div className="wrap">
           <FadeUp>
             <div className="section-head">
-              <div className="eyebrow"><span className="stem"></span>{t('Our Values', 'قيمنا')}</div>
+              <div className="eyebrow"><span className="stem"></span>{t('Core Pillars', 'الركائز الأساسية')}</div>
             </div>
           </FadeUp>
           <WordPullUp
-            text={t('What we stand for', 'ما نؤمن به')}
+            text={t('What defines our distinction', 'ما يُحدد ريادتنا وتميزنا')}
             tag="h2"
             delay={0.1}
             style={{
@@ -220,12 +234,41 @@ export default function About({ onNavigate }: AboutProps) {
               margin: '16px 0 0',
             }}
           />
-          <Stagger stagger={0.1} className="values-grid" delay={0.15}>
+          <Stagger stagger={0.1} className="values-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))' }} delay={0.15}>
             {[
-              { num: '01', en: ['Quality', 'We never compromise on materials, execution, or finish. Quality is the minimum, not the goal.'], ar: ['الجودة', 'لا نتنازل أبدًا عن المواد أو التنفيذ أو اللمسات النهائية.'] },
-              { num: '02', en: ['Design', 'Architecture that is both beautiful and functional — spaces that serve the rhythms of daily life.'], ar: ['التصميم', 'عمارة جميلة وعملية في آنٍ واحد — مساحات تخدم إيقاعات الحياة اليومية.'] },
-              { num: '03', en: ['Community', 'We build neighborhoods, not just buildings. Every project is designed to foster belonging.'], ar: ['المجتمع', 'نبني أحياء، لا مجرد مبانٍ. كل مشروع مصمم لتعزيز الانتماء.'] },
-              { num: '04', en: ['Vision', 'We think decades ahead — in landscape planning, infrastructure, and the lives our residents will lead.'], ar: ['الرؤية', 'نفكر عقودًا للأمام — في تخطيط المناظر الطبيعية والبنية التحتية وحياة سكاننا.'] },
+              {
+                num: '01',
+                en: [
+                  'Strategic Expansion',
+                  "Investing in Egypt's most promising, high-growth urban hubs with prime, high-connectivity locations.",
+                ],
+                ar: [
+                  'توسع استراتيجي مدروس',
+                  'الاستثمار في أكثر المراكز الحضرية الواعدة والأسرع نمواً في مصر بمواقع حيوية وسهلة الوصول.',
+                ],
+              },
+              {
+                num: '02',
+                en: [
+                  'New Classic Craftsmanship',
+                  'Facades defined by balanced symmetry, bespoke wrought iron, and refined stone finishes.',
+                ],
+                ar: [
+                  'حرفية النيو كلاسيك',
+                  'واجهات تتسم بالتناظر المتوازن، تفاصيل الحديد المشغول الخاصة، والتشطيبات الحجرية الفاخرة.',
+                ],
+              },
+              {
+                num: '03',
+                en: [
+                  'Integrated Ecosystems',
+                  'Seamless master plans merging tranquil private residences with vibrant strip malls, executive suites, and specialized clinics.',
+                ],
+                ar: [
+                  'منظومات متكاملة',
+                  'مخططات عامة متناغمة تدمج بين السكن الهادئ الخاص والستريب مول النابض، المكاتب الإدارية، والعيادات التخصصية.',
+                ],
+              },
             ].map(v => (
               <StaggerItem key={v.num}>
                 <div className="value-item">
@@ -244,8 +287,8 @@ export default function About({ onNavigate }: AboutProps) {
         <div className="wrap">
           <div className="about-grid">
             <ImageReveal
-              src="https://images.unsplash.com/photo-1560185007-cde436f6a4d0?w=900&h=700&fit=crop&auto=format"
-              alt="What Gardenia does"
+              src="/images/gallery/gallery-14.jpg"
+              alt="Gardenia Heights Commercial & Mixed-Use Destinations"
               delay={0}
               className="about-img"
             />

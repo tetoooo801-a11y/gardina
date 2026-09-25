@@ -107,6 +107,8 @@ export default function TowerHeroScrollytelling({ onNavigate }: TowerHeroScrolly
 
   const [imagesLoaded, setImagesLoaded] = useState<boolean>(false);
   const [loadProgress, setLoadProgress] = useState<number>(0);
+  const [isHeroActive, setIsHeroActive] = useState<boolean>(true);
+  const [isFinaleActive, setIsFinaleActive] = useState<boolean>(false);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -120,6 +122,23 @@ export default function TowerHeroScrollytelling({ onNavigate }: TowerHeroScrolly
   });
 
   const exploreIndicatorOpacity = useTransform(scrollYProgress, [0, 0.08], [1, 0]);
+
+  // Above The Fold Hero transforms (visible at start, smoothly fades out on scroll)
+  const heroContentOpacity = useTransform(
+    smoothProgress,
+    [0.0, 0.07, 0.14],
+    [1, 0.85, 0]
+  );
+  const heroContentY = useTransform(
+    smoothProgress,
+    [0.0, 0.14],
+    [0, -28]
+  );
+  const heroContentScale = useTransform(
+    smoothProgress,
+    [0.0, 0.14],
+    [1, 0.96]
+  );
 
   // Logo Reveal Animation at the end of the scroll (after all text beats finish)
   const logoOpacity = useTransform(
@@ -243,6 +262,11 @@ export default function TowerHeroScrollytelling({ onNavigate }: TowerHeroScrolly
 
   useEffect(() => {
     const unsubscribe = smoothProgress.on('change', (latest: number) => {
+      const heroActive = latest < 0.15;
+      const finaleActive = latest >= 0.82;
+      setIsHeroActive(prev => (prev !== heroActive ? heroActive : prev));
+      setIsFinaleActive(prev => (prev !== finaleActive ? finaleActive : prev));
+
       if (!imagesLoaded) return;
       const targetIndex = Math.min(
         TOTAL_FRAMES - 1,
@@ -315,14 +339,163 @@ export default function TowerHeroScrollytelling({ onNavigate }: TowerHeroScrolly
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-[#050505] opacity-90" />
 
         {/* ════════════════════════════════════════════════════
-            SCROLLYTELLING TEXT BEATS (0% -> 80%)
+            ✨ HERO SECTION (ABOVE THE FOLD)
+        ════════════════════════════════════════════════════ */}
+        <motion.div
+          style={{
+            opacity: heroContentOpacity,
+            y: heroContentY,
+            scale: heroContentScale,
+          }}
+          className={`absolute inset-0 z-30 flex flex-col justify-between items-center text-center px-4 sm:px-6 pt-24 sm:pt-28 pb-5 md:pb-7 ${
+            isHeroActive ? 'pointer-events-auto' : 'pointer-events-none'
+          }`}
+        >
+          {/* Subtle top breathing space */}
+          <div className="flex-1 max-h-8 md:max-h-16" />
+
+          {/* Main Hero Center Content */}
+          <div className="flex flex-col items-center max-w-2xl mx-auto my-auto w-full">
+            {/* Badge / Eyebrow: Gardenia Heights Developments */}
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full border border-[#d4af37]/35 bg-[#d4af37]/10 backdrop-blur-md mb-3 md:mb-4 shadow-[0_2px_14px_rgba(212,175,55,0.25)]">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#d4af37] animate-pulse" />
+              <span
+                className="text-[10px] sm:text-[11px] font-semibold tracking-[0.2em] uppercase text-[#f0d886]"
+                style={{
+                  fontFamily: isAr ? 'var(--font-ar-body)' : 'var(--font-en-body)',
+                }}
+              >
+                {t('Gardenia Heights Developments', 'جاردينيا هايتس للتطوير العقاري')}
+              </span>
+            </div>
+
+            {/* Main Headline: LIFE YOU DESERVE / حياة تليق بك */}
+            <h1
+              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-normal leading-[1.2] text-white tracking-[0.02em] drop-shadow-[0_4px_24px_rgba(0,0,0,0.85)] max-w-xl"
+              style={{
+                fontFamily: isAr ? 'var(--font-ar-display)' : 'var(--font-en-display)',
+                letterSpacing: isAr ? '0' : '0.04em',
+                textTransform: isAr ? 'none' : 'uppercase',
+              }}
+            >
+              {isAr ? 'حياة تليق بك' : 'LIFE YOU DESERVE'}
+            </h1>
+
+            {/* Sub-headline */}
+            <p
+              className="mt-3 md:mt-4 text-xs sm:text-sm md:text-base text-white/80 max-w-lg mx-auto font-light leading-relaxed drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)]"
+              style={{
+                fontFamily: isAr ? 'var(--font-ar-body)' : 'var(--font-en-body)',
+              }}
+            >
+              {t(
+                'Developing visionary New Classic communities and high-yield commercial landmarks across 10th of Ramadan and New Sohag. Where refined craftsmanship meets serene modern luxury.',
+                'تطوير مجتمعات نيو كلاسيك ملهمة ومعالم تجارية عالية العائد في العاشر من رمضان وسوهاج الجديدة. حيث تلتقي الحرفية الرفيعة بالفخامة العصرية الهادئة.'
+              )}
+            </p>
+          </div>
+
+          {/* Trust Bar / Metrics Strip: (Multi-Regional, 100% Commitment, Ecosystems) */}
+          <div className="w-full max-w-5xl mx-auto px-2 sm:px-4 mt-auto mb-2 md:mb-4 pointer-events-auto">
+            <div className="relative overflow-hidden rounded-2xl md:rounded-full bg-[#080d09]/85 backdrop-blur-2xl border border-[#d4af37]/40 shadow-[0_16px_48px_rgba(0,0,0,0.8)] py-3 px-4 md:px-7">
+              {/* Golden Ambient highlight line */}
+              <div className="pointer-events-none absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-[#d4af37]/70 to-transparent" />
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-2.5 md:gap-0 divide-y md:divide-y-0 md:divide-x rtl:md:divide-x-reverse divide-[#d4af37]/25 text-start">
+                {/* Metric 1: Multi-Regional Footprint: 10th of Ramadan & New Sohag */}
+                <div className="flex items-center gap-3 pt-1.5 md:pt-0 first:pt-0 px-2 md:px-5">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#d4af37]/15 border border-[#d4af37]/40 flex items-center justify-center text-[#d4af37]">
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.75">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                  </div>
+                  <div className="min-w-0">
+                    <div
+                      className="text-[11px] uppercase tracking-wider text-[#d4af37] font-semibold"
+                      style={{ fontFamily: isAr ? 'var(--font-ar-body)' : 'var(--font-en-body)' }}
+                    >
+                      {t('Multi-Regional Footprint', 'توسع جغرافي متعدد')}
+                    </div>
+                    <div
+                      className="text-xs sm:text-[13px] text-[#FFFDF8] font-medium truncate"
+                      style={{ fontFamily: isAr ? 'var(--font-ar-body)' : 'var(--font-en-body)', color: '#FFFDF8' }}
+                    >
+                      {t('10th of Ramadan & New Sohag', 'العاشر من رمضان وسوهاج الجديدة')}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Metric 2: 100% Commitment to Architectural Delivery & Quality */}
+                <div className="flex items-center gap-3 pt-2.5 md:pt-0 px-2 md:px-5">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#d4af37]/15 border border-[#d4af37]/40 flex items-center justify-center text-[#d4af37]">
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.75">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                  </div>
+                  <div className="min-w-0">
+                    <div
+                      className="text-[11px] uppercase tracking-wider text-[#d4af37] font-semibold"
+                      style={{ fontFamily: isAr ? 'var(--font-ar-body)' : 'var(--font-en-body)' }}
+                    >
+                      {t('100% Commitment', 'التزام 100%')}
+                    </div>
+                    <div
+                      className="text-xs sm:text-[13px] text-[#FFFDF8] font-medium truncate"
+                      style={{ fontFamily: isAr ? 'var(--font-ar-body)' : 'var(--font-en-body)', color: '#FFFDF8' }}
+                    >
+                      {t('Architectural Delivery & Quality', 'بالتسليم المعماري والجودة')}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Metric 3: Fully Integrated Ecosystems: Residential, Medical & Commercial */}
+                <div className="flex items-center gap-3 pt-2.5 md:pt-0 px-2 md:px-5">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#d4af37]/15 border border-[#d4af37]/40 flex items-center justify-center text-[#d4af37]">
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.75">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                    </svg>
+                  </div>
+                  <div className="min-w-0">
+                    <div
+                      className="text-[11px] uppercase tracking-wider text-[#d4af37] font-semibold"
+                      style={{ fontFamily: isAr ? 'var(--font-ar-body)' : 'var(--font-en-body)' }}
+                    >
+                      {t('Fully Integrated Ecosystems', 'منظومات متكاملة')}
+                    </div>
+                    <div
+                      className="text-xs sm:text-[13px] text-[#FFFDF8] font-medium truncate"
+                      style={{ fontFamily: isAr ? 'var(--font-ar-body)' : 'var(--font-en-body)', color: '#FFFDF8' }}
+                    >
+                      {t('Residential, Medical & Commercial', 'سكني، طبي وتجاري')}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Clean, Non-overlapping Scroll Indicator below the bar */}
+            <div className="mt-3 flex items-center justify-center gap-2 text-white/70">
+              <span
+                className="text-[10px] md:text-[11px] font-semibold uppercase tracking-[0.25em]"
+                style={{ fontFamily: isAr ? 'var(--font-ar-body)' : 'var(--font-en-body)' }}
+              >
+                {t('Scroll to Explore', 'مرر لأسفل للاستكشاف')}
+              </span>
+              <div className="h-3.5 w-[1px] bg-gradient-to-b from-[#d4af37] to-transparent animate-pulse" />
+            </div>
+          </div>
+        </motion.div>
+
+        {/* ════════════════════════════════════════════════════
+            SCROLLYTELLING TEXT BEATS (18% -> 78%)
         ════════════════════════════════════════════════════ */}
         <div className="absolute inset-0 pointer-events-none z-10">
-          {/* Beat A: 0% – 19% */}
+          {/* Beat 1: 18% – 36% */}
           <ScrollyBeat
             progress={smoothProgress}
-            range={[0.0, 0.04, 0.15, 0.19]}
-            badge={{ en: 'The Vision', ar: 'الرؤية المعمارية' }}
+            range={[0.18, 0.22, 0.32, 0.36]}
+            badge={{ en: 'Architectural Vision', ar: 'الرؤية المعمارية' }}
             title={{ en: 'Monumental Living', ar: 'حياة استثنائية راقية' }}
             subtitle={{
               en: 'Architectural brilliance sculpted into the twilight sky.',
@@ -331,10 +504,10 @@ export default function TowerHeroScrollytelling({ onNavigate }: TowerHeroScrolly
             isAr={isAr}
           />
 
-          {/* Beat B: 21% – 39% */}
+          {/* Beat 2: 39% – 57% */}
           <ScrollyBeat
             progress={smoothProgress}
-            range={[0.21, 0.25, 0.35, 0.39]}
+            range={[0.39, 0.43, 0.53, 0.57]}
             badge={{ en: 'Biophilic Sanctuary', ar: 'ملاذ بيئي مستدام' }}
             title={{ en: 'Living In Harmony', ar: 'تناغم الطبيعة والعمارة' }}
             subtitle={{
@@ -344,28 +517,15 @@ export default function TowerHeroScrollytelling({ onNavigate }: TowerHeroScrolly
             isAr={isAr}
           />
 
-          {/* Beat C: 41% – 59% */}
+          {/* Beat 3: 60% – 78% */}
           <ScrollyBeat
             progress={smoothProgress}
-            range={[0.41, 0.45, 0.55, 0.59]}
+            range={[0.60, 0.64, 0.74, 0.78]}
             badge={{ en: 'Master Craftsmanship', ar: 'حرفية وإتقان' }}
             title={{ en: 'Refined Interiors', ar: 'تصاميم داخلية فاخرة' }}
             subtitle={{
               en: 'Natural timber, honed marble, and warm bespoke finishes.',
               ar: 'أخشاب طبيعية ورخام مصقول مع تشطيبات راقية مصممة خصيصاً.',
-            }}
-            isAr={isAr}
-          />
-
-          {/* Beat D: 61% – 79% */}
-          <ScrollyBeat
-            progress={smoothProgress}
-            range={[0.61, 0.65, 0.75, 0.79]}
-            badge={{ en: 'Sky Residences', ar: 'أجنحة السحاب' }}
-            title={{ en: 'Claim Your Horizon', ar: 'امتلك أفقك الخاص' }}
-            subtitle={{
-              en: 'Exclusive sky penthouses now available for private booking.',
-              ar: 'بنتهاوس وأجنحة سحابية حصرية متاحة الآن للحجز الخاص.',
             }}
             isAr={isAr}
           />
@@ -376,7 +536,9 @@ export default function TowerHeroScrollytelling({ onNavigate }: TowerHeroScrolly
         ════════════════════════════════════════════════════ */}
         <motion.div
           style={{ opacity: logoOpacity, scale: logoScale, y: logoY }}
-          className="absolute inset-0 z-20 flex flex-col items-center justify-center px-6 text-center"
+          className={`absolute inset-0 z-20 flex flex-col items-center justify-center px-6 text-center ${
+            isFinaleActive ? 'pointer-events-auto' : 'pointer-events-none'
+          }`}
         >
           {/* Subtle Ambient Backlight Glow behind Logo */}
           <div
@@ -393,7 +555,7 @@ export default function TowerHeroScrollytelling({ onNavigate }: TowerHeroScrolly
               fontFamily: isAr ? 'var(--font-ar-body)' : 'var(--font-en-body)',
             }}
           >
-            {t('Gardenia Developments', 'جاردينيا للتطوير العقاري')}
+            {t('Gardenia Heights Developments', 'جاردينيا هايتس للتطوير العقاري')}
           </span>
 
           {/* Official Logo Display */}
@@ -425,61 +587,50 @@ export default function TowerHeroScrollytelling({ onNavigate }: TowerHeroScrolly
           {/* Elegant Gold Divider */}
           <div className="mt-4 h-[1px] w-24 bg-gradient-to-r from-transparent via-[#d4af37]/80 to-transparent" />
 
-          {/* Interactive CTA Buttons in the finale */}
+          {/* Interactive CTA Buttons in the finale (with Logo) */}
           {onNavigate && (
-            <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-3 sm:gap-4 pointer-events-auto relative z-30">
               <button
+                type="button"
                 onClick={() => onNavigate('projects')}
-                className="pill-btn"
+                className="group relative inline-flex items-center gap-2.5 px-7 py-3 rounded-full text-[13px] md:text-[14px] font-semibold text-[#0b1510] cursor-pointer transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] shadow-[0_4px_24px_rgba(212,175,55,0.45)]"
                 style={{
-                  background: 'var(--gold)',
-                  color: '#0b1510',
-                  padding: '11px 24px',
-                  fontSize: '13px',
-                  fontWeight: 600,
-                  boxShadow: '0 4px 20px rgba(184, 144, 90, 0.45)',
-                  cursor: 'pointer',
+                  background: 'linear-gradient(135deg, #f3de96 0%, #d4af37 60%, #b8905a 100%)',
+                  fontFamily: isAr ? 'var(--font-ar-body)' : 'var(--font-en-body)',
                 }}
               >
-                {t('Explore Portfolio', 'استكشف مشروعاتنا')} →
+                <span>{t('Explore Our Projects', 'استكشف مشروعاتنا')}</span>
+                <span className="transition-transform duration-300 group-hover:translate-x-1 rtl:group-hover:-translate-x-1">
+                  {isAr ? '←' : '→'}
+                </span>
               </button>
+
               <button
+                type="button"
                 onClick={() => onNavigate('contact')}
+                className="group relative inline-flex items-center justify-center gap-2 px-7 py-3 rounded-full text-[13px] md:text-[14px] font-medium cursor-pointer transition-all duration-300 hover:scale-[1.03] active:scale-[0.98]"
                 style={{
-                  background: 'rgba(255, 253, 248, 0.1)',
-                  backdropFilter: 'blur(12px)',
-                  border: '1px solid rgba(255, 253, 248, 0.25)',
-                  color: 'var(--petal)',
-                  borderRadius: 999,
-                  padding: '11px 22px',
-                  fontSize: '13px',
-                  fontWeight: 500,
-                  cursor: 'pointer',
-                  transition: 'background 0.2s',
+                  background: 'rgba(255, 253, 248, 0.12)',
+                  backdropFilter: 'blur(16px)',
+                  WebkitBackdropFilter: 'blur(16px)',
+                  border: '1.5px solid rgba(255, 253, 248, 0.55)',
+                  color: '#FFFDF8',
+                  fontFamily: isAr ? 'var(--font-ar-body)' : 'var(--font-en-body)',
+                  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.4)',
                 }}
-                onMouseEnter={e => ((e.currentTarget as HTMLElement).style.background = 'rgba(255, 253, 248, 0.2)')}
-                onMouseLeave={e => ((e.currentTarget as HTMLElement).style.background = 'rgba(255, 253, 248, 0.1)')}
+                onMouseEnter={e => {
+                  e.currentTarget.style.background = 'rgba(212, 175, 55, 0.25)';
+                  e.currentTarget.style.borderColor = '#d4af37';
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.background = 'rgba(255, 253, 248, 0.12)';
+                  e.currentTarget.style.borderColor = 'rgba(255, 253, 248, 0.55)';
+                }}
               >
-                {t('Book a Private Tour', 'احجز زيارة خاصة')}
+                <span>{t('Book a Private Consultation', 'احجز استشارة خاصة')}</span>
               </button>
             </div>
           )}
-        </motion.div>
-
-        {/* "Scroll to Explore" / "مرر للاستكشاف" Indicator */}
-        <motion.div
-          style={{ opacity: exploreIndicatorOpacity }}
-          className="pointer-events-none absolute bottom-10 z-20 flex flex-col items-center gap-2"
-        >
-          <span
-            className="text-[11px] font-semibold tracking-[0.25em] uppercase text-white/70"
-            style={{
-              fontFamily: isAr ? 'var(--font-ar-body)' : 'var(--font-en-body)',
-            }}
-          >
-            {t('Scroll to Explore', 'مرر لأسفل للاستكشاف')}
-          </span>
-          <div className="h-6 w-[1px] bg-gradient-to-b from-[#d4af37] via-[#8FA089] to-transparent animate-pulse" />
         </motion.div>
       </div>
     </div>

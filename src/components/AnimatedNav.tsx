@@ -3,8 +3,8 @@ import { motion, useScroll, useMotionValueEvent, AnimatePresence } from 'framer-
 import { Menu, X } from 'lucide-react'
 import { useLang } from '../context/LangContext'
 
-const gardeniaLogoAr          = '/gardenia-logo.svg'
-const gardeniaLogoEn          = '/gardenia-logo-en.png'
+const gardeniaLogoAr = '/gardenia-logo.svg'
+const gardeniaLogoEn = '/gardenia-logo-en.png'
 const gardeniaLogoCollapsedAr = '/gardenia-logo-collapsed.svg'
 const gardeniaLogoCollapsedEn = '/gardenia-logo-collapsed-en.svg'
 
@@ -16,11 +16,11 @@ interface AnimatedNavProps {
 }
 
 const NAV: Array<{ key: Page; en: string; ar: string }> = [
-  { key: 'home',     en: 'Home',     ar: 'الرئيسية' },
-  { key: 'about',    en: 'About',    ar: 'من نحن' },
+  { key: 'home', en: 'Home', ar: 'الرئيسية' },
+  { key: 'about', en: 'About', ar: 'من نحن' },
   { key: 'projects', en: 'Projects', ar: 'المشروعات' },
-  { key: 'careers',  en: 'Careers',  ar: 'الوظائف' },
-  { key: 'contact',  en: 'Contact',  ar: 'تواصل' },
+  { key: 'careers', en: 'Careers', ar: 'الوظائف' },
+  { key: 'contact', en: 'Contact', ar: 'تواصل' },
 ]
 
 const COLLAPSE_THRESHOLD = 150
@@ -52,10 +52,10 @@ export default function AnimatedNav({ currentPage, onNavigate }: AnimatedNavProp
     setExpanded(true)
   }
 
-  const petal    = 'rgba(225,220,200,0.88)'
+  const petal = 'rgba(225,220,200,0.88)'
   const petalDim = 'rgba(225,220,200,0.5)'
-  const bg       = 'rgba(8,14,10,0.9)'
-  const border   = '1px solid rgba(225,220,200,0.13)'
+  const bg = 'rgba(8,14,10,0.9)'
+  const border = '1px solid rgba(225,220,200,0.13)'
   const logoFilter = 'brightness(0) invert(1) sepia(1) saturate(1.5) hue-rotate(5deg)'
 
   return (

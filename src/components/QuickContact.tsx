@@ -8,11 +8,12 @@ export default function QuickContact() {
   const [isOpen, setIsOpen] = useState(false)
 
   // Official Gardenia contact coordinates
-  const phoneFormatted = '+20 2 2600 0000'
-  const phoneTel = '+20226000000'
-  const whatsappNumber = '201000000000' // Sales WhatsApp
-  const whatsappMsgEn = encodeURIComponent('Hello Gardenia Developments, I would like to enquire about your projects.')
-  const whatsappMsgAr = encodeURIComponent('مرحباً جاردينيا للتطوير العقاري، أود الاستفسار عن مشروعاتكم المتاحة.')
+  const phoneFormatted = '17994'
+  const phoneTel = '17994'
+  const mobileFormatted = '01050176306'
+  const whatsappNumber = '201050176306' // Official WhatsApp & Mobile
+  const whatsappMsgEn = encodeURIComponent('Hello Gardenia Heights Developments, I would like to enquire about your projects.')
+  const whatsappMsgAr = encodeURIComponent('مرحباً جاردينيا هايتس للتطوير العقاري، أود الاستفسار عن مشروعاتكم وتوافر الوحدات.')
   const whatsappLink = `https://wa.me/${whatsappNumber}?text=${isAr ? whatsappMsgAr : whatsappMsgEn}`
 
   return (
@@ -118,7 +119,7 @@ export default function QuickContact() {
                 }}
               >
                 <MessageCircle size={17} />
-                <span>{t('Chat on WhatsApp', 'محادثة عبر واتساب')}</span>
+                <span>{t(`WhatsApp: ${mobileFormatted}`, `واتساب: ${mobileFormatted}`)}</span>
               </a>
 
               {/* Direct Call Action */}
@@ -148,7 +149,7 @@ export default function QuickContact() {
                 }}
               >
                 <Phone size={16} />
-                <span>{t(`Call ${phoneFormatted}`, `اتصل بنا: ${phoneFormatted}`)}</span>
+                <span>{t(`Hotline: ${phoneFormatted}`, `الخط الساخن: ${phoneFormatted}`)}</span>
               </a>
             </div>
           </motion.div>

@@ -201,7 +201,7 @@ export default function GardeniaHero({ onNavigate }: GardeniaHeroProps) {
           opacity: sOp[0], y: sY[0], pointerEvents: 'none',
         }}>
           <MicroLabel style={{ marginBottom: 20, color: 'rgba(184,144,90,0.85)' }}>
-            {t('Gardenia Developments · Egypt · Est. 2015', 'جاردينيا للتطوير العقاري · مصر')}
+            {t('Gardenia Heights Developments · Egypt · Est. 2015', 'جاردينيا هايتس للتطوير العقاري · مصر')}
           </MicroLabel>
           <h1 style={{
             fontFamily: 'var(--font-en-display)',
@@ -364,7 +364,7 @@ export default function GardeniaHero({ onNavigate }: GardeniaHeroProps) {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 40, alignItems: 'flex-end' }}>
             <div>
               <MicroLabel style={{ marginBottom: 20, color: 'rgba(184,144,90,0.75)' }}>
-                {t('Gardenia Developments', 'جاردينيا للتطوير العقاري')}
+                {t('Gardenia Heights Developments', 'جاردينيا هايتس للتطوير العقاري')}
               </MicroLabel>
               <div style={{
                 fontFamily: isAr ? 'var(--font-ar-display)' : 'var(--font-en-display)',

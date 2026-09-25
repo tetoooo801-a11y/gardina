@@ -79,7 +79,7 @@ function AppInner() {
             >
               <img
                 src={gardeniaLogo}
-                alt="Gardenia Developments"
+                alt="Gardenia Heights Developments"
                 style={{
                   height: 52,
                   width: 'auto',
@@ -96,7 +96,7 @@ function AppInner() {
                   fontWeight: 600,
                 }}
               >
-                {t('Gardenia Developments', 'جاردينيا للتطوير العقاري')}
+                {t('Gardenia Heights Developments', 'جاردينيا هايتس للتطوير العقاري')}
               </div>
             </motion.div>
 

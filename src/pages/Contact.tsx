@@ -26,15 +26,21 @@ export default function Contact({ prefill }: ContactProps) {
     setSubmitted(true)
   }
 
-  const phoneTel = '+20226000000'
-  const phoneFormatted = '+20 (2) 2600 0000'
-  const emailAddr = 'info@gardeniadevelopments.com'
-  const whatsappNum = '201000000000'
+  const phoneTel = '17994'
+  const phoneFormatted = '17994'
+  const mobileTel = '+201050176306'
+  const mobileFormatted = '01050176306'
+  const emailAddr = 'info@gardeniaheights.com'
+  const whatsappNum = '201050176306'
   const whatsappUrl = `https://wa.me/${whatsappNum}?text=${encodeURIComponent(
     isAr
-      ? 'مرحباً، أود الاستفسار بخصوص مشروعات جاردينيا للتطوير العقاري.'
-      : 'Hello, I would like to inquire about Gardenia Developments projects.'
+      ? 'مرحباً جاردينيا هايتس للتطوير العقاري، أود الاستفسار بخصوص مشروعاتكم وتوافر الوحدات.'
+      : 'Hello Gardenia Heights Developments, I would like to inquire about your projects and unit availability.'
   )}`
+  const officeAddress = {
+    en: '10th of Ramadan City, New Ordonia Mall, 7th Floor',
+    ar: 'مدينة العاشر من رمضان، مول الأردنية الجديد، الدور السابع',
+  }
 
   return (
     <>
@@ -89,44 +95,65 @@ export default function Contact({ prefill }: ContactProps) {
                 </div>
               </FadeUp>
               <Stagger stagger={0.08} className="contact-info">
-                {/* Phone */}
+                {/* Direct Hotline */}
                 <StaggerItem>
                   <div className="contact-info-item">
                     <div className="contact-info-label" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                       <Phone size={13} color="var(--gold-deep)" />
-                      {t('Phone', 'الهاتف المباشر')}
+                      {t('Direct Hotline', 'الخط الساخن المباشر')}
                     </div>
                     <a
                       href={`tel:${phoneTel}`}
                       className="contact-info-value contact-link"
-                      style={{ color: 'var(--ink)', textDecoration: 'none', transition: 'color 0.2s' }}
+                      style={{ color: 'var(--gold-deep)', textDecoration: 'none', transition: 'color 0.2s', fontWeight: 700, fontSize: '24px' }}
                     >
                       {phoneFormatted}
                     </a>
                     <div style={{ fontSize: '13px', color: 'rgba(33,31,26,.55)', marginTop: '2px' }}>
-                      {t('Sun – Thu, 9am – 6pm', 'الأحد – الخميس، 9ص – 6م')}
+                      {t('Toll-free across Egypt', 'متاح لكافة الاتصالات من داخل مصر')}
                     </div>
                   </div>
                 </StaggerItem>
 
-                {/* WhatsApp */}
+                {/* Mobile & WhatsApp */}
                 <StaggerItem>
                   <div className="contact-info-item">
                     <div className="contact-info-label" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                       <MessageCircle size={13} color="#22c55e" />
-                      {t('Instant WhatsApp', 'واتساب المبيعات')}
+                      {t('Mobile & WhatsApp', 'الموبايل والواتساب')}
                     </div>
-                    <a
-                      href={whatsappUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="contact-info-value contact-link"
-                      style={{ color: '#15803d', textDecoration: 'none', transition: 'color 0.2s' }}
-                    >
-                      {t('Chat with a Property Consultant', 'تحدث مباشرة مع مستشارك العقاري')} →
-                    </a>
-                    <div style={{ fontSize: '13px', color: 'rgba(33,31,26,.55)', marginTop: '2px' }}>
-                      {t('Instant response available daily', 'استجابة فورية على مدار اليوم')}
+                    <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '10px', marginTop: '4px' }}>
+                      <a
+                        href={`tel:${mobileTel}`}
+                        className="contact-info-value contact-link"
+                        style={{ color: 'var(--ink)', textDecoration: 'none', transition: 'color 0.2s', fontWeight: 600, fontSize: '18px' }}
+                      >
+                        {mobileFormatted}
+                      </a>
+                      <a
+                        href={whatsappUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          background: 'rgba(37, 211, 102, 0.15)',
+                          color: '#15803d',
+                          border: '1px solid rgba(37, 211, 102, 0.35)',
+                          padding: '4px 12px',
+                          borderRadius: '999px',
+                          fontSize: '12px',
+                          fontWeight: 600,
+                          textDecoration: 'none',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '6px',
+                        }}
+                      >
+                        <MessageCircle size={13} />
+                        <span>{t('Chat on WhatsApp', 'محادثة واتساب')}</span>
+                      </a>
+                    </div>
+                    <div style={{ fontSize: '13px', color: 'rgba(33,31,26,.55)', marginTop: '4px' }}>
+                      {t('Direct line for unit sales & inquiries', 'خط مباشر للمبيعات والاستفسارات')}
                     </div>
                   </div>
                 </StaggerItem>
@@ -136,30 +163,30 @@ export default function Contact({ prefill }: ContactProps) {
                   <div className="contact-info-item">
                     <div className="contact-info-label" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                       <Mail size={13} color="var(--gold-deep)" />
-                      {t('Email', 'البريد الإلكتروني')}
+                      {t('Official Email', 'البريد الإلكتروني الرسمي')}
                     </div>
                     <a
                       href={`mailto:${emailAddr}`}
                       className="contact-info-value contact-link"
-                      style={{ color: 'var(--ink)', textDecoration: 'none', wordBreak: 'break-all', transition: 'color 0.2s' }}
+                      style={{ color: 'var(--ink)', textDecoration: 'none', wordBreak: 'break-all', transition: 'color 0.2s', fontSize: '16px' }}
                     >
                       {emailAddr}
                     </a>
                   </div>
                 </StaggerItem>
 
-                {/* Sales Office */}
+                {/* Head Office */}
                 <StaggerItem>
                   <div className="contact-info-item">
                     <div className="contact-info-label" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                       <MapPin size={13} color="var(--gold-deep)" />
-                      {t('Sales Office', 'مكتب المبيعات')}
+                      {t('Head Office & Sales Center', 'المقر الرئيسي والمبيعات')}
                     </div>
-                    <div className="contact-info-value">
-                      {t('10th of Ramadan City, Cairo, Egypt', 'العاشر من رمضان، القاهرة، مصر')}
+                    <div className="contact-info-value" style={{ lineHeight: 1.5, fontSize: '15px' }}>
+                      {t(officeAddress.en, officeAddress.ar)}
                     </div>
-                    <div style={{ fontSize: '13px', color: 'rgba(33,31,26,.55)', marginTop: '2px' }}>
-                      {t('Open daily 9am – 8pm', 'مفتوح يومياً 9ص – 8م')}
+                    <div style={{ fontSize: '13px', color: 'rgba(33,31,26,.55)', marginTop: '4px' }}>
+                      {t('Open Sat – Thu, 9:00 AM – 6:00 PM', 'السبت – الخميس، 9:00 ص – 6:00 م')}
                     </div>
                   </div>
                 </StaggerItem>
@@ -168,10 +195,25 @@ export default function Contact({ prefill }: ContactProps) {
                 <StaggerItem>
                   <div className="contact-info-item">
                     <div className="contact-info-label">{t('Follow Us', 'تابعنا')}</div>
-                    <div className="social-links">
-                      {['Instagram', 'Facebook', 'LinkedIn', 'YouTube'].map(s => (
-                        <a key={s} href="#" className="social-link" aria-label={`Gardenia on ${s}`}>{s}</a>
-                      ))}
+                    <div className="social-links" style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                      <a
+                        href="https://www.facebook.com/share/1DYKNgHetH/?mibextid=wwXIfr"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="social-link"
+                        aria-label="Gardenia Heights on Facebook"
+                      >
+                        Facebook
+                      </a>
+                      <a
+                        href="https://www.instagram.com/gardenia_heights_developments?stkn=MXdzN2RzeTFwOGlzdA=="
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="social-link"
+                        aria-label="Gardenia Heights on Instagram"
+                      >
+                        Instagram
+                      </a>
                     </div>
                   </div>
                 </StaggerItem>
@@ -186,7 +228,7 @@ export default function Contact({ prefill }: ContactProps) {
                     style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.65 }}
                   />
                   <a
-                    href="https://maps.google.com/?q=10th+of+Ramadan+City+Cairo"
+                    href="https://maps.google.com/?q=New+Ordonia+Mall+10th+of+Ramadan+City"
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{
@@ -207,7 +249,7 @@ export default function Contact({ prefill }: ContactProps) {
                     }}
                   >
                     <MapPin size={15} color="var(--gold-deep)" />
-                    {t('View on Google Maps', 'عرض على خرائط Google')} ↗
+                    {t('View Office on Google Maps', 'عرض موقع المكتب على خرائط Google')} ↗
                   </a>
                 </div>
               </FadeUp>
