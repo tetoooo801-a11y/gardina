@@ -25,12 +25,14 @@ export function LangProvider({ children }: { children: ReactNode }) {
     html.setAttribute('data-lang', l)
     html.setAttribute('lang', l)
     html.setAttribute('dir', l === 'ar' ? 'rtl' : 'ltr')
+    document.title = 'Gardenia Heights'
   }
 
   useEffect(() => {
     document.documentElement.setAttribute('data-lang', 'en')
     document.documentElement.setAttribute('lang', 'en')
     document.documentElement.setAttribute('dir', 'ltr')
+    document.title = 'Gardenia Heights'
   }, [])
 
   const t = (en: string, ar: string) => lang === 'ar' ? ar : en

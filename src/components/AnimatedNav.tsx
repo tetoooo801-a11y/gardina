@@ -30,6 +30,27 @@ export default function AnimatedNav({ currentPage, onNavigate }: AnimatedNavProp
   const { lang, setLang, t, isAr } = useLang()
   const [isExpanded, setExpanded] = React.useState(true)
   const [mobileOpen, setMobileOpen] = React.useState(false)
+  const [isMobile, setIsMobile] = React.useState(false)
+
+  React.useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(typeof window !== 'undefined' && window.innerWidth <= 768)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
+  React.useEffect(() => {
+    if (mobileOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [mobileOpen])
 
   const { scrollY } = useScroll()
   const lastScrollY = React.useRef(0)
@@ -52,6 +73,16 @@ export default function AnimatedNav({ currentPage, onNavigate }: AnimatedNavProp
     setExpanded(true)
   }
 
+  const handleNavClick = (e: React.MouseEvent) => {
+    const isMobileScreen = (typeof window !== 'undefined' && window.innerWidth <= 768) || isMobile
+    if (isMobileScreen) {
+      e.stopPropagation()
+      setMobileOpen(true)
+    } else {
+      if (!isExpanded) setExpanded(true)
+    }
+  }
+
   const petal = 'rgba(225,220,200,0.88)'
   const petalDim = 'rgba(225,220,200,0.5)'
   const bg = 'rgba(8,14,10,0.9)'
@@ -69,11 +100,11 @@ export default function AnimatedNav({ currentPage, onNavigate }: AnimatedNavProp
         <motion.nav
           dir={isAr ? 'rtl' : 'ltr'}
           aria-label="Main Navigation"
-          title={isExpanded ? undefined : (isAr ? 'انقر لفتح القائمة' : 'Click to expand menu')}
+          title={isMobile ? (isAr ? 'انقر لفتح القائمة' : 'Tap to open menu') : (isExpanded ? undefined : (isAr ? 'انقر لفتح القائمة' : 'Click to expand menu'))}
           initial={{ y: -72, opacity: 0 }}
           animate={{ y: 0, opacity: 1, width: isExpanded ? 'auto' : '44px' }}
           transition={{ type: 'spring', damping: 22, stiffness: 280 }}
-          onClick={() => { if (!isExpanded) setExpanded(true) }}
+          onClick={handleNavClick}
           style={{
             display: 'flex', alignItems: 'center',
             overflow: 'hidden',
@@ -83,30 +114,48 @@ export default function AnimatedNav({ currentPage, onNavigate }: AnimatedNavProp
             WebkitBackdropFilter: 'blur(16px)',
             height: '44px',
             boxShadow: '0 4px 32px rgba(0,0,0,0.38)',
-            cursor: isExpanded ? 'default' : 'pointer',
+            cursor: (isMobile || !isExpanded) ? 'pointer' : 'default',
             pointerEvents: 'auto',
             whiteSpace: 'nowrap',
             position: 'relative',
+            WebkitTapHighlightColor: 'transparent',
+            touchAction: 'manipulation',
           }}
         >
           {/* Expanded content — fades in/out as one block */}
           <motion.div
             animate={{ opacity: isExpanded ? 1 : 0, x: isExpanded ? 0 : -10 }}
             transition={{ duration: 0.18, ease: 'easeInOut' }}
-            style={{ display: 'flex', alignItems: 'center', pointerEvents: isExpanded ? 'auto' : 'none' }}
+            onClick={handleNavClick}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              pointerEvents: isExpanded ? 'auto' : 'none',
+              cursor: isMobile ? 'pointer' : 'default',
+            }}
           >
             {/* Logo */}
-            <div style={{ flexShrink: 0, display: 'flex', alignItems: 'center', padding: isAr ? '0 10px 0 14px' : '0 14px 0 10px' }}>
+            <div
+              className="animated-nav-logo"
+              onClick={handleNavClick}
+              style={{
+                flexShrink: 0,
+                display: 'flex',
+                alignItems: 'center',
+                padding: isAr ? '0 10px 0 14px' : '0 14px 0 10px',
+                cursor: isMobile ? 'pointer' : 'default',
+              }}
+            >
               <img
                 key={lang}
-                src={isAr ? gardeniaLogoAr : gardeniaLogoEn}
-                alt={isAr ? 'جاردينيا هايتس' : 'Gardenia Heights'}
+                src={gardeniaLogoEn}
+                alt="Gardenia Heights"
                 style={{ height: 26, width: 'auto', filter: logoFilter, opacity: 0.95 }}
               />
             </div>
 
             {/* Divider */}
-            <div style={{ flexShrink: 0, width: 1, height: 18, background: 'rgba(225,220,200,0.15)' }} />
+            <div className="animated-nav-divider" style={{ flexShrink: 0, width: 1, height: 18, background: 'rgba(225,220,200,0.15)' }} />
 
             {/* Nav links + lang + hamburger */}
             <div className="animated-nav-links" style={{ display: 'flex', alignItems: 'center', gap: 2, padding: '0 8px' }}>
@@ -179,16 +228,18 @@ export default function AnimatedNav({ currentPage, onNavigate }: AnimatedNavProp
           <motion.div
             animate={{ opacity: isExpanded ? 0 : 1, scale: isExpanded ? 0.7 : 1 }}
             transition={{ duration: 0.18, ease: 'easeInOut', delay: isExpanded ? 0 : 0.12 }}
+            onClick={handleNavClick}
             style={{
               position: 'absolute', inset: 0,
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              pointerEvents: 'none',
+              pointerEvents: isMobile ? 'auto' : 'none',
+              cursor: isMobile ? 'pointer' : 'default',
             }}
           >
             <img
               key={lang}
-              src={isAr ? gardeniaLogoCollapsedAr : gardeniaLogoCollapsedEn}
-              alt="Gardenia"
+              src={gardeniaLogoCollapsedEn}
+              alt="Gardenia Heights"
               style={{ height: 26, width: 'auto', maxWidth: 36, objectFit: 'contain', filter: logoFilter, opacity: 0.92, direction: 'ltr' }}
             />
           </motion.div>
@@ -199,6 +250,7 @@ export default function AnimatedNav({ currentPage, onNavigate }: AnimatedNavProp
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
+            dir={isAr ? 'rtl' : 'ltr'}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -219,8 +271,8 @@ export default function AnimatedNav({ currentPage, onNavigate }: AnimatedNavProp
             >
               <img
                 key={lang}
-                src={isAr ? gardeniaLogoAr : gardeniaLogoEn}
-                alt={isAr ? 'جاردينيا هايتس' : 'Gardenia Heights'}
+                src={gardeniaLogoEn}
+                alt="Gardenia Heights"
                 style={{ height: 28, width: 'auto', filter: logoFilter, opacity: 0.95 }}
               />
               <button

@@ -13,6 +13,8 @@ import {
   ChevronRight,
   ZoomIn,
   Download,
+  LayoutGrid,
+  SlidersHorizontal,
 } from 'lucide-react'
 import type { Page, ContactPrefill } from '../App'
 import Skiper49 from '../components/ui/skiper49'
@@ -43,7 +45,7 @@ export interface GalleryItem {
 }
 
 const CATEGORY_TAGS: Array<{ key: CategoryFilterKey; en: string; ar: string }> = [
-  { key: 'all', en: 'All Photos (21)', ar: 'كافة الصور (21)' },
+  { key: 'all', en: 'All Photos', ar: 'كافة الصور' },
   { key: 'residential', en: 'Residential Communities', ar: 'المجتمعات السكنية' },
   { key: 'commercial', en: 'Commercial & Strip Malls', ar: 'المراكز التجارية والستريب مول' },
   { key: 'villas', en: 'Villas & Mansions', ar: 'الفيلات والقصور' },
@@ -56,40 +58,6 @@ const REGIONAL_FILTERS: Array<{ key: RegionFilterKey; en: string; ar: string }> 
   { key: 'sohag', en: 'New Sohag', ar: 'مدينة سوهاج الجديدة' },
 ]
 
-const CONSTRUCTION_STANDARDS = [
-  {
-    title: { en: 'Architectural Consistency', ar: 'التناسق المعماري الموحد' },
-    desc: {
-      en: 'Signature New Classic exterior lines, natural stone cladding, and balanced symmetry integrated across all typologies.',
-      ar: 'خطوط خارجية كلاسيكية جديدة مميزة، تكسيات حجرية طبيعية، وتناسق متوازن مدمج عبر كافة الأنماط والمشروعات.',
-    },
-    badge: { en: 'New Classic Heritage', ar: 'أصالة كلاسيكية حديثة' },
-  },
-  {
-    title: { en: 'Prime Accessibility', ar: 'المواقع الاستراتيجية وسهولة الوصول' },
-    desc: {
-      en: 'Strategic positioning along key arterial roads in both 10th of Ramadan City and New Sohag.',
-      ar: 'تموضع استراتيجي على أهم المحاور والشرايين الرئيسية في كل من مدينة العاشر من رمضان ومدينة سوهاج الجديدة.',
-    },
-    badge: { en: 'Strategic Arterials', ar: 'شرايين ومحاور رئيسية' },
-  },
-  {
-    title: { en: 'Integrated Ecosystems', ar: 'منظومات ومجتمعات متكاملة' },
-    desc: {
-      en: 'Seamless physical proximity between living spaces, daily retail conveniences, and essential medical care.',
-      ar: 'ترابط وتقارب مدروس بين المساحات السكنية، والمراكز التجارية والخدمات اليومية، ومراكز الرعاية الطبية الأساسية.',
-    },
-    badge: { en: 'Full Life Integration', ar: 'تكامل معيشي شامل' },
-  },
-  {
-    title: { en: 'Investment Longevity', ar: 'استدامة القيمة والعائد الاستثماري' },
-    desc: {
-      en: 'Built with durable materials and meticulous engineering to ensure sustained capital appreciation.',
-      ar: 'تنفيذ بخامات معمرة فائقة الجودة وهندسة دقيقة تضمن نمواً متواصلاً في رأس المال وقيمة الأصول عبر الأجيال.',
-    },
-    badge: { en: 'Capital Appreciation', ar: 'نمو مستدام للأصول' },
-  },
-]
 
 // Official Architectural Gallery items loaded from Google Drive portfolio
 const galleryItems: GalleryItem[] = [
@@ -457,6 +425,14 @@ export default function Projects({ onNavigate }: ProjectsProps) {
   const [activeCategory, setActiveCategory] = useState<CategoryFilterKey>('all')
   const [activeRegion, setActiveRegion] = useState<RegionFilterKey>('all')
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
+  const [viewMode, setViewMode] = useState<'grid' | 'carousel'>('grid')
+
+  // Strictly confine 3D Coverflow slider view to 'all' (كافة الصور)
+  useEffect(() => {
+    if (activeCategory !== 'all') {
+      setViewMode('grid')
+    }
+  }, [activeCategory])
 
   // Filter gallery photos dynamically
   const filteredPhotos = useMemo(() => {
@@ -474,6 +450,33 @@ export default function Projects({ onNavigate }: ProjectsProps) {
       return matchesCat && matchesReg
     })
   }, [activeCategory, activeRegion])
+
+  // Dynamic count for category filter pills
+  const getCategoryCount = useCallback(
+    (catKey: CategoryFilterKey) => {
+      return galleryItems.filter(item => {
+        const matchesCat = catKey === 'all' || item.category === catKey
+        const matchesReg =
+          activeRegion === 'all' || item.region === activeRegion || item.region === 'both'
+        return matchesCat && matchesReg
+      }).length
+    },
+    [activeRegion]
+  )
+
+  // Dynamic count for regional destination filter pills
+  const getRegionCount = useCallback(
+    (regKey: RegionFilterKey) => {
+      return galleryItems.filter(item => {
+        const matchesCat =
+          activeCategory === 'all' || item.category === activeCategory
+        const matchesReg =
+          regKey === 'all' || item.region === regKey || item.region === 'both'
+        return matchesCat && matchesReg
+      }).length
+    },
+    [activeCategory]
+  )
 
   // Current photo in lightbox
   const currentPhoto = lightboxIndex !== null ? filteredPhotos[lightboxIndex] : null
@@ -533,7 +536,7 @@ export default function Projects({ onNavigate }: ProjectsProps) {
   return (
     <>
       {/* 1. HERO SECTION: Architectural Gallery Header */}
-      <section className="page-hero" style={{ paddingBottom: '90px' }}>
+      <section className="page-hero projects-hero">
         <div className="page-hero-bg">
           <ParallaxImage
             src="/images/projects/residential-flagship.jpg"
@@ -551,7 +554,8 @@ export default function Projects({ onNavigate }: ProjectsProps) {
           />
         </div>
 
-        <div className="wrap page-hero-content" style={{ maxWidth: '1060px' }}>
+        {/* DESKTOP HERO CONTENT (min-width: 769px) */}
+        <div className="wrap page-hero-content projects-hero-desktop" style={{ maxWidth: '1060px' }}>
           {/* Eyebrow / Badge */}
           <FadeUp delay={0.1}>
             <div
@@ -614,6 +618,38 @@ export default function Projects({ onNavigate }: ProjectsProps) {
             </p>
           </FadeUp>
         </div>
+
+        {/* MOBILE HERO CONTENT (max-width: 768px) - EXACTLY LIKE ABOUT & CONTACT */}
+        <div className="wrap page-hero-content projects-hero-mobile">
+          <FadeUp delay={0.1}>
+            <div className="eyebrow-label">
+              <span className="stem"></span>
+              {t('Portfolio', 'المشروعات')}
+            </div>
+          </FadeUp>
+          <WordPullUp
+            text={t('Our Projects', 'مشروعاتنا')}
+            tag="h1"
+            delay={0.18}
+            stagger={0.08}
+            style={{
+              fontFamily: isAr ? 'var(--font-ar-display)' : 'var(--font-en-display)',
+              fontWeight: isAr ? 700 : 300,
+              lineHeight: isAr ? 1.25 : 0.95,
+              letterSpacing: isAr ? 0 : '-0.01em',
+              color: 'var(--petal)',
+              fontSize: isAr ? 'clamp(36px, 8.5vw, 48px)' : 'clamp(38px, 9.5vw, 52px)',
+            }}
+          />
+          <FadeUp delay={0.3}>
+            <p className="subtitle">
+              {t(
+                'Discover the iconic communities designed and delivered by Gardenia Heights Developments.',
+                'اكتشف المجتمعات الراقية التي صممتها ونفذتها جاردينيا هايتس للتطوير العقاري.'
+              )}
+            </p>
+          </FadeUp>
+        </div>
       </section>
 
       {/* 2. GALLERY INTERACTIVE FILTER BAR & PHOTO GRID */}
@@ -621,7 +657,7 @@ export default function Projects({ onNavigate }: ProjectsProps) {
         <div className="wrap">
           {/* Interactive Category Filter Pills */}
           <FadeUp delay={0.05}>
-            <div style={{ marginBottom: '24px' }}>
+            <div style={{ marginBottom: '20px' }}>
               <div
                 style={{
                   display: 'flex',
@@ -633,13 +669,14 @@ export default function Projects({ onNavigate }: ProjectsProps) {
               >
                 {CATEGORY_TAGS.map(tab => {
                   const isActive = activeCategory === tab.key
+                  const count = getCategoryCount(tab.key)
                   return (
                     <button
                       key={tab.key}
                       onClick={() => setActiveCategory(tab.key)}
                       style={{
                         position: 'relative',
-                        padding: '11px 22px',
+                        padding: '10px 20px',
                         borderRadius: '999px',
                         fontSize: isAr ? '13.5px' : '13px',
                         fontWeight: isActive ? 600 : 500,
@@ -655,6 +692,9 @@ export default function Projects({ onNavigate }: ProjectsProps) {
                         cursor: 'pointer',
                         transition: 'all 0.22s ease',
                         fontFamily: isAr ? 'var(--font-ar-body)' : 'var(--font-en-body)',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '8px',
                       }}
                       onMouseEnter={e => {
                         if (!isActive) {
@@ -669,7 +709,19 @@ export default function Projects({ onNavigate }: ProjectsProps) {
                         }
                       }}
                     >
-                      {t(tab.en, tab.ar)}
+                      <span>{t(tab.en, tab.ar)}</span>
+                      <span
+                        style={{
+                          fontSize: '11px',
+                          fontWeight: 700,
+                          padding: '2px 8px',
+                          borderRadius: '999px',
+                          background: isActive ? 'rgba(14, 26, 18, 0.18)' : 'rgba(33, 31, 26, 0.08)',
+                          color: isActive ? '#0e1a12' : 'rgba(33, 31, 26, 0.65)',
+                        }}
+                      >
+                        {count}
+                      </span>
                     </button>
                   )
                 })}
@@ -678,7 +730,7 @@ export default function Projects({ onNavigate }: ProjectsProps) {
           </FadeUp>
 
           {/* Regional Footprint Quick Toggle */}
-          <FadeUp delay={0.12}>
+          <FadeUp delay={0.1}>
             <div
               style={{
                 display: 'flex',
@@ -686,12 +738,12 @@ export default function Projects({ onNavigate }: ProjectsProps) {
                 justifyContent: 'center',
                 gap: '8px',
                 flexWrap: 'wrap',
-                marginBottom: '54px',
+                marginBottom: '42px',
                 padding: '8px 18px',
                 background: 'rgba(244, 240, 230, 0.65)',
                 borderRadius: '999px',
                 width: 'fit-content',
-                margin: '0 auto 54px',
+                margin: '0 auto 42px',
                 border: '1px solid rgba(212, 175, 55, 0.25)',
               }}
             >
@@ -709,11 +761,12 @@ export default function Projects({ onNavigate }: ProjectsProps) {
                 }}
               >
                 <MapPin size={14} />
-                <span>{t('Filter by Destination:', 'تصفية حسب الوجهة:')}</span>
+                <span>{t('Destination:', 'الوجهة:')}</span>
               </div>
 
               {REGIONAL_FILTERS.map(reg => {
                 const isRegActive = activeRegion === reg.key
+                const count = getRegionCount(reg.key)
                 return (
                   <button
                     key={reg.key}
@@ -729,31 +782,500 @@ export default function Projects({ onNavigate }: ProjectsProps) {
                       cursor: 'pointer',
                       transition: 'all 0.18s ease',
                       fontFamily: isAr ? 'var(--font-ar-body)' : 'var(--font-en-body)',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '6px',
                     }}
                   >
-                    {t(reg.en, reg.ar)}
+                    <span>{t(reg.en, reg.ar)}</span>
+                    <span
+                      style={{
+                        fontSize: '10.5px',
+                        opacity: isRegActive ? 0.9 : 0.6,
+                      }}
+                    >
+                      ({count})
+                    </span>
                   </button>
                 )
               })}
             </div>
           </FadeUp>
 
-          {/* 3. PURE ARCHITECTURAL PHOTO 3D COVERFLOW GALLERY (NO TEXT ON PHOTOS) */}
-          <div className="w-full">
-            <Skiper49
-              images={filteredPhotos.map(photo => ({
-                src: photo.img,
-                alt: isAr ? photo.title.ar : photo.title.en,
-              }))}
-              showPagination={true}
-              showNavigation={true}
-              loop={true}
-              autoplay={true}
-              slideHeight={440}
-              slideWidth={340}
-              onImageClick={(_, index) => setLightboxIndex(index)}
-            />
-          </div>
+          {/* View Mode Switcher & Results Status Bar */}
+          <FadeUp delay={0.15}>
+            <div
+              style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                gap: '16px',
+                marginBottom: '36px',
+                padding: '16px 22px',
+                background: '#FFFFFF',
+                borderRadius: '18px',
+                border: '1px solid rgba(212, 175, 55, 0.22)',
+                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.04)',
+              }}
+            >
+              {/* Count and indicator */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <span
+                  style={{
+                    width: '9px',
+                    height: '9px',
+                    borderRadius: '50%',
+                    background: 'var(--gold-deep)',
+                    display: 'inline-block',
+                    boxShadow: '0 0 10px rgba(184, 144, 90, 0.6)',
+                  }}
+                />
+                <span
+                  style={{
+                    fontSize: '14px',
+                    fontWeight: 600,
+                    color: '#0e1a12',
+                    fontFamily: isAr ? 'var(--font-ar-body)' : 'var(--font-en-body)',
+                  }}
+                >
+                  {activeCategory === 'all'
+                    ? isAr
+                      ? `عرض كافة الصروح المعمارية (${filteredPhotos.length} صورة)`
+                      : `Displaying All Architectural Projects (${filteredPhotos.length} photos)`
+                    : isAr
+                      ? `عرض ${filteredPhotos.length} صرحاً معمارياً في قسم "${t(
+                          CATEGORY_TAGS.find(c => c.key === activeCategory)?.en || '',
+                          CATEGORY_TAGS.find(c => c.key === activeCategory)?.ar || ''
+                        )}"`
+                      : `Displaying ${filteredPhotos.length} projects in ${t(
+                          CATEGORY_TAGS.find(c => c.key === activeCategory)?.en || '',
+                          CATEGORY_TAGS.find(c => c.key === activeCategory)?.ar || ''
+                        )}`}
+                </span>
+              </div>
+
+              {/* View Switcher buttons - STRICTLY for 'all' (كافة الصور) only */}
+              {activeCategory === 'all' && (
+                <div
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    background: 'rgba(33, 31, 26, 0.06)',
+                    padding: '4px',
+                    borderRadius: '999px',
+                    border: '1px solid rgba(212, 175, 55, 0.22)',
+                  }}
+                >
+                  <button
+                    type="button"
+                    onClick={() => setViewMode('grid')}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '7px',
+                      padding: '8px 18px',
+                      borderRadius: '999px',
+                      fontSize: isAr ? '13px' : '12.5px',
+                      fontWeight: viewMode === 'grid' ? 600 : 500,
+                      background: viewMode === 'grid' ? 'var(--green)' : 'transparent',
+                      color: viewMode === 'grid' ? '#FFFDF8' : 'rgba(33, 31, 26, 0.75)',
+                      border: 'none',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s ease',
+                      boxShadow: viewMode === 'grid' ? '0 2px 10px rgba(14, 26, 18, 0.25)' : 'none',
+                      fontFamily: isAr ? 'var(--font-ar-body)' : 'var(--font-en-body)',
+                    }}
+                  >
+                    <LayoutGrid size={15} />
+                    <span>{t('All Photos Grid', 'شبكة كافة الصور')}</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setViewMode('carousel')}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '7px',
+                      padding: '8px 18px',
+                      borderRadius: '999px',
+                      fontSize: isAr ? '13px' : '12.5px',
+                      fontWeight: viewMode === 'carousel' ? 600 : 500,
+                      background: viewMode === 'carousel' ? 'var(--green)' : 'transparent',
+                      color: viewMode === 'carousel' ? '#FFFDF8' : 'rgba(33, 31, 26, 0.75)',
+                      border: 'none',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s ease',
+                      boxShadow: viewMode === 'carousel' ? '0 2px 10px rgba(14, 26, 18, 0.25)' : 'none',
+                      fontFamily: isAr ? 'var(--font-ar-body)' : 'var(--font-en-body)',
+                    }}
+                  >
+                    <SlidersHorizontal size={15} />
+                    <span>{t('3D Coverflow Slider', 'سلايدر 3D تفاعلي')}</span>
+                  </button>
+                </div>
+              )}
+            </div>
+          </FadeUp>
+
+          {/* VIEW 1: FULL ARCHITECTURAL ALL-PHOTOS GRID */}
+          {viewMode === 'grid' && (
+            <motion.div
+              layout
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.35 }}
+              className="projects-gallery-grid"
+            >
+              <AnimatePresence mode="popLayout">
+                {filteredPhotos.map((photo, index) => {
+                  return (
+                    <motion.div
+                      key={photo.id}
+                      layout
+                      initial={{ opacity: 0, scale: 0.94, y: 20 }}
+                      animate={{ opacity: 1, scale: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 0.92, y: 15 }}
+                      transition={{ duration: 0.32, delay: index * 0.02 }}
+                      className="projects-photo-card"
+                      onClick={() => setLightboxIndex(index)}
+                    >
+                      {/* Image Top Half */}
+                      <div style={{ position: 'relative', width: '100%', height: '260px', overflow: 'hidden' }}>
+                        <img
+                          src={photo.img}
+                          alt={t(photo.title.en, photo.title.ar)}
+                          loading="lazy"
+                          className="projects-card-img"
+                        />
+                        <div
+                          style={{
+                            position: 'absolute',
+                            inset: 0,
+                            background:
+                              'linear-gradient(180deg, rgba(8,18,12,0.45) 0%, transparent 40%, transparent 60%, rgba(8,18,12,0.55) 100%)',
+                            pointerEvents: 'none',
+                          }}
+                        />
+
+                        {/* Top Badges */}
+                        <div
+                          style={{
+                            position: 'absolute',
+                            top: '12px',
+                            left: '12px',
+                            right: '12px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            gap: '8px',
+                            zIndex: 2,
+                          }}
+                        >
+                          <span
+                            style={{
+                              background: 'rgba(8, 18, 12, 0.8)',
+                              backdropFilter: 'blur(8px)',
+                              WebkitBackdropFilter: 'blur(8px)',
+                              border: '1px solid rgba(212, 175, 55, 0.45)',
+                              color: '#f6e0a3',
+                              fontSize: '11px',
+                              fontWeight: 600,
+                              padding: '4px 10px',
+                              borderRadius: '999px',
+                              fontFamily: isAr ? 'var(--font-ar-body)' : 'var(--font-en-body)',
+                            }}
+                          >
+                            {t(photo.categoryLabel.en, photo.categoryLabel.ar)}
+                          </span>
+
+                          <span
+                            style={{
+                              background: 'rgba(255, 255, 255, 0.92)',
+                              backdropFilter: 'blur(8px)',
+                              color: '#0e1a12',
+                              fontSize: '11px',
+                              fontWeight: 600,
+                              padding: '4px 10px',
+                              borderRadius: '999px',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '4px',
+                              boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+                              fontFamily: isAr ? 'var(--font-ar-body)' : 'var(--font-en-body)',
+                            }}
+                          >
+                            <MapPin size={11} color="var(--gold-deep)" />
+                            <span>{t(photo.loc.en, photo.loc.ar)}</span>
+                          </span>
+                        </div>
+
+                        {/* Corner Zoom Button */}
+                        <div
+                          className="projects-card-zoom-badge"
+                          style={{
+                            position: 'absolute',
+                            bottom: '12px',
+                            [isAr ? 'left' : 'right']: '12px',
+                            background: 'rgba(212, 175, 55, 0.95)',
+                            color: '#0e1a12',
+                            width: '34px',
+                            height: '34px',
+                            borderRadius: '50%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+                            zIndex: 2,
+                          }}
+                        >
+                          <ZoomIn size={16} />
+                        </div>
+                      </div>
+
+                      {/* Card Content */}
+                      <div
+                        style={{
+                          padding: '20px 22px',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          flexGrow: 1,
+                        }}
+                      >
+                        <h3
+                          style={{
+                            fontFamily: isAr ? 'var(--font-ar-display)' : 'var(--font-en-display)',
+                            fontSize: isAr ? '19px' : '20px',
+                            fontWeight: isAr ? 700 : 500,
+                            color: '#111813',
+                            margin: '0 0 8px',
+                            lineHeight: 1.3,
+                          }}
+                        >
+                          {t(photo.title.en, photo.title.ar)}
+                        </h3>
+
+                        <p
+                          style={{
+                            fontSize: isAr ? '13px' : '13.5px',
+                            lineHeight: 1.6,
+                            color: 'rgba(33, 31, 26, 0.72)',
+                            margin: '0 0 16px',
+                            flexGrow: 1,
+                            fontFamily: isAr ? 'var(--font-ar-body)' : 'var(--font-en-body)',
+                            display: '-webkit-box',
+                            WebkitLineClamp: 2,
+                            WebkitBoxOrient: 'vertical',
+                            overflow: 'hidden',
+                          }}
+                        >
+                          {t(photo.caption.en, photo.caption.ar)}
+                        </p>
+
+                        <div
+                          style={{
+                            height: '1px',
+                            background: 'rgba(33, 31, 26, 0.08)',
+                            marginBottom: '14px',
+                          }}
+                        />
+
+                        {/* Card Footer Actions */}
+                        <div
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            gap: '8px',
+                          }}
+                        >
+                          <span
+                            style={{
+                              fontSize: '12px',
+                              fontWeight: 600,
+                              color: 'var(--gold-deep)',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '5px',
+                              fontFamily: isAr ? 'var(--font-ar-body)' : 'var(--font-en-body)',
+                            }}
+                          >
+                            <span>{t('View Full Photo', 'استعراض الصورة')}</span>
+                            <span>{isAr ? '←' : '→'}</span>
+                          </span>
+
+                          <button
+                            type="button"
+                            onClick={e => {
+                              e.stopPropagation()
+                              window.open(getWhatsAppInquiryUrl(photo), '_blank', 'noopener,noreferrer')
+                            }}
+                            title={t('Inquire on WhatsApp', 'استفسار واتساب')}
+                            style={{
+                              background: 'rgba(37, 211, 102, 0.12)',
+                              border: '1px solid rgba(37, 211, 102, 0.35)',
+                              color: '#16a34a',
+                              padding: '6px 12px',
+                              borderRadius: '999px',
+                              fontSize: '11.5px',
+                              fontWeight: 600,
+                              cursor: 'pointer',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '5px',
+                              transition: 'background 0.2s',
+                              fontFamily: isAr ? 'var(--font-ar-body)' : 'var(--font-en-body)',
+                            }}
+                            onMouseEnter={e =>
+                              (e.currentTarget.style.background = 'rgba(37, 211, 102, 0.22)')
+                            }
+                            onMouseLeave={e =>
+                              (e.currentTarget.style.background = 'rgba(37, 211, 102, 0.12)')
+                            }
+                          >
+                            <MessageCircle size={13} />
+                            <span>{t('WhatsApp', 'واتساب')}</span>
+                          </button>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )
+                })}
+              </AnimatePresence>
+            </motion.div>
+          )}
+
+          {/* VIEW 2: 3D COVERFLOW SHOWCASE (STRICTLY for 'all' / كافة الصور) */}
+          {activeCategory === 'all' && viewMode === 'carousel' && (
+            <motion.div
+              layout
+              initial={{ opacity: 0, scale: 0.98 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.35 }}
+              className="w-full"
+            >
+              <Skiper49
+                images={filteredPhotos.map(photo => ({
+                  src: photo.img,
+                  alt: isAr ? photo.title.ar : photo.title.en,
+                }))}
+                showPagination={true}
+                showNavigation={true}
+                loop={true}
+                autoplay={true}
+                slideHeight={440}
+                slideWidth={340}
+                onImageClick={(_, index) => setLightboxIndex(index)}
+              />
+            </motion.div>
+          )}
+
+          {/* 3D Showcase Section below the Grid (STRICTLY ONLY in 'all' / كافة الصور) */}
+          {activeCategory === 'all' && viewMode === 'grid' && filteredPhotos.length > 0 && (
+            <FadeUp delay={0.2}>
+              <div
+                style={{
+                  marginTop: '64px',
+                  padding: '36px 30px',
+                  background: 'linear-gradient(135deg, rgba(12,22,14,0.03) 0%, rgba(212,175,55,0.08) 100%)',
+                  borderRadius: '24px',
+                  border: '1px solid rgba(212, 175, 55, 0.3)',
+                  boxShadow: '0 8px 30px rgba(0, 0, 0, 0.03)',
+                }}
+              >
+                <div
+                  style={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    gap: '16px',
+                    marginBottom: '28px',
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+                    <div
+                      style={{
+                        width: '44px',
+                        height: '44px',
+                        borderRadius: '50%',
+                        background: 'rgba(212, 175, 55, 0.2)',
+                        color: 'var(--gold-deep)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <SlidersHorizontal size={22} />
+                    </div>
+                    <div>
+                      <h4
+                        style={{
+                          fontFamily: isAr ? 'var(--font-ar-display)' : 'var(--font-en-display)',
+                          fontSize: '19px',
+                          fontWeight: 600,
+                          margin: '0 0 4px',
+                          color: '#0e1a12',
+                        }}
+                      >
+                        {t('Interactive 3D Coverflow Experience', 'السلايدر التفاعلي ثلاثي الأبعاد لكافة الصور')}
+                      </h4>
+                      <p
+                        style={{
+                          fontSize: '13.5px',
+                          color: 'rgba(33, 31, 26, 0.72)',
+                          margin: 0,
+                          fontFamily: isAr ? 'var(--font-ar-body)' : 'var(--font-en-body)',
+                        }}
+                      >
+                        {t(
+                          'Explore all 21 architectural landmarks in an immersive 3D spatial carousel.',
+                          'استكشف كافة الصروح المعمارية الـ 21 عبر سلايدر سينمائي ثلاثي الأبعاد.'
+                        )}
+                      </p>
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setViewMode('carousel')
+                      window.scrollTo({ top: 480, behavior: 'smooth' })
+                    }}
+                    className="pill-btn"
+                    style={{
+                      background: 'var(--green)',
+                      color: '#FFFDF8',
+                      padding: '10px 22px',
+                      fontSize: '13px',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                      boxShadow: '0 4px 16px rgba(14,26,18,0.25)',
+                    }}
+                  >
+                    <span>{t('Launch Full 3D View', 'عرض السلايدر 3D كاملاً')}</span>
+                    <span>{isAr ? '←' : '→'}</span>
+                  </button>
+                </div>
+
+                {/* Embedded 3D Slider right here */}
+                <Skiper49
+                  images={filteredPhotos.map(photo => ({
+                    src: photo.img,
+                    alt: isAr ? photo.title.ar : photo.title.en,
+                  }))}
+                  showPagination={true}
+                  showNavigation={true}
+                  loop={true}
+                  autoplay={true}
+                  slideHeight={420}
+                  slideWidth={320}
+                  onImageClick={(_, index) => setLightboxIndex(index)}
+                />
+              </div>
+            </FadeUp>
+          )}
 
           {/* Empty state fallback */}
           {filteredPhotos.length === 0 && (
@@ -1123,200 +1645,11 @@ export default function Projects({ onNavigate }: ProjectsProps) {
         )}
       </AnimatePresence>
 
-      {/* 4. ARCHITECTURAL HIGHLIGHTS & CONSTRUCTION STANDARDS STRIP */}
-      <section
-        style={{
-          background: 'linear-gradient(135deg, #0d1a10 0%, #15271b 50%, #0d1a10 100%)',
-          color: 'var(--petal)',
-          padding: '88px 0',
-          position: 'relative',
-          overflow: 'hidden',
-          borderTop: '1px solid rgba(212, 175, 55, 0.25)',
-          borderBottom: '1px solid rgba(212, 175, 55, 0.25)',
-          marginBottom: '100px',
-        }}
-      >
-        {/* Ambient gold glow */}
-        <div
-          style={{
-            position: 'absolute',
-            top: '-20%',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            width: '700px',
-            height: '350px',
-            background: 'radial-gradient(circle, rgba(212,175,55,0.12) 0%, transparent 70%)',
-            pointerEvents: 'none',
-          }}
-        />
-
-        <div className="wrap" style={{ position: 'relative', zIndex: 2 }}>
-          {/* Header */}
-          <div style={{ textAlign: 'center', maxWidth: '780px', margin: '0 auto 56px' }}>
-            <FadeUp>
-              <div
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  padding: '6px 18px',
-                  borderRadius: '999px',
-                  background: 'rgba(212, 175, 55, 0.15)',
-                  border: '1px solid rgba(212, 175, 55, 0.45)',
-                  color: 'var(--gold)',
-                  fontSize: '11px',
-                  fontWeight: 600,
-                  letterSpacing: isAr ? 0 : '0.18em',
-                  textTransform: isAr ? 'none' : 'uppercase',
-                  marginBottom: '18px',
-                  fontFamily: isAr ? 'var(--font-ar-body)' : 'var(--font-en-body)',
-                }}
-              >
-                <Sparkles size={12} />
-                <span>{t('Engineering Rigor & Quality Standards', 'معايير التنفيذ والريادة الهندسية')}</span>
-              </div>
-            </FadeUp>
-
-            <WordPullUp
-              text={t(
-                'Project Highlights & Construction Standards',
-                'أبرز مميزات المشروعات ومعايير الجودة والإنشاء'
-              )}
-              tag="h2"
-              delay={0.1}
-              style={{
-                fontFamily: isAr ? 'var(--font-ar-display)' : 'var(--font-en-display)',
-                fontWeight: isAr ? 700 : 400,
-                fontSize: isAr ? '28px' : '34px',
-                lineHeight: 1.25,
-                color: '#FFFDF8',
-                marginBottom: '16px',
-              }}
-            />
-
-            <FadeUp delay={0.2}>
-              <p
-                style={{
-                  fontSize: isAr ? '14.5px' : '15px',
-                  lineHeight: 1.7,
-                  color: 'rgba(255, 253, 248, 0.8)',
-                  margin: 0,
-                  fontFamily: isAr ? 'var(--font-ar-body)' : 'var(--font-en-body)',
-                }}
-              >
-                {t(
-                  'Every Gardenia Heights landmark is engineered to international architectural benchmarks, ensuring enduring value, resident privacy, and generational distinction.',
-                  'كل صرح تطوره جاردينيا هايتس يُنفذ وفق أعلى المعايير المعمارية العالمية، لضمان استدامة القيمة، الخصوصية المطلقة، والتميز المتوارث عبر الأجيال.'
-                )}
-              </p>
-            </FadeUp>
-          </div>
-
-          {/* 4 Cards Grid */}
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-              gap: '24px',
-            }}
-          >
-            {CONSTRUCTION_STANDARDS.map((std, idx) => {
-              return (
-                <FadeUp key={idx} delay={0.1 + idx * 0.08}>
-                  <div
-                    style={{
-                      background: 'rgba(255, 253, 248, 0.04)',
-                      backdropFilter: 'blur(16px)',
-                      WebkitBackdropFilter: 'blur(16px)',
-                      border: '1px solid rgba(212, 175, 55, 0.22)',
-                      borderRadius: '18px',
-                      padding: '28px 24px',
-                      height: '100%',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      transition: 'all 0.25s ease',
-                      boxShadow: '0 8px 30px rgba(0,0,0,0.25)',
-                    }}
-                    onMouseEnter={e => {
-                      e.currentTarget.style.transform = 'translateY(-4px)'
-                      e.currentTarget.style.borderColor = 'rgba(212, 175, 55, 0.55)'
-                      e.currentTarget.style.background = 'rgba(255, 253, 248, 0.07)'
-                    }}
-                    onMouseLeave={e => {
-                      e.currentTarget.style.transform = 'translateY(0)'
-                      e.currentTarget.style.borderColor = 'rgba(212, 175, 55, 0.22)'
-                      e.currentTarget.style.background = 'rgba(255, 253, 248, 0.04)'
-                    }}
-                  >
-                    {/* Top Row: Badge */}
-                    <div style={{ marginBottom: '18px' }}>
-                      <span
-                        style={{
-                          fontSize: '11px',
-                          fontWeight: 600,
-                          padding: '4px 12px',
-                          borderRadius: '999px',
-                          background: 'rgba(212, 175, 55, 0.12)',
-                          color: '#f3dd97',
-                          border: '1px solid rgba(212, 175, 55, 0.28)',
-                          fontFamily: isAr ? 'var(--font-ar-body)' : 'var(--font-en-body)',
-                          display: 'inline-block',
-                          letterSpacing: isAr ? 0 : '0.04em',
-                        }}
-                      >
-                        {t(std.badge.en, std.badge.ar)}
-                      </span>
-                    </div>
-
-                    {/* Title */}
-                    <h3
-                      style={{
-                        fontFamily: isAr ? 'var(--font-ar-display)' : 'var(--font-en-display)',
-                        fontSize: isAr ? '19px' : '20px',
-                        fontWeight: isAr ? 700 : 500,
-                        color: '#FFFDF8',
-                        margin: '0 0 12px',
-                        lineHeight: 1.3,
-                      }}
-                    >
-                      {t(std.title.en, std.title.ar)}
-                    </h3>
-
-                    {/* Gold Divider Line */}
-                    <div
-                      style={{
-                        height: '1px',
-                        width: '40px',
-                        background: 'linear-gradient(90deg, #d4af37, transparent)',
-                        marginBottom: '14px',
-                      }}
-                    />
-
-                    {/* Description */}
-                    <p
-                      style={{
-                        fontSize: isAr ? '13.5px' : '13.5px',
-                        lineHeight: 1.65,
-                        color: 'rgba(255, 253, 248, 0.75)',
-                        margin: 0,
-                        flexGrow: 1,
-                        fontFamily: isAr ? 'var(--font-ar-body)' : 'var(--font-en-body)',
-                      }}
-                    >
-                      {t(std.desc.en, std.desc.ar)}
-                    </p>
-                  </div>
-                </FadeUp>
-              )
-            })}
-          </div>
-        </div>
-      </section>
 
       {/* 5. INQUIRY BANNER */}
-      <FadeUp distance={40} style={{ padding: '0 48px', marginBottom: '110px' }}>
+      <FadeUp distance={40} className="projects-cta-fadeup" style={{ padding: '0 48px', marginBottom: '110px' }}>
         <div
-          className="cta-banner"
+          className="cta-banner projects-cta-banner"
           style={{
             margin: 0,
             borderRadius: '28px',
@@ -1347,9 +1680,18 @@ export default function Projects({ onNavigate }: ProjectsProps) {
               pointerEvents: 'none',
             }}
           />
+          <div
+            className="projects-cta-dark-overlay"
+            style={{
+              position: 'absolute',
+              inset: 0,
+              background: 'linear-gradient(180deg, rgba(10,16,12,0.72) 0%, rgba(14,24,17,0.65) 50%, rgba(10,16,12,0.88) 100%)',
+              pointerEvents: 'none',
+            }}
+          />
 
           <div
-            className="cta-banner-content"
+            className="cta-banner-content projects-cta-content"
             style={{
               position: 'relative',
               zIndex: 2,
@@ -1359,6 +1701,7 @@ export default function Projects({ onNavigate }: ProjectsProps) {
           >
             {/* Eyebrow */}
             <div
+              className="projects-cta-eyebrow"
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -1377,11 +1720,13 @@ export default function Projects({ onNavigate }: ProjectsProps) {
               }}
             >
               <Sparkles size={12} />
-              <span>{t('Unit Inquiries & Booking', 'حجز الوحدات والاستفسارات')}</span>
+              <span className="projects-cta-eyebrow-desktop">{t('Unit Inquiries & Booking', 'حجز الوحدات والاستفسارات')}</span>
+              <span className="projects-cta-eyebrow-mobile">{t('Unit Inquiries', 'حجز واستفسار')}</span>
             </div>
 
             {/* Headline */}
             <h2
+              className="projects-cta-title"
               style={{
                 fontFamily: isAr ? 'var(--font-ar-display)' : 'var(--font-en-display)',
                 fontSize: isAr ? '30px' : '38px',
@@ -1392,14 +1737,23 @@ export default function Projects({ onNavigate }: ProjectsProps) {
                 textShadow: '0 2px 20px rgba(0,0,0,0.6)',
               }}
             >
-              {t(
-                'Ready to Secure Your Unit in Our Developments?',
-                'جاهز لحجز وحدتك في مشروعاتنا؟'
-              )}
+              <span className="projects-cta-title-desktop">
+                {t(
+                  'Ready to Secure Your Unit in Our Developments?',
+                  'جاهز لحجز وحدتك في مشروعاتنا؟'
+                )}
+              </span>
+              <span className="projects-cta-title-mobile">
+                {t(
+                  'Ready to Secure Your Unit?',
+                  'جاهز لحجز وحدتك؟'
+                )}
+              </span>
             </h2>
 
             {/* Sub-headline */}
             <p
+              className="projects-cta-desc"
               style={{
                 maxWidth: '740px',
                 margin: '0 auto 34px',
@@ -1409,14 +1763,23 @@ export default function Projects({ onNavigate }: ProjectsProps) {
                 fontFamily: isAr ? 'var(--font-ar-body)' : 'var(--font-en-body)',
               }}
             >
-              {t(
-                'Request master plans, full architectural brochures, and customized installment schedules for any unit across our integrated portfolio.',
-                'اطلب المخططات العامة، البروشورات المعمارية الكاملة، وجداول السداد المصممة خصيصاً لأي وحدة عبر محفظتنا المتكاملة.'
-              )}
+              <span className="projects-cta-desc-desktop">
+                {t(
+                  'Request master plans, full architectural brochures, and customized installment schedules for any unit across our integrated portfolio.',
+                  'اطلب المخططات العامة، البروشورات المعمارية الكاملة، وجداول السداد المصممة خصيصاً لأي وحدة عبر محفظتنا المتكاملة.'
+                )}
+              </span>
+              <span className="projects-cta-desc-mobile">
+                {t(
+                  'Request master plans and tailored installment schedules for our units.',
+                  'اطلب المخططات والبروشورات وجداول السداد لمشروعاتنا.'
+                )}
+              </span>
             </p>
 
             {/* Action Row */}
             <div
+              className="projects-cta-actions"
               style={{
                 display: 'flex',
                 flexWrap: 'wrap',
@@ -1429,7 +1792,7 @@ export default function Projects({ onNavigate }: ProjectsProps) {
               {/* Primary Button */}
               <button
                 type="button"
-                className="cursor-pointer"
+                className="cursor-pointer projects-cta-btn-primary"
                 onClick={() => {
                   onNavigate('contact', {
                     subject: isAr
@@ -1461,90 +1824,103 @@ export default function Projects({ onNavigate }: ProjectsProps) {
                 onMouseLeave={e => ((e.currentTarget as HTMLElement).style.transform = 'scale(1)')}
               >
                 <Download size={16} />
-                <span>
+                <span className="projects-cta-btn-text-desktop">
                   {t(
                     'Download Project Portfolio & Floor Plans',
                     'تحميل دليل المشروعات والمخططات'
                   )}
                 </span>
+                <span className="projects-cta-btn-text-mobile">
+                  {t(
+                    'Download Project Portfolio',
+                    'تحميل دليل المشروعات'
+                  )}
+                </span>
                 <span>{isAr ? '←' : '→'}</span>
               </button>
 
-              {/* Direct Hotline: 17994 */}
-              <a
-                href="tel:17994"
-                style={{
-                  background: 'rgba(255, 253, 248, 0.12)',
-                  backdropFilter: 'blur(16px)',
-                  WebkitBackdropFilter: 'blur(16px)',
-                  border: '1.5px solid rgba(212, 175, 55, 0.55)',
-                  color: '#FFFDF8',
-                  padding: '14px 28px',
-                  borderRadius: '999px',
-                  fontSize: '14px',
-                  fontWeight: 600,
-                  textDecoration: 'none',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '9px',
-                  boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
-                  transition: 'background 0.2s, border-color 0.2s, transform 0.2s',
-                  fontFamily: isAr ? 'var(--font-ar-body)' : 'var(--font-en-body)',
-                }}
-                onMouseEnter={e => {
-                  e.currentTarget.style.background = 'rgba(212, 175, 55, 0.22)'
-                  e.currentTarget.style.borderColor = '#d4af37'
-                  e.currentTarget.style.transform = 'scale(1.03)'
-                }}
-                onMouseLeave={e => {
-                  e.currentTarget.style.background = 'rgba(255, 253, 248, 0.12)'
-                  e.currentTarget.style.borderColor = 'rgba(212, 175, 55, 0.55)'
-                  e.currentTarget.style.transform = 'scale(1)'
-                }}
-              >
-                <Phone size={16} style={{ color: '#d4af37' }} />
-                <span>{t('Direct Hotline: 17994', 'الخط الساخن: 17994')}</span>
-              </a>
+              <div className="projects-cta-secondary-row">
+                {/* Direct Hotline: 17994 */}
+                <a
+                  href="tel:17994"
+                  className="projects-cta-btn-secondary"
+                  style={{
+                    background: 'rgba(255, 253, 248, 0.12)',
+                    backdropFilter: 'blur(16px)',
+                    WebkitBackdropFilter: 'blur(16px)',
+                    border: '1.5px solid rgba(212, 175, 55, 0.55)',
+                    color: '#FFFDF8',
+                    padding: '14px 28px',
+                    borderRadius: '999px',
+                    fontSize: '14px',
+                    fontWeight: 600,
+                    textDecoration: 'none',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '9px',
+                    boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
+                    transition: 'background 0.2s, border-color 0.2s, transform 0.2s',
+                    fontFamily: isAr ? 'var(--font-ar-body)' : 'var(--font-en-body)',
+                  }}
+                  onMouseEnter={e => {
+                    e.currentTarget.style.background = 'rgba(212, 175, 55, 0.22)'
+                    e.currentTarget.style.borderColor = '#d4af37'
+                    e.currentTarget.style.transform = 'scale(1.03)'
+                  }}
+                  onMouseLeave={e => {
+                    e.currentTarget.style.background = 'rgba(255, 253, 248, 0.12)'
+                    e.currentTarget.style.borderColor = 'rgba(212, 175, 55, 0.55)'
+                    e.currentTarget.style.transform = 'scale(1)'
+                  }}
+                >
+                  <Phone size={15} style={{ color: '#d4af37' }} />
+                  <span className="projects-cta-btn-text-desktop">{t('Direct Hotline: 17994', 'الخط الساخن: 17994')}</span>
+                  <span className="projects-cta-btn-text-mobile">{t('Hotline: 17994', 'الخط الساخن: 17994')}</span>
+                </a>
 
-              {/* WhatsApp Icon / Action */}
-              <a
-                href={generalWhatsAppUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  background: 'rgba(37, 211, 102, 0.16)',
-                  backdropFilter: 'blur(16px)',
-                  WebkitBackdropFilter: 'blur(16px)',
-                  border: '1.5px solid rgba(37, 211, 102, 0.5)',
-                  color: '#4ade80',
-                  padding: '14px 26px',
-                  borderRadius: '999px',
-                  fontSize: '14px',
-                  fontWeight: 600,
-                  textDecoration: 'none',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '9px',
-                  boxShadow: '0 4px 20px rgba(0,0,0,0.25)',
-                  transition: 'background 0.2s, border-color 0.2s, transform 0.2s',
-                  fontFamily: isAr ? 'var(--font-ar-body)' : 'var(--font-en-body)',
-                }}
-                onMouseEnter={e => {
-                  e.currentTarget.style.background = 'rgba(37, 211, 102, 0.28)'
-                  e.currentTarget.style.transform = 'scale(1.03)'
-                }}
-                onMouseLeave={e => {
-                  e.currentTarget.style.background = 'rgba(37, 211, 102, 0.16)'
-                  e.currentTarget.style.transform = 'scale(1)'
-                }}
-              >
-                <MessageCircle size={17} />
-                <span>{t('WhatsApp Inquiries', 'واتساب المبيعات')}</span>
-              </a>
+                {/* WhatsApp Action */}
+                <a
+                  href={generalWhatsAppUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="projects-cta-btn-whatsapp"
+                  style={{
+                    background: 'rgba(37, 211, 102, 0.16)',
+                    backdropFilter: 'blur(16px)',
+                    WebkitBackdropFilter: 'blur(16px)',
+                    border: '1.5px solid rgba(37, 211, 102, 0.5)',
+                    color: '#4ade80',
+                    padding: '14px 26px',
+                    borderRadius: '999px',
+                    fontSize: '14px',
+                    fontWeight: 600,
+                    textDecoration: 'none',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '9px',
+                    boxShadow: '0 4px 20px rgba(0,0,0,0.25)',
+                    transition: 'background 0.2s, border-color 0.2s, transform 0.2s',
+                    fontFamily: isAr ? 'var(--font-ar-body)' : 'var(--font-en-body)',
+                  }}
+                  onMouseEnter={e => {
+                    e.currentTarget.style.background = 'rgba(37, 211, 102, 0.28)'
+                    e.currentTarget.style.transform = 'scale(1.03)'
+                  }}
+                  onMouseLeave={e => {
+                    e.currentTarget.style.background = 'rgba(37, 211, 102, 0.16)'
+                    e.currentTarget.style.transform = 'scale(1)'
+                  }}
+                >
+                  <MessageCircle size={16} />
+                  <span className="projects-cta-btn-text-desktop">{t('WhatsApp Inquiries', 'واتساب المبيعات')}</span>
+                  <span className="projects-cta-btn-text-mobile">{t('WhatsApp', 'واتساب المبيعات')}</span>
+                </a>
+              </div>
             </div>
 
             {/* Gold Divider */}
             <div
+              className="projects-cta-divider"
               style={{
                 height: '1px',
                 width: '180px',
@@ -1556,6 +1932,7 @@ export default function Projects({ onNavigate }: ProjectsProps) {
 
             {/* Brand Signature */}
             <div
+              className="projects-cta-signature"
               style={{
                 fontFamily: isAr ? 'var(--font-ar-display)' : 'var(--font-en-display)',
                 fontSize: isAr ? '14px' : '13px',

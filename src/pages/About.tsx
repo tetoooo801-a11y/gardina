@@ -69,6 +69,8 @@ export default function About({ onNavigate }: AboutProps) {
                 text={t('A Legacy of Growth & Distinction', 'إرث من النمو والتميز')}
                 tag="h2"
                 delay={0.12}
+                align="start"
+                className="w-full"
                 style={{
                   fontFamily: isAr ? 'var(--font-ar-display)' : 'var(--font-en-display)',
                   fontWeight: isAr ? 700 : 400,

@@ -58,6 +58,7 @@ interface WordPullUpProps {
   delay?: number
   stagger?: number
   tag?: 'h1' | 'h2' | 'h3' | 'p' | 'div'
+  align?: 'left' | 'center' | 'right' | 'start' | 'end'
 }
 
 export function WordPullUp({
@@ -67,6 +68,7 @@ export function WordPullUp({
   delay = 0,
   stagger = 0.07,
   tag = 'div',
+  align,
 }: WordPullUpProps) {
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { once: true, amount: 0.2 })
@@ -74,14 +76,24 @@ export function WordPullUp({
 
   const Tag = tag as keyof JSX.IntrinsicElements
 
+  const isStart = align === 'start' || align === 'left' || className.includes('justify-start')
+  const isEnd = align === 'end' || align === 'right' || className.includes('justify-end')
+  const alignClass = isStart
+    ? 'justify-start text-start'
+    : isEnd
+      ? 'justify-end text-end'
+      : 'justify-center text-center'
+
   return (
     // @ts-ignore — polymorphic ref
     <Tag
       ref={ref}
-      className={`inline-flex flex-wrap items-center justify-center ${className}`}
+      className={`inline-flex flex-wrap items-center ${alignClass} ${className}`}
       style={{
         rowGap: '0.2em',
         columnGap: '0.35em',
+        justifyContent: isStart ? 'flex-start' : isEnd ? 'flex-end' : 'center',
+        textAlign: isStart ? 'start' : isEnd ? 'end' : 'center',
         ...style,
       }}
     >
