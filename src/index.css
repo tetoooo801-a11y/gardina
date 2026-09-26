@@ -1969,9 +1969,11 @@ footer {
 
 @media (max-width: 768px) {
   .page-hero.projects-hero {
-    min-height: auto !important;
-    padding-top: 100px !important;
-    padding-bottom: 24px !important;
+    min-height: 65vh !important;
+    padding: 110px 0 60px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
   }
 
   .projects-hero-desktop {
@@ -1980,30 +1982,44 @@ footer {
 
   .projects-hero-mobile {
     display: flex !important;
-    padding-top: 0 !important;
-    padding-bottom: 0 !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    width: 100% !important;
+    padding: 0 24px !important;
   }
 
   .projects-hero-mobile .eyebrow-label {
-    margin-bottom: 10px !important;
-    font-size: 11px !important;
-    letter-spacing: 0.12em !important;
+    margin-bottom: 16px !important;
+    font-size: 12px !important;
+    letter-spacing: 0.14em !important;
   }
 
   .projects-hero-mobile .eyebrow-label .stem {
-    width: 22px !important;
+    width: 28px !important;
+  }
+
+  .projects-hero-mobile h1 {
+    font-size: clamp(48px, 8vw, 84px) !important;
+    line-height: 0.9 !important;
+  }
+
+  [data-lang="ar"] .projects-hero-mobile h1 {
+    font-size: clamp(40px, 7.5vw, 76px) !important;
+    line-height: 1.25 !important;
   }
 
   .projects-hero-mobile .subtitle {
-    margin-top: 12px !important;
-    font-size: 13.5px !important;
-    line-height: 1.55 !important;
-    max-width: 36ch !important;
+    margin-top: 20px !important;
+    font-size: 15px !important;
+    line-height: 1.65 !important;
+    max-width: 44ch !important;
   }
 
   .projects-page {
-    padding-top: 24px !important;
-    padding-bottom: 60px !important;
+    padding-top: 48px !important;
+    padding-bottom: 80px !important;
   }
 }
 

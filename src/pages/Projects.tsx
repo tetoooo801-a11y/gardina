@@ -541,7 +541,7 @@ export default function Projects({ onNavigate }: ProjectsProps) {
           <ParallaxImage
             src="/images/projects/residential-flagship.jpg"
             alt="Gardenia Heights Architectural Gallery"
-            strength={120}
+            strength={100}
             containerStyle={{ position: 'absolute', inset: 0 }}
           />
           <div
@@ -549,7 +549,7 @@ export default function Projects({ onNavigate }: ProjectsProps) {
               position: 'absolute',
               inset: 0,
               background:
-                'linear-gradient(180deg, rgba(12,22,14,0.78) 0%, rgba(12,22,14,0.92) 80%, rgba(12,22,14,1) 100%)',
+                'linear-gradient(180deg, rgba(20, 26, 20, 0.55) 0%, rgba(15, 20, 15, 0.78) 100%)',
             }}
           />
         </div>
@@ -630,18 +630,18 @@ export default function Projects({ onNavigate }: ProjectsProps) {
           <WordPullUp
             text={t('Our Projects', 'مشروعاتنا')}
             tag="h1"
-            delay={0.18}
+            delay={0.2}
             stagger={0.08}
             style={{
               fontFamily: isAr ? 'var(--font-ar-display)' : 'var(--font-en-display)',
               fontWeight: isAr ? 700 : 300,
-              lineHeight: isAr ? 1.25 : 0.95,
+              lineHeight: isAr ? 1.25 : 0.9,
               letterSpacing: isAr ? 0 : '-0.01em',
               color: 'var(--petal)',
-              fontSize: isAr ? 'clamp(36px, 8.5vw, 48px)' : 'clamp(38px, 9.5vw, 52px)',
+              fontSize: isAr ? 'clamp(44px, 7.5vw, 84px)' : 'clamp(52px, 8vw, 96px)',
             }}
           />
-          <FadeUp delay={0.3}>
+          <FadeUp delay={0.45}>
             <p className="subtitle">
               {t(
                 'Discover the iconic communities designed and delivered by Gardenia Heights Developments.',
