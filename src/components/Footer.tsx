@@ -181,11 +181,9 @@ export default function Footer({ onNavigate }: FooterProps) {
         </div>
         <div className="footer-bottom" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: '14px' }}>
           <span>{t('© 2026 Gardenia Heights Developments. All rights reserved.', '© 2026 جاردينيا هايتس للتطوير العقاري، جميع الحقوق محفوظة')}</span>
-          <a
-            href="https://www.instagram.com/ads_with_benefits?stkn=emNjZnprd2E0dDhh"
-            target="_blank"
-            rel="noopener noreferrer"
-            title="Powered by ads with benefits (Instagram)"
+          <div
+            className="footer-powered-badge"
+            dir="ltr"
             style={{
               fontSize: '11.5px',
               fontWeight: 500,
@@ -194,34 +192,117 @@ export default function Footer({ onNavigate }: FooterProps) {
               border: '1px solid rgba(212, 175, 55, 0.42)',
               padding: '4px 12px',
               borderRadius: '999px',
-              textDecoration: 'underline',
-              textUnderlineOffset: '3px',
-              textDecorationColor: 'rgba(212, 175, 55, 0.75)',
               letterSpacing: '0.03em',
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '5px',
+              gap: '6px',
               boxShadow: '0 0 12px rgba(212, 175, 55, 0.14)',
               transition: 'all 0.22s ease',
             }}
             onMouseEnter={e => {
               const el = e.currentTarget as HTMLElement
-              el.style.background = 'rgba(212, 175, 55, 0.26)'
+              el.style.background = 'rgba(212, 175, 55, 0.22)'
               el.style.borderColor = 'var(--gold)'
-              el.style.boxShadow = '0 0 16px rgba(212, 175, 55, 0.35)'
-              el.style.transform = 'translateY(-1px)'
+              el.style.boxShadow = '0 0 16px rgba(212, 175, 55, 0.3)'
             }}
             onMouseLeave={e => {
               const el = e.currentTarget as HTMLElement
               el.style.background = 'rgba(212, 175, 55, 0.14)'
               el.style.borderColor = 'rgba(212, 175, 55, 0.42)'
               el.style.boxShadow = '0 0 12px rgba(212, 175, 55, 0.14)'
-              el.style.transform = 'translateY(0)'
             }}
           >
-            <span>Powered by ads with benefits</span>
-            <span style={{ fontSize: '11px', opacity: 0.9 }}>↗</span>
-          </a>
+            <span style={{ opacity: 0.85, fontWeight: 400 }}>Powered by</span>
+            <a
+              href="https://www.instagram.com/ads_with_benefits?stkn=emNjZnprd2E0dDhh"
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Powered by ads with benefits (Instagram)"
+              style={{
+                color: 'var(--gold)',
+                textDecoration: 'underline',
+                textUnderlineOffset: '3px',
+                textDecorationColor: 'rgba(212, 175, 55, 0.75)',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '3px',
+                fontWeight: 600,
+                transition: 'all 0.2s ease',
+              }}
+              onMouseEnter={e => {
+                const el = e.currentTarget as HTMLElement
+                el.style.color = '#fff'
+                el.style.textDecorationColor = '#fff'
+              }}
+              onMouseLeave={e => {
+                const el = e.currentTarget as HTMLElement
+                el.style.color = 'var(--gold)'
+                el.style.textDecorationColor = 'rgba(212, 175, 55, 0.75)'
+              }}
+            >
+              <span>ads with benefits</span>
+              <span style={{ fontSize: '10px', opacity: 0.9 }}>↗</span>
+            </a>
+            <span
+              style={{
+                fontSize: '10px',
+                opacity: 0.6,
+                fontWeight: 700,
+                margin: '0 1px',
+                color: 'var(--gold)',
+                userSelect: 'none',
+              }}
+              aria-hidden="true"
+            >
+              ✕
+            </span>
+            <a
+              href="https://sirad-agancy.com/en"
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Sirad Creative Agency"
+              style={{
+                color: 'var(--gold)',
+                textDecoration: 'none',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '4px',
+                fontWeight: 600,
+                transition: 'all 0.2s ease',
+              }}
+              onMouseEnter={e => {
+                const el = e.currentTarget as HTMLElement
+                el.style.color = '#fff'
+                const img = el.querySelector('img')
+                if (img) {
+                  img.style.filter = 'brightness(1.3) drop-shadow(0 0 6px rgba(212, 175, 55, 0.6))'
+                  img.style.transform = 'scale(1.04)'
+                }
+              }}
+              onMouseLeave={e => {
+                const el = e.currentTarget as HTMLElement
+                el.style.color = 'var(--gold)'
+                const img = el.querySelector('img')
+                if (img) {
+                  img.style.filter = 'none'
+                  img.style.transform = 'scale(1)'
+                }
+              }}
+            >
+              <img
+                src="/images/sirad-logo-gold.png"
+                alt="Sirad Creative Agency"
+                style={{
+                  height: '13px',
+                  width: 'auto',
+                  objectFit: 'contain',
+                  verticalAlign: 'middle',
+                  transition: 'filter 0.2s ease, transform 0.2s ease',
+                }}
+              />
+              <span style={{ fontSize: '10px', opacity: 0.9 }}>↗</span>
+            </a>
+          </div>
           <span>{t('Life You Deserve — حياة تليق بك', 'حياة تليق بك — Life You Deserve')}</span>
         </div>
       </div>
