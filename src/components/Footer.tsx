@@ -293,7 +293,7 @@ export default function Footer({ onNavigate }: FooterProps) {
                 src="/images/sirad-logo-gold.png"
                 alt="Sirad Creative Agency"
                 style={{
-                  height: '13px',
+                  height: '15.5px',
                   width: 'auto',
                   objectFit: 'contain',
                   verticalAlign: 'middle',

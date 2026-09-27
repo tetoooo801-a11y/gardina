@@ -156,49 +156,61 @@ export default function QuickContact() {
         )}
       </AnimatePresence>
 
-      {/* Floating Trigger Button */}
+      {/* Floating Trigger Button (Compact Circular) */}
       <motion.button
         onClick={() => setIsOpen(v => !v)}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        aria-label={t('Quick Sales Contact', 'تواصل مع المبيعات')}
+        whileHover={{ scale: 1.08 }}
+        whileTap={{ scale: 0.94 }}
+        title={t('Sales Inquiry', 'تواصل مع المبيعات')}
+        aria-label={t('Sales Inquiry', 'تواصل مع المبيعات')}
         style={{
+          position: 'relative',
           display: 'flex',
           alignItems: 'center',
-          gap: 10,
+          justifyContent: 'center',
+          width: 48,
+          height: 48,
           background: 'linear-gradient(135deg, #25382B 0%, #152419 100%)',
-          color: 'var(--petal)',
-          border: '1px solid rgba(184, 144, 90, 0.45)',
-          borderRadius: 999,
-          padding: '12px 20px',
-          boxShadow: '0 8px 28px rgba(0, 0, 0, 0.4)',
+          color: 'var(--gold)',
+          border: '1.5px solid rgba(212, 175, 55, 0.48)',
+          borderRadius: '50%',
+          boxShadow: '0 8px 24px rgba(0, 0, 0, 0.45), 0 0 14px rgba(212, 175, 55, 0.22)',
           cursor: 'pointer',
+          padding: 0,
+          transition: 'border-color 0.2s, box-shadow 0.2s',
         }}
       >
+        {isOpen ? (
+          <X size={20} style={{ color: 'var(--gold)' }} />
+        ) : (
+          <span
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: 30,
+              height: 30,
+              borderRadius: '50%',
+              background: 'var(--gold)',
+              color: '#152419',
+            }}
+          >
+            <MessageCircle size={17} />
+          </span>
+        )}
+
+        {/* Live Active Status Indicator */}
         <span
           style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: 28,
-            height: 28,
-            borderRadius: '50%',
-            background: 'var(--gold)',
-            color: 'var(--green)',
-          }}
-        >
-          <MessageCircle size={15} />
-        </span>
-        <span style={{ fontSize: 12.5, fontWeight: 600, letterSpacing: isAr ? 0 : '0.04em' }}>
-          {t('Sales Inquiry', 'تواصل مع المبيعات')}
-        </span>
-        <span
-          style={{
-            width: 8,
-            height: 8,
+            position: 'absolute',
+            top: 1,
+            [isAr ? 'left' : 'right']: 1,
+            width: 11,
+            height: 11,
             borderRadius: '50%',
             background: '#22c55e',
-            boxShadow: '0 0 10px #22c55e',
+            border: '2px solid #152419',
+            boxShadow: '0 0 8px #22c55e',
             display: 'inline-block',
           }}
         />
