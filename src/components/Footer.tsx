@@ -256,37 +256,12 @@ export default function Footer({ onNavigate }: FooterProps) {
             >
               ✕
             </span>
-            <a
-              href="https://sirad-agancy.com/en"
-              target="_blank"
-              rel="noopener noreferrer"
+            <span
               title="Sirad Creative Agency"
               style={{
-                color: 'var(--gold)',
-                textDecoration: 'none',
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: '4px',
-                fontWeight: 600,
-                transition: 'all 0.2s ease',
-              }}
-              onMouseEnter={e => {
-                const el = e.currentTarget as HTMLElement
-                el.style.color = '#fff'
-                const img = el.querySelector('img')
-                if (img) {
-                  img.style.filter = 'brightness(1.3) drop-shadow(0 0 6px rgba(212, 175, 55, 0.6))'
-                  img.style.transform = 'scale(1.04)'
-                }
-              }}
-              onMouseLeave={e => {
-                const el = e.currentTarget as HTMLElement
-                el.style.color = 'var(--gold)'
-                const img = el.querySelector('img')
-                if (img) {
-                  img.style.filter = 'none'
-                  img.style.transform = 'scale(1)'
-                }
+                verticalAlign: 'middle',
               }}
             >
               <img
@@ -297,11 +272,9 @@ export default function Footer({ onNavigate }: FooterProps) {
                   width: 'auto',
                   objectFit: 'contain',
                   verticalAlign: 'middle',
-                  transition: 'filter 0.2s ease, transform 0.2s ease',
                 }}
               />
-              <span style={{ fontSize: '10px', opacity: 0.9 }}>↗</span>
-            </a>
+            </span>
           </div>
           <span>{t('Life You Deserve — حياة تليق بك', 'حياة تليق بك — Life You Deserve')}</span>
         </div>
